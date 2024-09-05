@@ -1,48 +1,43 @@
-# Übungsaufgabe Cluster-Dateisystem (macOS)
+# GlusterFS-Cluster Übungsaufgabe für macOS
 
-### 1. Vorbereitung der Umgebung
+## 1. Umgebungsvorbereitung
 
-Zuerst haben wir sichergestellt, dass alle notwendigen Tools auf macOS installiert waren. Dazu gehörten:
+Benötigte Tools:
 
-- VMware Fusion als Virtualisierungsplattform
-- Homebrew als Paketmanager
-- Vagrant für die einfache Verwaltung von VMs
-- Vagrant VMware Utility und Plugin für die Integration mit VMware Fusion
+- VMware Fusion (Virtualisierungsplattform)
+- Homebrew (Paketmanager)
+- Vagrant (VM-Verwaltung)
+- Vagrant VMware Utility und Plugin (VMware Fusion Integration)
 
-Wir haben Homebrew mit folgendem Befehl installiert (falls noch nicht vorhanden):
+Installation:
 
 ```bash
+# Homebrew installieren (falls nicht vorhanden)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
 
-Anschliessend haben wir Vagrant und das VMware Utility installiert:
-
-```bash
+# Vagrant und VMware Utility installieren
 brew install vagrant
 brew install --cask vagrant-vmware-utility
-```
 
-Zum Schluss haben wir das Vagrant VMware Plugin hinzugefügt:
-
-```bash
+# Vagrant VMware Plugin hinzufügen
 vagrant plugin install vagrant-vmware-desktop
 ```
 
-### 2. Projekt-Setup
+## 2. Projekt-Setup
 
-Als Nächstes haben wir das bestehende GitHub-Repository geklont und ein neues Verzeichnis für unser GlusterFS-Cluster erstellt:
+Repository klonen:
 
 ```bash
 git clone https://github.com/halkyon/glusterfs-vagrant
 ```
 
-### 3. VM-Konfiguration
+## 3. VM-Konfiguration
 
-Nachdem wir die Grundstruktur des Projekts eingerichtet hatten, haben, mussten wir das Vagrantfile aber noch anpassen, damit es mit VMware Fusion und der ARM64 Prozessorarchitektur funktioniert. Dieser Prozess dauerte eine Weile, und wir mussten immer wieder kleinere Änderungen vornehmen, um die VMs zum Laufen zu bringen.
+Das Vagrantfile wurde angepasst, um mit VMware Fusion und der ARM64-Architektur kompatibel zu sein. Dieser Prozess erforderte mehrere Iterationen und Feinjustierungen.
 
-## Herausforderungen und aktuelle Probleme
+## Herausforderungen
 
-Während des Setups stiessen wir auf ein Problem bei der Installation von GlusterFS. Der Fehler trat während des Provisioning-Prozesses auf:
+Während des Setups trat ein Problem bei der GlusterFS-Installation auf:
 
 ```
 The SSH command responded with a non-zero exit status. Vagrant
@@ -51,6 +46,14 @@ should be in the log above. Please read the output to determine what
 went wrong.
 ```
 
-Dieser Fehler deutet darauf hin, dass es Schwierigkeiten bei der Ausführung der Shell-Befehle in der VM gab. Mögliche Ursachen könnten Netzwerkprobleme, Inkompatibilitäten oder Berechtigungsprobleme sein. Da wir aber nicht genügend Zeit hatten, um das Problem zu lösen, konnten wir den Cluster nicht erfolgreich einrichten.
+Dieser Fehler deutet auf Schwierigkeiten bei der Ausführung von Shell-Befehlen in der VM hin. Mögliche Ursachen:
 
-Trotz dieser Herausforderung haben wir einen guten Überblick über den Prozess der Einrichtung eines GlusterFS-Clusters mit Vagrant und VMware Fusion auf macOS gewonnen.
+- Netzwerkprobleme
+- Inkompatibilitäten
+- Berechtigungsprobleme
+
+Aufgrund zeitlicher Beschränkungen konnte der Cluster nicht erfolgreich eingerichtet werden.
+
+## Fazit
+
+Trotz der Herausforderungen wurde ein guter Überblick über den Prozess der Einrichtung eines GlusterFS-Clusters mit Vagrant und VMware Fusion auf macOS gewonnen.
