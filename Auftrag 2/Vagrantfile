@@ -1,0 +1,88 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+servers = {
+  "dev-gluster-01" => {
+    :script => "provision-gluster-server.sh",
+    :ip => "192.168.10.10",
+    :cpus => 2,
+    :memory => 2048,
+    :disks => [
+      {
+        :size => 20480,
+        :name => "data",
+        :unit_number => 2
+      }
+    ]
+  },
+  "dev-gluster-02" => {
+    :script => "provision-gluster-server.sh",
+    :ip => "192.168.10.20",
+    :cpus => 2,
+    :memory => 2048,
+    :disks => [
+      {
+        :size => 20480,
+        :name => "data",
+        :unit_number => 2
+      }
+    ]
+  },
+  "dev-gluster-03" => {
+    :script => "provision-gluster-server.sh",
+    :ip => "192.168.10.30",
+    :cpus => 2,
+    :memory => 2048,
+    :disks => [
+      {
+        :size => 20480,
+        :name => "data",
+        :unit_number => 2
+      }
+    ]
+  },
+  "dev-client-01" => {
+    :script => "provision-gluster-client.sh",
+    :ip => "192.168.10.40",
+    :cpus => 2
+  }
+}
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  servers.each do |hostname, server|
+    config.vm.define hostname do |cfg|
+      cfg.vm.provider "vmware_desktop" do |vmware, override|
+        vmware.vmx["numvcpus"] = server[:cpus] || 1
+        vmware.vmx["memsize"] = server[:memory] || 768
+        vmware.vmx["ethernet0.virtualDev"] = "vmxnet3"
+        vmware.vmx["sound.present"] = "FALSE"
+        vmware.vmx["serial0.present"] = "FALSE"
+        
+        if server[:disks]
+          server[:disks].each do |disk|
+            vmware.vmx["scsi0:#{disk[:unit_number]}.present"] = "TRUE"
+            vmware.vmx["scsi0:#{disk[:unit_number]}.fileName"] = "#{hostname}_#{disk[:name]}.vmdk"
+            vmware.vmx["scsi0:#{disk[:unit_number]}.size"] = disk[:size]
+          end
+        end
+      end
+      
+      cfg.vm.box = "bento/ubuntu-22.04"
+      cfg.vm.hostname = hostname
+      cfg.vm.network "private_network", ip: server[:ip]
+      
+      if server[:forwarded_ports]
+        server[:forwarded_ports].each do |port|
+          cfg.vm.network "forwarded_port", guest: port[:guest], host: port[:host], auto_correct: true
+        end
+      end
+      
+      cfg.vm.provision "shell", path: "provision-common.sh"
+      if server[:script]
+        cfg.vm.provision "shell", path: server[:script]
+      end
+    end
+  end
+end
