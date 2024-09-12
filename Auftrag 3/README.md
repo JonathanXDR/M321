@@ -567,7 +567,9 @@ components:
           description: Das Geburtsdatum des Autors
 ```
 
-## Umwandeln un GraphQL
+![alt text](src/image2.png)
+
+## Umwandeln in GraphQL
 
 ```graphQL
 # Types
