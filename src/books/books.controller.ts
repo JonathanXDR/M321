@@ -1,35 +1,42 @@
 import { BookDto } from './dto/book.dto';
-import { Controller, Get, Post, Put, Delete, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { BooksService } from './books.service';
 
 @Controller('books')
-export class CatsController {
-  // Used to inject the BooksService into the controller.
+export class BooksController {
+  // Used to inject the BooksService into the controller
   constructor(private booksService: BooksService) {}
 
   @Get()
-  findAll(): string {
-    return 'This action returns all books';
+  async getAll(): Promise<BookDto[]> {
+    return this.booksService.getAll();
   }
 
   @Get(':id')
-  findOne(): string {
-    return 'This action returns a book';
+  async getOne(@Param('id') id: number): Promise<BookDto> {
+    return this.booksService.getOne(id);
   }
 
   @Post()
-  // The @Body() decorator extracts the data from the request body and passes it to the create() method.
-  async create(@Body() createCatDto: BookDto) {
-    this.booksService.create(createCatDto);
+  async postOne(@Body() bookDto: BookDto) {
+    this.booksService.postOne(bookDto);
   }
 
   @Put(':id')
-  updateOne(): string {
-    return 'This action updates a book';
+  async updateOne(@Param('id') id: number, @Body() bookDto: BookDto) {
+    this.booksService.putOne(id, bookDto);
   }
 
   @Delete(':id')
-  deleteOne(): string {
-    return 'This action removes a book';
+  async deleteOne(@Param('id') id: number) {
+    this.booksService.deleteOne(id);
   }
 }
