@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsDate } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 export class BookDto {
   // validates the data type of the property.
   @IsInt()
@@ -7,8 +7,8 @@ export class BookDto {
   @IsString()
   title: string;
 
-  @IsDate()
-  releaseDate: Date;
+  @IsInt()
+  releaseDate: number;
 
   @IsString()
   author: string;
