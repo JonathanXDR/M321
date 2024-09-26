@@ -7,13 +7,13 @@ export class BookService {
   constructor(private prisma: PrismaService) {}
 
   async findOne(id) {
-    try {
-      return this.prisma.book.findUniqueOrThrow({
-        where: { id },
-      });
-    } catch {
+    const book = await this.prisma.book.findUnique({
+      where: { id },
+    });
+    if (!book) {
       throw new NotFoundException();
     }
+    return book;
   }
 
   async findMany(params: {
@@ -43,7 +43,11 @@ export class BookService {
     where: Prisma.BookWhereUniqueInput;
     data: Prisma.BookUpdateInput;
   }): Promise<Book> {
-    const { where, data } = params;
+    const { data, where } = params;
+    const book = await this.findOne(params.where.id);
+    if (!book) {
+      throw new NotFoundException();
+    }
     return this.prisma.book.update({
       data,
       where,
@@ -51,6 +55,10 @@ export class BookService {
   }
 
   async deleteBook(where: Prisma.BookWhereUniqueInput): Promise<Book> {
+    const book = await this.findOne(where.id);
+    if (!book) {
+      throw new NotFoundException();
+    }
     return this.prisma.book.delete({
       where,
     });
