@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+main,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+#__primerPortalRoot__ > div {
+  z-index: unset !important;
+}
+
+.octicon-alert,
+div:has(svg.octicon-alert) ~ div > div > span,
+span > div:has(svg.octicon-alert) + span,
+div:has(~ div > svg.octicon-alert) > span {
+  color: rgb(210, 153, 34);
+  fill: currentColor !important;
+}
