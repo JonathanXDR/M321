@@ -1,5 +1,5 @@
 # Use an official Node runtime as the base image
-FROM node:18
+FROM node:18.16.0
 
 # Set the working directory in the container
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 # Expose the port on which the app will run
-EXPOSE 3000
+EXPOSE 3001
 
 # Start the application
 CMD ["npm", "start"]
