@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book as BookModel } from '@prisma/client';
+import { NotFoundException } from '@nestjs/common';
 
 @Controller()
 export class AppController {
@@ -21,7 +22,11 @@ export class AppController {
 
   @Get('books/:id')
   async getBook(@Param('id') id: string): Promise<BookModel> {
-    return this.bookService.book({ id: Number(id) });
+    try {
+      return this.bookService.book({ id: Number(id) });
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   @Post('books')
@@ -34,14 +39,22 @@ export class AppController {
     @Param('id') id: string,
     @Body() data: any,
   ): Promise<BookModel> {
-    return this.bookService.updateBook({
-      where: { id: Number(id) },
-      data,
-    });
+    try {
+      return this.bookService.updateBook({
+        where: { id: Number(id) },
+        data,
+      });
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   @Delete('books/:id')
   async deleteBook(@Param('id') id: string): Promise<BookModel> {
-    return this.bookService.deleteBook({ id: Number(id) });
+    try {
+      return this.bookService.deleteBook({ id: Number(id) });
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 }

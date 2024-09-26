@@ -4,7 +4,6 @@ import { Book, Prisma } from '@prisma/client';
 
 @Injectable()
 export class BookService {
-  //create a private property that can only be accessed within the class.
   constructor(private prisma: PrismaService) {}
 
   async book(
