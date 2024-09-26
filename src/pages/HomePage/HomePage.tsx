@@ -151,9 +151,9 @@ const HomePage: React.FC = () => {
           </Flash>
         )}
 
-        {/* PageHeader and other components */}
-        {/* if there is at least one item show the TreeView else show the BlankState */}
-        {noteCollectionsData.length > 0 ? (
+        {!notesData.length && !noteCollectionsData.length ? (
+          <BlankStateEmpty />
+        ) : (
           <TreeView aria-label="Files">
             <Box sx={{ marginTop: 4 }}>
               <Box
@@ -209,9 +209,6 @@ const HomePage: React.FC = () => {
               </Box>
             </Box>
           </TreeView>
-        ) : (
-          // <BlankStateEmpty />
-          <BlankStateConnectionError />
         )}
       </PageLayout.Content>
     </PageLayout>

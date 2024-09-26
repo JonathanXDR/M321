@@ -3,6 +3,16 @@ import { Note } from '../types/Note/note.interface';
 import { NoteCollection } from '../types/NoteCollection/noteCollection.interface';
 import api from './api.service';
 
+export const checkConnection = async () => {
+  try {
+    await api.get('/users');
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
 const users = {
   getAll: () => api.get<User[]>('/users'),
   get: (id: string) => api.get<User>(`/users/${id}`),
