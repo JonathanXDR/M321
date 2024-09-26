@@ -9,7 +9,7 @@ export class BookEntity implements Book {
   title: string;
 
   @ApiProperty()
-  releaseDate: number;
+  releaseYear: number;
 
   @ApiProperty()
   author: string;

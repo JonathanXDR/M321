@@ -2,7 +2,7 @@
 CREATE TABLE `Book` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
-    `releaseDate` INTEGER NOT NULL,
+    `releaseYear` INTEGER NOT NULL,
     `author` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
