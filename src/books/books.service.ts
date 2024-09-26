@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Book, Prisma } from '@prisma/client';
 
@@ -7,12 +7,9 @@ export class BooksService {
   constructor(private prisma: PrismaService) {}
 
   async findOne(id) {
-    const book = await this.prisma.book.findUnique({
+    const book = await this.prisma.book.findUniqueOrThrow({
       where: { id },
     });
-    if (!book) {
-      throw new NotFoundException();
-    }
     return book;
   }
 
@@ -44,10 +41,6 @@ export class BooksService {
     data: Prisma.BookUpdateInput;
   }): Promise<Book> {
     const { data, where } = params;
-    const book = await this.findOne(params.where.id);
-    if (!book) {
-      throw new NotFoundException();
-    }
     return this.prisma.book.update({
       data,
       where,
@@ -55,10 +48,6 @@ export class BooksService {
   }
 
   async deleteBook(where: Prisma.BookWhereUniqueInput): Promise<Book> {
-    const book = await this.findOne(where.id);
-    if (!book) {
-      throw new NotFoundException();
-    }
     return this.prisma.book.delete({
       where,
     });
