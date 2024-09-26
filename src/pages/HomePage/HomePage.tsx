@@ -168,10 +168,15 @@ const HomePage: React.FC = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'flex-start',
-                    flexWrap: 'wrap',
+                    flexWrap: 'wrap-reverse',
                   }}
                 >
-                  <ButtonGroup sx={{ marginBottom: '3' }}>
+                  <ButtonGroup
+                    sx={{
+                      marginRight: '3',
+                      marginBottom: '3',
+                    }}
+                  >
                     <Button
                       trailingIcon={
                         expanded.length > 0 ? ChevronDownIcon : ChevronRightIcon
@@ -192,7 +197,6 @@ const HomePage: React.FC = () => {
                       display: 'flex',
                       alignItems: 'flex-start',
                       flexWrap: 'wrap',
-                      marginBottom: '3',
                     }}
                   >
                     <Button
@@ -210,6 +214,9 @@ const HomePage: React.FC = () => {
                       leadingIcon={FileDirectoryIcon}
                       variant="default"
                       onClick={() => openNoteCollectionDialog('create')}
+                      sx={{
+                        marginBottom: '3',
+                      }}
                     >
                       Create NoteCollection
                     </Button>
