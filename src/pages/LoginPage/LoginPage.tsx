@@ -122,8 +122,9 @@ const LoginPage = () => {
                 Incorrect username or password.
                 <IconButton
                   variant="invisible"
-                  aria-label="Search"
+                  aria-label="Close flash"
                   icon={XIcon}
+                  onClick={() => setError(false)}
                 />
               </Box>
             </Flash>

@@ -5,15 +5,17 @@ function BlankStateConnectionError() {
   return (
     <Box
       sx={{
-        padding: '112px 0 112px 0',
+        paddingX: ['0px', '10px', '20px', '40px'],
+        paddingY: ['0px', '20px', '40px', '80px'],
       }}
     >
       <Box
-        className="blankslate blankslate-large blankslate-spacious"
+        className="blankslate blankslate-large"
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          paddingY: '128px',
         }}
       >
         <CloudOfflineIcon size={64} className="blankslate-icon" />

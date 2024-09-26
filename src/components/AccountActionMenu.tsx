@@ -1,4 +1,8 @@
-import { KebabHorizontalIcon, SignOutIcon } from '@primer/octicons-react';
+import {
+  KebabHorizontalIcon,
+  SignOutIcon,
+  StarIcon,
+} from '@primer/octicons-react';
 import {
   ActionList,
   Text,
@@ -43,29 +47,34 @@ function AccountActionMenu() {
             disabled
             sx={{
               cursor: 'default !important',
+              color: 'fg.default !important',
             }}
           >
-            <Text>
-              Signed in as
-              {/* <Text fontWeight="bold">{user.username}</Text>s */}
-            </Text>
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+              }}
+            >
+              <Text
+                sx={{
+                  marginRight: 1,
+                }}
+              >
+                Signed in as
+              </Text>
+              <Text
+                sx={{
+                  fontWeight: 'bold',
+                }}
+              >
+                Jonathan Russ
+              </Text>
+            </Box>
           </ActionList.Item>
-          {/* <ActionList.Item onSelect={() => alert('Star clicked')}>
-            <ActionList.LeadingVisual>
-              <StarIcon />
-            </ActionList.LeadingVisual>
-            Star
-            <ActionList.TrailingVisual>⌘S</ActionList.TrailingVisual>
-          </ActionList.Item> */}
-          {/* <ActionList.Divider /> */}
+          <ActionList.Divider />
           <ActionList.Item variant="danger" onSelect={() => logout()}>
             Logout
-            <StyledOcticon
-              icon={SignOutIcon}
-              sx={{
-                marginLeft: 2,
-              }}
-            />
             <ActionList.TrailingVisual>⌘L</ActionList.TrailingVisual>
           </ActionList.Item>
         </ActionList>

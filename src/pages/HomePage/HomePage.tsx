@@ -167,7 +167,7 @@ const HomePage: React.FC = () => {
                   sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center',
+                    alignItems: 'flex-start',
                     flexWrap: 'wrap',
                   }}
                 >
@@ -187,22 +187,33 @@ const HomePage: React.FC = () => {
                       {expanded.length > 0 ? 'Collapse' : 'Expand'} All
                     </Button>
                   </ButtonGroup>
-                  <ButtonGroup sx={{ marginBottom: '3' }}>
-                    <Button
-                      leadingIcon={FileDirectoryIcon}
-                      variant="primary"
-                      onClick={() => openNoteCollectionDialog('create')}
-                    >
-                      Create NoteCollection
-                    </Button>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexWrap: 'wrap',
+                      marginBottom: '3',
+                    }}
+                  >
                     <Button
                       leadingIcon={NoteIcon}
                       variant="primary"
                       onClick={() => openNoteDialog('create')}
+                      sx={{
+                        marginRight: '3',
+                        marginBottom: '3',
+                      }}
                     >
                       Create Note
                     </Button>
-                  </ButtonGroup>
+                    <Button
+                      leadingIcon={FileDirectoryIcon}
+                      variant="default"
+                      onClick={() => openNoteCollectionDialog('create')}
+                    >
+                      Create NoteCollection
+                    </Button>
+                  </Box>
                 </Box>
                 {renderNoteCollections()}
                 {renderFilteredNoteItems()}
