@@ -35,6 +35,8 @@ import {
 } from '../../utils/noteCollection.util';
 import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
 import { Note } from '../../types/Note/note.interface';
+import BlankState from '../../components/BlankStateEmpty';
+import BlankStateEmpty from '../../components/BlankStateEmpty';
 
 const HomePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -42,11 +44,14 @@ const HomePage: React.FC = () => {
 
   const { flashVisible, flashMessage } = useHandleFlash();
 
-  const { handleNoteDialog, noteDialogIsOpen } = useNoteDialog();
+  const { noteDialogIsOpen, openNoteDialog, closeNoteDialog } = useNoteDialog();
   const { notesData, setNotesData } = useNoteState();
 
-  const { handleNoteCollectionDialog, noteCollectionDialogIsOpen } =
-    useNoteCollectionDialog();
+  const {
+    noteCollectionDialogIsOpen,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
+  } = useNoteCollectionDialog();
   const { noteCollectionsData, setNoteCollectionsData } =
     useNoteCollectionState();
 
@@ -146,61 +151,66 @@ const HomePage: React.FC = () => {
         )}
 
         {/* PageHeader and other components */}
-        <TreeView aria-label="Files">
-          <Box sx={{ marginTop: 4 }}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
+        {/* if there is at least one item show the TreeView else show the BlankState */}
+        {noteCollectionsData.length > 0 ? (
+          <TreeView aria-label="Files">
+            <Box sx={{ marginTop: 4 }}>
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                 }}
               >
-                <ButtonGroup sx={{ marginBottom: '3' }}>
-                  <Button
-                    trailingIcon={
-                      expanded.length > 0 ? ChevronDownIcon : ChevronRightIcon
-                    }
-                    onClick={() =>
-                      setExpanded(
-                        expanded.length > 0
-                          ? []
-                          : noteCollectionsData.map((nc) => nc.id)
-                      )
-                    }
-                  >
-                    {expanded.length > 0 ? 'Collapse' : 'Expand'} All
-                  </Button>
-                </ButtonGroup>
-                <ButtonGroup sx={{ marginBottom: '3' }}>
-                  <Button
-                    leadingIcon={FileDirectoryIcon}
-                    variant="primary"
-                    onClick={() => handleNoteCollectionDialog('create')}
-                  >
-                    Create NoteCollection
-                  </Button>
-                  <Button
-                    leadingIcon={NoteIcon}
-                    variant="primary"
-                    onClick={() => handleNoteDialog('create')}
-                  >
-                    Create Note
-                  </Button>
-                </ButtonGroup>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <ButtonGroup sx={{ marginBottom: '3' }}>
+                    <Button
+                      trailingIcon={
+                        expanded.length > 0 ? ChevronDownIcon : ChevronRightIcon
+                      }
+                      onClick={() =>
+                        setExpanded(
+                          expanded.length > 0
+                            ? []
+                            : noteCollectionsData.map((nc) => nc.id)
+                        )
+                      }
+                    >
+                      {expanded.length > 0 ? 'Collapse' : 'Expand'} All
+                    </Button>
+                  </ButtonGroup>
+                  <ButtonGroup sx={{ marginBottom: '3' }}>
+                    <Button
+                      leadingIcon={FileDirectoryIcon}
+                      variant="primary"
+                      onClick={() => openNoteCollectionDialog('create')}
+                    >
+                      Create NoteCollection
+                    </Button>
+                    <Button
+                      leadingIcon={NoteIcon}
+                      variant="primary"
+                      onClick={() => openNoteDialog('create')}
+                    >
+                      Create Note
+                    </Button>
+                  </ButtonGroup>
+                </Box>
+                {renderNoteCollections()}
+                {renderFilteredNoteItems()}
               </Box>
-              {renderNoteCollections()}
-              {renderFilteredNoteItems()}
             </Box>
-          </Box>
-        </TreeView>
+          </TreeView>
+        ) : (
+          <BlankStateEmpty />
+        )}
       </PageLayout.Content>
     </PageLayout>
   );

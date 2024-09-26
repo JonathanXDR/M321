@@ -17,7 +17,8 @@ function NoteDialog({ note }: NoteDialogProps) {
   const [createdContent, setCreatedContent] = useState('');
 
   const { notesData, setNotesData, newNote, setNewNote } = useNoteState();
-  const { handleNoteDialog, noteDialogType } = useNoteDialog();
+  const { closeNoteDialog, noteDialogType, setNoteDialogIsOpen } =
+    useNoteDialog();
 
   const handleCreateNote = useCreateNote(
     newNote,
@@ -31,7 +32,7 @@ function NoteDialog({ note }: NoteDialogProps) {
   const handleCancel = () => {
     setUpdatedTitle(note.title);
     setUpdatedContent(note.content);
-    handleNoteDialog();
+    closeNoteDialog();
   };
 
   const getDialogTitle = () => {
@@ -51,11 +52,11 @@ function NoteDialog({ note }: NoteDialogProps) {
   const getDialogSubtitle = () => {
     switch (noteDialogType) {
       case 'create':
-        return 'Create a new note';
+        return 'Compose a new note to save your ideas';
       case 'update':
-        return 'Edit an existing note';
+        return 'Edit and enhance your existing note';
       case 'delete':
-        return 'Delete this note';
+        return 'Remove a note you no longer need';
       default:
         return '';
     }
@@ -67,7 +68,7 @@ function NoteDialog({ note }: NoteDialogProps) {
         return [
           {
             content: 'Cancel',
-            onClick: () => handleNoteDialog(),
+            onClick: () => closeNoteDialog(),
           },
           {
             content: 'Save',
@@ -89,7 +90,7 @@ function NoteDialog({ note }: NoteDialogProps) {
         return [
           {
             content: 'Cancel',
-            onClick: () => handleNoteDialog(),
+            onClick: () => closeNoteDialog(),
           },
           {
             content: 'Delete',
@@ -112,7 +113,7 @@ function NoteDialog({ note }: NoteDialogProps) {
         title={getDialogTitle()}
         subtitle={getDialogSubtitle()}
         footerButtons={getFooterButtons()}
-        onClose={() => handleNoteDialog()}
+        onClose={() => setNoteDialogIsOpen(false)}
       >
         <FormControl>
           <FormControl.Label>Title</FormControl.Label>

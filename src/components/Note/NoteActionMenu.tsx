@@ -16,7 +16,7 @@ import {
 import { useNoteDialog } from '../../utils/note.util';
 import NoteDialog from './NoteDialog';
 function NoteActionMenu({ note }: any) {
-  const { handleNoteDialog, noteDialogIsOpen, noteDialogType } =
+  const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
     useNoteDialog();
   return (
     <>
@@ -31,7 +31,7 @@ function NoteActionMenu({ note }: any) {
 
         <ActionMenu.Overlay>
           <ActionList>
-            <ActionList.Item onSelect={() => handleNoteDialog('update')}>
+            <ActionList.Item onSelect={() => openNoteDialog('update')}>
               <ActionList.LeadingVisual>
                 <PencilIcon />
               </ActionList.LeadingVisual>
@@ -48,7 +48,7 @@ function NoteActionMenu({ note }: any) {
             {/* <ActionList.Divider /> */}
             <ActionList.Item
               variant="danger"
-              onSelect={() => handleNoteDialog('delete')}
+              onSelect={() => openNoteDialog('delete')}
             >
               <ActionList.LeadingVisual>
                 <TrashIcon />
@@ -59,6 +59,7 @@ function NoteActionMenu({ note }: any) {
           </ActionList>
         </ActionMenu.Overlay>
       </ActionMenu>
+
       {noteDialogIsOpen && noteDialogType !== 'delete' && (
         <NoteDialog key={note.id} note={note} />
       )}
@@ -66,7 +67,8 @@ function NoteActionMenu({ note }: any) {
       {noteDialogIsOpen && noteDialogType === 'delete' && (
         <ConfirmationDialog
           title="Confirm action?"
-          onClose={() => handleNoteDialog()}
+          onClose={() => closeNoteDialog()}
+          confirmButtonType="danger"
         >
           Are you sure you want to delete this note?
         </ConfirmationDialog>

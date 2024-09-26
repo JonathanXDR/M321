@@ -13,25 +13,25 @@ export const useNoteState = () => {
 export const useNoteDialog = () => {
   const [noteDialogIsOpen, setNoteDialogIsOpen] = useState(false);
   const [noteDialogType, setNoteDialogType] = useState<
-    'create' | 'update' | 'delete' | null
-  >(null);
+    'create' | 'update' | 'delete'
+  >('create');
 
-  const handleNoteDialog = useCallback(
-    (type?: 'create' | 'update' | 'delete') => {
-      if (type) {
-        setNoteDialogType(type);
-      }
-      setNoteDialogIsOpen(!noteDialogIsOpen);
-    },
-    [noteDialogIsOpen, noteDialogType]
-  );
+  const openNoteDialog = useCallback((type: 'create' | 'update' | 'delete') => {
+    setNoteDialogType(type);
+    setNoteDialogIsOpen(true);
+  }, []);
+
+  const closeNoteDialog = useCallback(() => {
+    setNoteDialogIsOpen(false);
+  }, []);
 
   return {
     noteDialogIsOpen,
     setNoteDialogIsOpen,
     noteDialogType,
     setNoteDialogType,
-    handleNoteDialog,
+    openNoteDialog,
+    closeNoteDialog,
   };
 };
 
@@ -42,7 +42,7 @@ export const useCreateNote = (
   setNewNote: Function
 ) => {
   const { handleFlash } = useHandleFlash();
-  const { handleNoteDialog } = useNoteDialog();
+  const { closeNoteDialog } = useNoteDialog();
 
   const handleCreateNote = useCallback(async () => {
     if (!newNote) return;
@@ -53,14 +53,14 @@ export const useCreateNote = (
     setNotesData([...notesData, createdNote.data]);
     setNewNote('');
     handleFlash('Note created successfully!');
-    handleNoteDialog();
+    closeNoteDialog();
   }, [
     newNote,
     notesData,
     setNotesData,
     setNewNote,
     handleFlash,
-    handleNoteDialog,
+    closeNoteDialog,
   ]);
 
   return handleCreateNote;
@@ -68,7 +68,7 @@ export const useCreateNote = (
 
 export const useUpdateNote = (notesData: Note[], setNotesData: Function) => {
   const { handleFlash } = useHandleFlash();
-  const { handleNoteDialog } = useNoteDialog();
+  const { closeNoteDialog } = useNoteDialog();
 
   const handleUpdateNote = useCallback(
     async (id: string, title: string, content: string) => {
@@ -77,9 +77,9 @@ export const useUpdateNote = (notesData: Note[], setNotesData: Function) => {
         notesData.map((note) => (note.id === id ? updatedNote.data : note))
       );
       handleFlash('Note updated successfully!');
-      handleNoteDialog();
+      closeNoteDialog();
     },
-    [notesData, setNotesData, handleFlash, handleNoteDialog]
+    [notesData, setNotesData, handleFlash, closeNoteDialog]
   );
 
   return handleUpdateNote;
@@ -87,16 +87,16 @@ export const useUpdateNote = (notesData: Note[], setNotesData: Function) => {
 
 export const useDeleteNote = (notesData: Note[], setNotesData: Function) => {
   const { handleFlash } = useHandleFlash();
-  const { handleNoteDialog } = useNoteDialog();
+  const { closeNoteDialog } = useNoteDialog();
 
   const handleDeleteNote = useCallback(
     async (id: string) => {
       await notes.delete(id);
       setNotesData(notesData.filter((note) => note.id !== id));
       handleFlash('Note deleted successfully!');
-      handleNoteDialog();
+      closeNoteDialog();
     },
-    [notesData, setNotesData, handleFlash, handleNoteDialog]
+    [notesData, setNotesData, handleFlash, closeNoteDialog]
   );
 
   return handleDeleteNote;

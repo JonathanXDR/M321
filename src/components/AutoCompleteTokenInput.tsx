@@ -72,7 +72,7 @@ function AutoCompleteTokenInput({
     setTokens(newlySelectedItems.map(({ id, text }) => ({ id, text })));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newNotes = tokens
       .map((token) => initialNotes.find((note) => note.id === token.id))
       .filter((note) => note !== undefined) as Note[];

@@ -15,9 +15,10 @@ import { useNoteCollectionDialog } from '../../utils/noteCollection.util';
 
 function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
   const {
-    handleNoteCollectionDialog,
     noteCollectionDialogIsOpen,
     noteCollectionDialogType,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
   } = useNoteCollectionDialog();
 
   const textStyle = {
@@ -52,14 +53,14 @@ function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
               <Button
                 leadingIcon={PencilIcon}
                 variant="outline"
-                onClick={() => handleNoteCollectionDialog('update')}
+                onClick={() => openNoteCollectionDialog('update')}
               >
                 Edit
               </Button>
               <Button
                 leadingIcon={TrashIcon}
                 variant="danger"
-                onClick={() => handleNoteCollectionDialog('delete')}
+                onClick={() => openNoteCollectionDialog('delete')}
               >
                 Delete
               </Button>
@@ -85,7 +86,8 @@ function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
       {noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete' && (
         <ConfirmationDialog
           title="Confirm action?"
-          onClose={() => handleNoteCollectionDialog()}
+          onClose={() => closeNoteCollectionDialog()}
+          confirmButtonType="danger"
         >
           Are you sure you want to delete this note?
         </ConfirmationDialog>

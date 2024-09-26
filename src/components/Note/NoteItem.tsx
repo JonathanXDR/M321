@@ -14,7 +14,7 @@ import NoteActionMenu from './NoteActionMenu';
 import { useNoteDialog } from '../../utils/note.util';
 
 function NoteItem({ note }: NoteItemProps) {
-  const { handleNoteDialog, noteDialogIsOpen, noteDialogType } =
+  const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
     useNoteDialog();
 
   const textStyle = {
@@ -49,14 +49,14 @@ function NoteItem({ note }: NoteItemProps) {
             <Button
               leadingIcon={PencilIcon}
               variant="outline"
-              onClick={() => handleNoteDialog('update')}
+              onClick={() => openNoteDialog('update')}
             >
               Edit
             </Button>
             <Button
               leadingIcon={TrashIcon}
               variant="danger"
-              onClick={() => handleNoteDialog('delete')}
+              onClick={() => openNoteDialog('delete')}
             >
               Delete
             </Button>
@@ -75,7 +75,8 @@ function NoteItem({ note }: NoteItemProps) {
       {noteDialogIsOpen && noteDialogType === 'delete' && (
         <ConfirmationDialog
           title="Confirm action?"
-          onClose={() => handleNoteDialog()}
+          onClose={() => closeNoteDialog()}
+          confirmButtonType="danger"
         >
           Are you sure you want to delete this note?
         </ConfirmationDialog>

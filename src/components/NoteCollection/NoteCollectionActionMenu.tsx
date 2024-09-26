@@ -16,9 +16,10 @@ import { useNoteCollectionDialog } from '../../utils/noteCollection.util';
 
 function NoteCollectionActionMenu({ noteCollection }: any) {
   const {
-    handleNoteCollectionDialog,
     noteCollectionDialogIsOpen,
     noteCollectionDialogType,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
   } = useNoteCollectionDialog();
   return (
     <>
@@ -34,7 +35,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
         <ActionMenu.Overlay>
           <ActionList>
             <ActionList.Item
-              onSelect={() => handleNoteCollectionDialog('update')}
+              onSelect={() => openNoteCollectionDialog('update')}
             >
               <ActionList.LeadingVisual>
                 <PencilIcon />
@@ -52,7 +53,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
             {/* <ActionList.Divider /> */}
             <ActionList.Item
               variant="danger"
-              onSelect={() => handleNoteCollectionDialog('delete')}
+              onSelect={() => openNoteCollectionDialog('delete')}
             >
               <ActionList.LeadingVisual>
                 <TrashIcon />
@@ -63,6 +64,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
           </ActionList>
         </ActionMenu.Overlay>
       </ActionMenu>
+
       {noteCollectionDialogIsOpen && noteCollectionDialogType !== 'delete' && (
         <NoteCollectionDialog
           key={noteCollection.id}
@@ -73,7 +75,8 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
       {noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete' && (
         <ConfirmationDialog
           title="Confirm action?"
-          onClose={() => handleNoteCollectionDialog()}
+          onClose={() => closeNoteCollectionDialog()}
+          confirmButtonType="danger"
         >
           Are you sure you want to delete this note?
         </ConfirmationDialog>

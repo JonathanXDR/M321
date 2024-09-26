@@ -22,25 +22,28 @@ export const useNoteCollectionDialog = () => {
   const [noteCollectionDialogIsOpen, setNoteCollectionDialogIsOpen] =
     useState(false);
   const [noteCollectionDialogType, setNoteCollectionDialogType] = useState<
-    'create' | 'update' | 'delete' | null
-  >(null);
+    'create' | 'update' | 'delete'
+  >('create');
 
-  const handleNoteCollectionDialog = useCallback(
-    (type?: 'create' | 'update' | 'delete') => {
-      if (type) {
-        setNoteCollectionDialogType(type);
-      }
-      setNoteCollectionDialogIsOpen(!noteCollectionDialogIsOpen);
+  const openNoteCollectionDialog = useCallback(
+    (type: 'create' | 'update' | 'delete') => {
+      setNoteCollectionDialogType(type);
+      setNoteCollectionDialogIsOpen(true);
     },
-    [noteCollectionDialogIsOpen, noteCollectionDialogType]
+    []
   );
+
+  const closeNoteCollectionDialog = useCallback(() => {
+    setNoteCollectionDialogIsOpen(false);
+  }, []);
 
   return {
     noteCollectionDialogIsOpen,
     setNoteCollectionDialogIsOpen,
     noteCollectionDialogType,
     setNoteCollectionDialogType,
-    handleNoteCollectionDialog,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
   };
 };
 
@@ -51,7 +54,7 @@ export const useCreateNoteCollection = (
   setNewNoteCollection: Function
 ) => {
   const { handleFlash } = useHandleFlash();
-  const { handleNoteCollectionDialog } = useNoteCollectionDialog();
+  const { closeNoteCollectionDialog } = useNoteCollectionDialog();
 
   const handleCreateNoteCollection = useCallback(async () => {
     if (!newNoteCollection) return;
@@ -65,14 +68,14 @@ export const useCreateNoteCollection = (
     ]);
     setNewNoteCollection('');
     handleFlash('NoteCollection created successfully!');
-    handleNoteCollectionDialog();
+    closeNoteCollectionDialog();
   }, [
     newNoteCollection,
     noteCollectionsData,
     setNoteCollectionsData,
     setNewNoteCollection,
     handleFlash,
-    handleNoteCollectionDialog,
+    closeNoteCollectionDialog,
   ]);
 
   return handleCreateNoteCollection;
@@ -83,7 +86,7 @@ export const useUpdateNoteCollection = (
   setNoteCollectionsData: Function
 ) => {
   const { handleFlash } = useHandleFlash();
-  const { handleNoteCollectionDialog } = useNoteCollectionDialog();
+  const { closeNoteCollectionDialog } = useNoteCollectionDialog();
 
   const handleUpdateNoteCollection = useCallback(
     async (id: string, title: string, notes: Note[]) => {
@@ -94,13 +97,13 @@ export const useUpdateNoteCollection = (
         )
       );
       handleFlash('NoteCollection updated successfully!');
-      handleNoteCollectionDialog();
+      closeNoteCollectionDialog();
     },
     [
       noteCollectionsData,
       setNoteCollectionsData,
       handleFlash,
-      handleNoteCollectionDialog,
+      closeNoteCollectionDialog,
     ]
   );
 
@@ -112,7 +115,7 @@ export const useDeleteNoteCollection = (
   setNoteCollectionsData: Function
 ) => {
   const { handleFlash } = useHandleFlash();
-  const { handleNoteCollectionDialog } = useNoteCollectionDialog();
+  const { closeNoteCollectionDialog } = useNoteCollectionDialog();
 
   const handleDeleteNoteCollection = useCallback(
     async (id: string) => {
@@ -121,13 +124,13 @@ export const useDeleteNoteCollection = (
         noteCollectionsData.filter((noteCollection) => noteCollection.id !== id)
       );
       handleFlash('NoteCollection deleted successfully!');
-      handleNoteCollectionDialog();
+      closeNoteCollectionDialog();
     },
     [
       noteCollectionsData,
       setNoteCollectionsData,
       handleFlash,
-      handleNoteCollectionDialog,
+      closeNoteCollectionDialog,
     ]
   );
 

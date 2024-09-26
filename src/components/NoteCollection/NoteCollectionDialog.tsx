@@ -30,7 +30,7 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
     newNoteCollection,
     setNewNoteCollection,
   } = useNoteCollectionState();
-  const { handleNoteCollectionDialog, noteCollectionDialogType } =
+  const { closeNoteCollectionDialog, noteCollectionDialogType } =
     useNoteCollectionDialog();
 
   const handleCreateNoteCollection = useCreateNoteCollection(
@@ -53,7 +53,7 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
   const handleCancel = () => {
     setUpdatedTitle(noteCollection.title);
     setUpdatedNotes(noteCollection.notes);
-    handleNoteCollectionDialog();
+    closeNoteCollectionDialog();
   };
 
   const getDialogTitle = () => {
@@ -63,7 +63,7 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
       case 'update':
         return 'Edit Note Collection';
       case 'delete':
-        return 'Are you sure?';
+        return 'Delete Note Collection';
       default:
         return '';
     }
@@ -72,9 +72,11 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
   const getDialogSubtitle = () => {
     switch (noteCollectionDialogType) {
       case 'create':
-        return 'Create a new Note Collection';
+        return 'Organize your notes by creating a collection';
       case 'update':
-        return 'Edit an existing Note Collection';
+        return 'Modify and manage your note collections';
+      case 'delete':
+        return 'Delete a collection and its associated notes';
       default:
         return '';
     }
