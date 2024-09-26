@@ -37,6 +37,7 @@ import NoteCollectionDialog from '../../components/NoteCollection/NoteCollection
 import { Note } from '../../types/Note/note.interface';
 import BlankState from '../../components/BlankStateEmpty';
 import BlankStateEmpty from '../../components/BlankStateEmpty';
+import BlankStateConnectionError from '../../components/BlankStateConnectionError';
 
 const HomePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -209,7 +210,8 @@ const HomePage: React.FC = () => {
             </Box>
           </TreeView>
         ) : (
-          <BlankStateEmpty />
+          // <BlankStateEmpty />
+          <BlankStateConnectionError />
         )}
       </PageLayout.Content>
     </PageLayout>
