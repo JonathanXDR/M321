@@ -6,6 +6,7 @@ import {
   Body,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book as BookModel } from '@prisma/client';
@@ -17,31 +18,31 @@ export class AppController {
 
   @Get('books')
   async getAllBooks(): Promise<BookModel[]> {
-    return this.bookService.books({});
+    return this.bookService.findMany({});
   }
 
   @Get('books/:id')
-  async getBook(@Param('id') id: string): Promise<BookModel> {
+  async getBook(@Param('id', ParseIntPipe) id: number): Promise<BookModel> {
     try {
-      return this.bookService.book({ id: Number(id) });
+      return this.bookService.findOne(id);
     } catch (error) {
       throw new NotFoundException();
     }
   }
 
   @Post('books')
-  async createBook(@Body() data: any): Promise<BookModel> {
+  async createBook(@Body() data: BookModel): Promise<BookModel> {
     return this.bookService.createBook(data);
   }
 
   @Put('books/:id')
   async updateBook(
-    @Param('id') id: string,
-    @Body() data: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: BookModel,
   ): Promise<BookModel> {
     try {
       return this.bookService.updateBook({
-        where: { id: Number(id) },
+        where: { id: id },
         data,
       });
     } catch (error) {
@@ -50,9 +51,9 @@ export class AppController {
   }
 
   @Delete('books/:id')
-  async deleteBook(@Param('id') id: string): Promise<BookModel> {
+  async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<BookModel> {
     try {
-      return this.bookService.deleteBook({ id: Number(id) });
+      return this.bookService.deleteBook({ id: id });
     } catch (error) {
       throw new NotFoundException();
     }
