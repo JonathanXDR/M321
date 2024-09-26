@@ -8,8 +8,17 @@ datasource db {
 }
 
 model Book {
-  id        Int      @id @default(autoincrement())
-  title     String
+  id          Int    @id @default(autoincrement())
+  title       String
   releaseYear Int
-  author    String
+  author      String
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  username  String
+  password  String
+  firstname String
+  lastname  String
+  gender    String
 }
