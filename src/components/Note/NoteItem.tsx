@@ -64,26 +64,22 @@ function NoteItem({ note }: NoteItemProps) {
         </Hidden>
 
         <Hidden when={['regular', 'wide']}>
-          <NoteActionMenu />
+          <NoteActionMenu key={note.id} note={note} />
         </Hidden>
       </Box>
 
       {noteDialogIsOpen && noteDialogType !== 'delete' && (
-        <Box onClick={(e) => e.stopPropagation()}>
-          <NoteDialog key={note.id} note={note} />
-        </Box>
+        <NoteDialog key={note.id} note={note} />
       )}
 
-      {/* {noteDialogIsOpen && noteDialogType === 'delete' && (
-        <Box onClick={(e) => e.stopPropagation()}>
-          <ConfirmationDialog
-            title="Confirm action?"
-            onClose={() => handleNoteDialog()}
-          >
-            Are you sure you want to delete this note?
-          </ConfirmationDialog>
-        </Box>
-      )} */}
+      {noteDialogIsOpen && noteDialogType === 'delete' && (
+        <ConfirmationDialog
+          title="Confirm action?"
+          onClose={() => handleNoteDialog()}
+        >
+          Are you sure you want to delete this note?
+        </ConfirmationDialog>
+      )}
     </>
   );
 }

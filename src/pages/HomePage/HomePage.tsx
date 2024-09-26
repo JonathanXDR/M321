@@ -76,11 +76,7 @@ const HomePage: React.FC = () => {
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
         <NoteItem note={note} />
-        {noteDialogIsOpen && (
-          <Box onClick={(e) => e.stopPropagation()}>
-            <NoteDialog note={note} />
-          </Box>
-        )}
+        {noteDialogIsOpen && <NoteDialog note={note} />}
       </TreeView.Item>
     ));
 
@@ -113,9 +109,7 @@ const HomePage: React.FC = () => {
           </TreeView.LeadingVisual>
           <NoteCollectionItem noteCollection={noteCollection} />
           {noteCollectionDialogIsOpen && (
-            <Box onClick={(e) => e.stopPropagation()}>
-              <NoteCollectionDialog noteCollection={noteCollection} />
-            </Box>
+            <NoteCollectionDialog noteCollection={noteCollection} />
           )}
           <TreeView.SubTree>
             {renderFilteredNoteItemTrees(filteredNotes)}

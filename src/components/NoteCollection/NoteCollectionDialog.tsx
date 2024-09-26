@@ -1,4 +1,4 @@
-import { FormControl, TextInput, Text } from '@primer/react';
+import { FormControl, TextInput, Text, Box } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { Note } from '../../types/Note/note.interface';
 import { NoteCollectionDialogProps } from '../../types/NoteCollection/noteCollectionDialogProps.interface';
@@ -126,56 +126,59 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
     }));
 
   return (
-    <Dialog
-      title={getDialogTitle()}
-      subtitle={getDialogSubtitle()}
-      footerButtons={getFooterButtons()}
-      onClose={handleCancel}
-    >
-      {noteCollectionDialogType === 'delete' ? (
-        <Text>
-          Are you sure you want to delete this Note Collection and all its
-          Notes?
-        </Text>
-      ) : (
-        <>
-          <FormControl>
-            <FormControl.Label>Title</FormControl.Label>
-            <TextInput
-              value={noteCollection.title}
-              placeholder="Enter title"
-              onChange={(e) =>
-                noteCollectionDialogType === 'create'
-                  ? setCreatedTitle(e.target.value)
-                  : setUpdatedTitle(e.target.value)
-              }
-              sx={{ width: '100%', marginBottom: '4' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>Notes</FormControl.Label>
-            <AutoCompleteTokenInput
-              initialNotes={noteCollection.notes}
-              onNotesChange={(newNotes) => {
-                noteCollectionDialogType === 'create'
-                  ? setCreatedNotes(newNotes)
-                  : setUpdatedNotes(newNotes);
-              }}
-            />
-            <FormControl.Validation
-              id="warning"
-              variant="warning"
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              {/* <StyledOcticon icon={AlertIcon} color="attention.fg" /> */}
-              Previous assigned notes will be reassigned to this NoteCollection
-            </FormControl.Validation>
-          </FormControl>
-        </>
-      )}
-    </Dialog>
+    <Box onClick={(e) => e.stopPropagation()}>
+      <Dialog
+        title={getDialogTitle()}
+        subtitle={getDialogSubtitle()}
+        footerButtons={getFooterButtons()}
+        onClose={handleCancel}
+      >
+        {noteCollectionDialogType === 'delete' ? (
+          <Text>
+            Are you sure you want to delete this Note Collection and all its
+            Notes?
+          </Text>
+        ) : (
+          <>
+            <FormControl>
+              <FormControl.Label>Title</FormControl.Label>
+              <TextInput
+                value={noteCollection.title}
+                placeholder="Enter title"
+                onChange={(e) =>
+                  noteCollectionDialogType === 'create'
+                    ? setCreatedTitle(e.target.value)
+                    : setUpdatedTitle(e.target.value)
+                }
+                sx={{ width: '100%', marginBottom: '4' }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormControl.Label>Notes</FormControl.Label>
+              <AutoCompleteTokenInput
+                initialNotes={noteCollection.notes}
+                onNotesChange={(newNotes) => {
+                  noteCollectionDialogType === 'create'
+                    ? setCreatedNotes(newNotes)
+                    : setUpdatedNotes(newNotes);
+                }}
+              />
+              <FormControl.Validation
+                id="warning"
+                variant="warning"
+                sx={{
+                  marginTop: 2,
+                }}
+              >
+                {/* <StyledOcticon icon={AlertIcon} color="attention.fg" /> */}
+                Previous assigned notes will be reassigned to this
+                NoteCollection
+              </FormControl.Validation>
+            </FormControl>
+          </>
+        )}
+      </Dialog>
+    </Box>
   );
 }
 

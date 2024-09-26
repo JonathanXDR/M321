@@ -67,30 +67,28 @@ function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
           </Hidden>
 
           <Hidden when={['regular', 'wide']}>
-            <NoteCollectionActionMenu />
+            <NoteCollectionActionMenu
+              key={noteCollection.id}
+              noteCollection={noteCollection}
+            />
           </Hidden>
         </Box>
       </Box>
 
       {noteCollectionDialogIsOpen && noteCollectionDialogType !== 'delete' && (
-        <Box onClick={(e) => e.stopPropagation()}>
-          <NoteCollectionDialog
-            key={noteCollection.id}
-            noteCollection={noteCollection}
-          />
-        </Box>
+        <NoteCollectionDialog
+          key={noteCollection.id}
+          noteCollection={noteCollection}
+        />
       )}
 
       {noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete' && (
-        <Box onClick={(e) => e.stopPropagation()}>
-          <ConfirmationDialog
-            title="Confirm action?"
-            onClose={() => handleNoteCollectionDialog()}
-          >
-            Are you sure you want to delete this noteCollection and all its
-            included notes?
-          </ConfirmationDialog>
-        </Box>
+        <ConfirmationDialog
+          title="Confirm action?"
+          onClose={() => handleNoteCollectionDialog()}
+        >
+          Are you sure you want to delete this note?
+        </ConfirmationDialog>
       )}
     </>
   );

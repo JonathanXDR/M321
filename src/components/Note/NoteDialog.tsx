@@ -1,4 +1,4 @@
-import { FormControl, TextInput, Textarea } from '@primer/react';
+import { Box, FormControl, TextInput, Textarea } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { useState } from 'react';
 import { NoteDialogProps } from '../../types/Note/noteDialogProps.interface';
@@ -107,42 +107,44 @@ function NoteDialog({ note }: NoteDialogProps) {
     noteDialogType === 'create' ? createdContent : updatedContent;
 
   return (
-    <Dialog
-      title={getDialogTitle()}
-      subtitle={getDialogSubtitle()}
-      footerButtons={getFooterButtons()}
-      onClose={() => handleNoteDialog()}
-    >
-      <FormControl>
-        <FormControl.Label>Title</FormControl.Label>
-        <TextInput
-          value={titleValue}
-          placeholder="Enter title"
-          onChange={(e) =>
-            noteDialogType === 'create'
-              ? setCreatedTitle(e.target.value)
-              : setUpdatedTitle(e.target.value)
-          }
-          sx={{ width: '100%', marginBottom: '4' }}
-          readOnly={noteDialogType === 'delete'}
-        />
-      </FormControl>
+    <Box onClick={(e) => e.stopPropagation()}>
+      <Dialog
+        title={getDialogTitle()}
+        subtitle={getDialogSubtitle()}
+        footerButtons={getFooterButtons()}
+        onClose={() => handleNoteDialog()}
+      >
+        <FormControl>
+          <FormControl.Label>Title</FormControl.Label>
+          <TextInput
+            value={titleValue}
+            placeholder="Enter title"
+            onChange={(e) =>
+              noteDialogType === 'create'
+                ? setCreatedTitle(e.target.value)
+                : setUpdatedTitle(e.target.value)
+            }
+            sx={{ width: '100%', marginBottom: '4' }}
+            readOnly={noteDialogType === 'delete'}
+          />
+        </FormControl>
 
-      <FormControl>
-        <FormControl.Label>Content</FormControl.Label>
-        <Textarea
-          value={contentValue}
-          placeholder="Enter content"
-          onChange={(e) =>
-            noteDialogType === 'create'
-              ? setCreatedContent(e.target.value)
-              : setUpdatedContent(e.target.value)
-          }
-          sx={{ width: '100%' }}
-          readOnly={noteDialogType === 'delete'}
-        />
-      </FormControl>
-    </Dialog>
+        <FormControl>
+          <FormControl.Label>Content</FormControl.Label>
+          <Textarea
+            value={contentValue}
+            placeholder="Enter content"
+            onChange={(e) =>
+              noteDialogType === 'create'
+                ? setCreatedContent(e.target.value)
+                : setUpdatedContent(e.target.value)
+            }
+            sx={{ width: '100%' }}
+            readOnly={noteDialogType === 'delete'}
+          />
+        </FormControl>
+      </Dialog>
+    </Box>
   );
 }
 
