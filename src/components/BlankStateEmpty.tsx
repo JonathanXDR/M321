@@ -1,6 +1,21 @@
 import { Box, Button, Heading, Link, Text } from '@primer/react';
+import { useNoteDialog, useNoteState } from '../utils/note.util';
+import {
+  useNoteCollectionDialog,
+  useNoteCollectionState,
+} from '../utils/noteCollection.util';
 
 function BlankStateEmpty() {
+  const { noteDialogIsOpen, openNoteDialog, closeNoteDialog } = useNoteDialog();
+  const {
+    noteCollectionDialogIsOpen,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
+  } = useNoteCollectionDialog();
+  const { notesData, setNotesData } = useNoteState();
+  const { noteCollectionsData, setNoteCollectionsData } =
+    useNoteCollectionState();
+
   return (
     <Box
       sx={{
@@ -40,6 +55,7 @@ function BlankStateEmpty() {
           <Box className="blankslate-action">
             <Button
               variant="primary"
+              onClick={() => openNoteDialog('create')}
               sx={{
                 marginRight: 3,
               }}
@@ -49,6 +65,7 @@ function BlankStateEmpty() {
           </Box>
           <Box
             className="blankslate-action"
+            onClick={() => openNoteCollectionDialog('create')}
             sx={{
               marginBottom: '0 !important',
             }}
