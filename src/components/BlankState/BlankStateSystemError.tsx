@@ -43,81 +43,35 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   };
 
   const renderErrorTree = (key: string, value: any, idPrefix: string = '') => {
-    if (value && typeof value === 'object') {
-      const itemId = `error-${idPrefix}`;
-      return (
-        <TreeView.Item
-          key={idPrefix}
-          id={itemId}
-          expanded={expandedItems[itemId] ?? false}
-          onExpandedChange={(expanded) =>
-            handleExpansionChange(itemId, expanded)
-          }
+    const itemId = `error-${idPrefix}`;
+
+    const renderItem = () => (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
         >
+          <Text as="pre">{key}: </Text>
           <Text
             as="pre"
+            color="danger.fg"
             sx={{
               whiteSpace: 'initial',
               overflowWrap: 'anywhere',
             }}
           >
-            {key}:{' '}
+            {String(value)}
           </Text>
-          <TreeView.SubTree>
-            {Object.entries(value).map(([subKey, subValue], index) => {
-              const newIdPrefix = idPrefix
-                ? `${idPrefix}-${index}`
-                : `${index}`;
-              return renderErrorTree(subKey, subValue, newIdPrefix);
-            })}
-          </TreeView.SubTree>
-        </TreeView.Item>
-      );
-    } else {
-      const itemId = `error-${idPrefix}`;
-      return (
-        <TreeView.Item
-          key={idPrefix}
-          id={itemId}
-          expanded={expandedItems[itemId] ?? false}
-          onExpandedChange={(expanded) =>
-            handleExpansionChange(itemId, expanded)
-          }
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Text
-                as="pre"
-                sx={{
-                  whiteSpace: 'initial',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {key}:{' '}
-              </Text>
-              <Text
-                as="pre"
-                color="danger.fg"
-                sx={{
-                  whiteSpace: 'initial',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {String(value)}
-              </Text>
-            </Box>
+        </Box>
             <Tooltip
               aria-label={copied === idPrefix ? 'Copied!' : 'Copy'}
               direction="w"
@@ -128,12 +82,11 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 animation: 'fade-in 200ms both;',
               }}
             >
-              <IconButton
-                aria-label="Copy"
-                icon={copied === idPrefix ? CheckIcon : CopyIcon}
-                // size="small"
-                onClick={() => copyToClipboard(String(value), idPrefix)}
-                sx={{
+          <IconButton
+            aria-label="Copy"
+            icon={copied === idPrefix ? CheckIcon : CopyIcon}
+            onClick={() => copyToClipboard(String(value), idPrefix)}
+            sx={{
                   transition: '80ms cubic-bezier(0.33, 1, 0.68, 1)',
                   transitionProperty:
                     'color,background-color,box-shadow,border-color',
@@ -154,8 +107,42 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                   },
                 }}
               />
-            </Tooltip>
-          </Box>
+        </Tooltip>
+      </Box>
+    );
+
+    if (typeof value === 'object' && value !== null) {
+      return (
+        <TreeView.Item
+          key={idPrefix}
+          id={itemId}
+          expanded={expandedItems[itemId] ?? false}
+          onExpandedChange={(expanded) =>
+            handleExpansionChange(itemId, expanded)
+          }
+        >
+          <Text as="pre">{key}: </Text>
+          <TreeView.SubTree>
+            {Object.entries(value).map(([subKey, subValue], index) => {
+              const newIdPrefix = idPrefix
+                ? `${idPrefix}-${index}`
+                : `${index}`;
+              return renderErrorTree(subKey, subValue, newIdPrefix);
+            })}
+          </TreeView.SubTree>
+        </TreeView.Item>
+      );
+    } else {
+      return (
+        <TreeView.Item
+          key={idPrefix}
+          id={itemId}
+          expanded={expandedItems[itemId] ?? false}
+          onExpandedChange={(expanded) =>
+            handleExpansionChange(itemId, expanded)
+          }
+        >
+          {renderItem()}
         </TreeView.Item>
       );
     }
