@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Link, Text } from '@primer/react';
+import { Box, Button, Heading, Text } from '@primer/react';
 import { useNoteDialog, useNoteState } from '../../utils/note.util';
 import {
   useNoteCollectionDialog,

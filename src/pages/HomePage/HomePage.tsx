@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -17,28 +18,23 @@ import {
   TreeView,
   Text,
 } from '@primer/react';
-import React, { useState, useEffect } from 'react';
-import NoteDialog from '../../components/Note/NoteDialog';
-import NoteItem from '../../components/Note/NoteItem';
-import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
-import { notes, noteCollections } from '../../services/http.service';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import AccountActionMenu from '../../components/AccountActionMenu';
 
+import { Note } from '../../types/Note/note.interface';
 import { fetchAllData, useHandleFlash } from '../../utils/general.util';
-
 import { useNoteState, useNoteDialog } from '../../utils/note.util';
-
 import {
   useNoteCollectionState,
   useNoteCollectionDialog,
 } from '../../utils/noteCollection.util';
+import NoteDialog from '../../components/Note/NoteDialog';
+import NoteItem from '../../components/Note/NoteItem';
+import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import AccountActionMenu from '../../components/AccountActionMenu';
 import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
-import { Note } from '../../types/Note/note.interface';
-import BlankState from '../../components/BlankState/BlankStateEmpty';
 import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
-import BlankStateBackendError from '../../components/BlankState/BlankStateBackendError';
 import UnderlineNavItem from '../../components/UnderlineNavItem';
+import './HomePage.module.css';
 
 const HomePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -46,14 +42,11 @@ const HomePage: React.FC = () => {
 
   const { flashVisible, flashMessage } = useHandleFlash();
 
-  const { noteDialogIsOpen, openNoteDialog, closeNoteDialog } = useNoteDialog();
+  const { noteDialogIsOpen, openNoteDialog } = useNoteDialog();
   const { notesData, setNotesData } = useNoteState();
 
-  const {
-    noteCollectionDialogIsOpen,
-    openNoteCollectionDialog,
-    closeNoteCollectionDialog,
-  } = useNoteCollectionDialog();
+  const { noteCollectionDialogIsOpen, openNoteCollectionDialog } =
+    useNoteCollectionDialog();
   const { noteCollectionsData, setNoteCollectionsData } =
     useNoteCollectionState();
 

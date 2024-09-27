@@ -63,8 +63,8 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           <Text as="pre">{key}: </Text>
           <Text
             as="pre"
-            color="danger.fg"
             sx={{
+              color: 'danger.fg',
               whiteSpace: 'initial',
               overflowWrap: 'anywhere',
             }}
@@ -72,41 +72,39 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
             {String(value)}
           </Text>
         </Box>
-            <Tooltip
-              aria-label={copied === idPrefix ? 'Copied!' : 'Copy'}
-              direction="w"
-              sx={{
-                margin: '3px',
-                display: 'none',
-                alignSelf: 'flex-start',
-                animation: 'fade-in 200ms both;',
-              }}
-            >
+        <Tooltip
+          aria-label={copied === idPrefix ? 'Copied!' : 'Copy'}
+          direction="w"
+          sx={{
+            margin: '3px',
+            display: 'none',
+            alignSelf: 'flex-start',
+            animation: 'fade-in 200ms both;',
+          }}
+        >
           <IconButton
             aria-label="Copy"
             icon={copied === idPrefix ? CheckIcon : CopyIcon}
             onClick={() => copyToClipboard(String(value), idPrefix)}
             sx={{
-                  transition: '80ms cubic-bezier(0.33, 1, 0.68, 1)',
-                  transitionProperty:
-                    'color,background-color,box-shadow,border-color',
-                  color: copied === idPrefix ? 'success.fg' : '',
-                  borderColor: copied === idPrefix ? 'success.emphasis' : '',
-                  boxShadow:
-                    copied === idPrefix
-                      ? '0 0 0 0.2em rgba(52,208,88,.4)'
-                      : 'none',
+              transition: '80ms cubic-bezier(0.33, 1, 0.68, 1)',
+              transitionProperty:
+                'color,background-color,box-shadow,border-color',
+              color: copied === idPrefix ? 'success.fg' : '',
+              borderColor: copied === idPrefix ? 'success.emphasis' : '',
+              boxShadow:
+                copied === idPrefix ? '0 0 0 0.2em rgba(52,208,88,.4)' : 'none',
 
-                  '&:hover': {
-                    color: copied === idPrefix ? 'success.fg' : '',
-                    borderColor: copied === idPrefix ? 'success.emphasis' : '',
+              '&:hover': {
+                color: copied === idPrefix ? 'success.fg' : '',
+                borderColor: copied === idPrefix ? 'success.emphasis' : '',
 
-                    '& svg': {
-                      fill: copied === idPrefix ? 'success.fg' : '',
-                    },
-                  },
-                }}
-              />
+                '& svg': {
+                  fill: copied === idPrefix ? 'success.fg' : '',
+                },
+              },
+            }}
+          />
         </Tooltip>
       </Box>
     );

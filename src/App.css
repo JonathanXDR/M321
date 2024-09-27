@@ -25,7 +25,7 @@ div:has(~ div > svg.octicon-alert) > span {
 }
 
 #\:r3\: {
-  z-index: 1000;
+  z-index: 100;
 }
 
 .PRIVATE_TreeView-item-content {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login, checkToken } from '../../services/auth.service';
 import {
   Box,
   Button,
@@ -10,13 +9,12 @@ import {
   IconButton,
   Link,
   PageLayout,
-  Text,
   TextInput,
 } from '@primer/react';
 import { MarkGithubIcon, XIcon } from '@primer/octicons-react';
-import './PasswordResetPage.module.css';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import './PasswordResetPage.module.css';
 
 const PasswordResetPage = () => {
   const [username, setUsername] = useState('');

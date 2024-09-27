@@ -1,15 +1,4 @@
-import Octicon, {
-  AlertIcon,
-  NoteIcon,
-  OcticonProps,
-} from '@primer/octicons-react';
-import {
-  Autocomplete,
-  Box,
-  FormControl,
-  StyledOcticon,
-  TextInputWithTokens,
-} from '@primer/react';
+import { Autocomplete, Box, TextInputWithTokens } from '@primer/react';
 import React, { useEffect, useState } from 'react';
 import { notes } from '../services/http.service';
 import { Token } from '../types/token.interface';

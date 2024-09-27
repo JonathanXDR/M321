@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import {
-  KebabHorizontalIcon,
-  SignOutIcon,
-  StarIcon,
-} from '@primer/octicons-react';
-import {
-  ActionList,
-  Text,
-  ActionMenu,
-  IconButton,
-  Avatar,
-  StyledOcticon,
-  Box,
-} from '@primer/react';
+import { useEffect, useState } from 'react';
+import { ActionList, Text, ActionMenu, Avatar, Box } from '@primer/react';
 import { logout } from '../services/auth.service';
 import { users } from '../services/http.service';
 import { User } from '../types/user.interface';
+import LoadingSpinner from './LoadingSpinner';
 
 function AccountActionMenu() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -34,7 +22,7 @@ function AccountActionMenu() {
   }, []);
 
   if (!currentUser) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -54,7 +42,7 @@ function AccountActionMenu() {
               color: 'fg.default',
             }}
           >
-            {currentUser.firstname} {currentUser.lastname}
+            {currentUser?.firstname} {currentUser?.lastname}
           </Text>
           <Avatar
             src="https://github.com/octocat.png"
@@ -91,7 +79,7 @@ function AccountActionMenu() {
                   fontWeight: 'bold',
                 }}
               >
-                {currentUser.username}
+                {currentUser?.username}
               </Text>
             </Box>
           </ActionList.Item>
