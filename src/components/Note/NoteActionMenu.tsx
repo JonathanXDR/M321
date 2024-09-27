@@ -36,7 +36,7 @@ function NoteActionMenu({ note }: any) {
                 <PencilIcon />
               </ActionList.LeadingVisual>
               Edit
-              <ActionList.TrailingVisual>⌘E</ActionList.TrailingVisual>
+              {/* <ActionList.TrailingVisual>⌘E</ActionList.TrailingVisual> */}
             </ActionList.Item>
             {/* <ActionList.Item onSelect={() => alert('Star clicked')}>
             <ActionList.LeadingVisual>
@@ -54,7 +54,7 @@ function NoteActionMenu({ note }: any) {
                 <TrashIcon />
               </ActionList.LeadingVisual>
               Delete
-              <ActionList.TrailingVisual>⌘D</ActionList.TrailingVisual>
+              {/* <ActionList.TrailingVisual>⌘D</ActionList.TrailingVisual> */}
             </ActionList.Item>
           </ActionList>
         </ActionMenu.Overlay>

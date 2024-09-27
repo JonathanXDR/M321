@@ -98,7 +98,7 @@ function AccountActionMenu() {
           <ActionList.Divider />
           <ActionList.Item variant="danger" onSelect={() => logout()}>
             Logout
-            <ActionList.TrailingVisual>⌘L</ActionList.TrailingVisual>
+            {/* <ActionList.TrailingVisual>⌘L</ActionList.TrailingVisual> */}
           </ActionList.Item>
         </ActionList>
       </ActionMenu.Overlay>

@@ -5,6 +5,8 @@ import './App.css';
 import LoadingSpinner from './components/LoadingSpinner';
 import { checkConnection } from './services/http.service';
 import BlankStateConnectionError from './components/BlankState/BlankStateBackendError';
+import SignUpPage from './pages/SignUpPage';
+import PasswordResetPage from './pages/PasswordResetPage';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
@@ -32,6 +34,9 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/password_reset" element={<PasswordResetPage />} />
+              <Route path="*" element={<div>404</div>} />
             </Routes>
           </Suspense>
         </Router>

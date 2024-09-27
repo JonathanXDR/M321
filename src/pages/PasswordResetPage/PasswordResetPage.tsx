@@ -14,13 +14,15 @@ import {
   TextInput,
 } from '@primer/react';
 import { MarkGithubIcon, XIcon } from '@primer/octicons-react';
-import './LoginPage.module.css';
+import './PasswordResetPage.module.css';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
 
-const LoginPage = () => {
+const PasswordResetPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -105,7 +107,7 @@ const LoginPage = () => {
                 letterSpacing: '-0.5px',
               }}
             >
-              Sign in to GitHub
+              Reset your password
             </Heading>
           </Box>
 
@@ -119,7 +121,7 @@ const LoginPage = () => {
                   paddingX: 2,
                 }}
               >
-                Incorrect username or password.
+                Passwords don't match
                 <IconButton
                   variant="invisible"
                   aria-label="Close flash"
@@ -151,11 +153,37 @@ const LoginPage = () => {
                   textAlign: 'left',
                 }}
               >
-                Username or email address
+                Enter your username
               </FormControl.Label>
               <TextInput
                 type="text"
+                loading={true}
+                validationStatus="error"
                 onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+                sx={{
+                  marginTop: 1,
+                  marginBottom: 4,
+                  width: '100%',
+                  paddingY: '5px',
+                }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormControl.Label
+                sx={{
+                  marginBottom: 2,
+                  fontWeight: '400',
+                  textAlign: 'left',
+                }}
+              >
+                Enter your new password
+              </FormControl.Label>
+              <TextInput
+                type="text"
+                validationStatus="error"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
                 sx={{
                   marginTop: 1,
                   marginBottom: 4,
@@ -177,11 +205,13 @@ const LoginPage = () => {
                     textAlign: 'left',
                   }}
                 >
-                  Password
+                  Confirm your new password
                 </FormControl.Label>
                 <TextInput
                   type="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  validationStatus="error"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm password"
                   sx={{
                     marginTop: 1,
                     marginBottom: 4,
@@ -193,38 +223,11 @@ const LoginPage = () => {
 
               <FormControl>
                 <Button type="submit" variant="primary" sx={{ width: '100%' }}>
-                  Sign in
+                  Reset password
                 </Button>
               </FormControl>
-
-              <Link
-                sx={{
-                  textDecoration: 'none !important',
-                  fontSize: '12px',
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}
-                href="/password_reset"
-              >
-                Forgot password?
-              </Link>
             </Box>
           </Box>
-
-          <Text
-            as="p"
-            sx={{
-              marginTop: 3,
-              padding: 4,
-              textAlign: 'center',
-              border: '1px solid',
-              borderColor: 'border.default',
-              borderRadius: 6,
-            }}
-          >
-            New to GitHub? <Link href="/signup">Create an account</Link>.
-          </Text>
         </Box>
       </PageLayout.Content>
 
@@ -286,4 +289,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default PasswordResetPage;

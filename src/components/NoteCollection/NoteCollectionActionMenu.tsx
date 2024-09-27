@@ -41,7 +41,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
                 <PencilIcon />
               </ActionList.LeadingVisual>
               Edit
-              <ActionList.TrailingVisual>⌘E</ActionList.TrailingVisual>
+              {/* <ActionList.TrailingVisual>⌘E</ActionList.TrailingVisual> */}
             </ActionList.Item>
             {/* <ActionList.Item onSelect={() => alert('Detach clicked')}>
             <ActionList.LeadingVisual>
@@ -59,7 +59,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
                 <TrashIcon />
               </ActionList.LeadingVisual>
               Delete
-              <ActionList.TrailingVisual>⌘D</ActionList.TrailingVisual>
+              {/* <ActionList.TrailingVisual>⌘D</ActionList.TrailingVisual> */}
             </ActionList.Item>
           </ActionList>
         </ActionMenu.Overlay>
