@@ -4,8 +4,7 @@ import '@primer/css/index.scss';
 import './App.css';
 import LoadingSpinner from './components/LoadingSpinner';
 import { checkConnection } from './services/http.service';
-import BlankStateSystemError from './components/BlankState/BlankStateSystemError';
-// import BlankStateBackendError from './components/BlankState/BlankStateBackendError';
+import BlankStateBackendError from './components/BlankState/BlankStateBackendError';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage/SignUpPage'));
@@ -16,14 +15,11 @@ const PasswordResetPage = React.lazy(
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
-  const [httpError, setHttpError] = useState<any | null>(null);
 
   useEffect(() => {
     const checkApi = async () => {
       const connectionStatus = await checkConnection();
-      console.log(connectionStatus);
-      setHttpError(connectionStatus);
-      setIsConnected(false);
+      setIsConnected(connectionStatus);
     };
 
     checkApi();
@@ -32,7 +28,7 @@ const App: React.FC = () => {
   return (
     <>
       {isConnected === false ? (
-        <BlankStateSystemError httpError={httpError} />
+        <BlankStateBackendError />
       ) : (
         <Router>
           <Suspense fallback={<LoadingSpinner />}>
