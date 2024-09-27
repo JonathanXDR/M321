@@ -7,10 +7,9 @@ export class BooksService {
   constructor(private prisma: PrismaService) {}
 
   async findOne(id) {
-    const book = await this.prisma.book.findUniqueOrThrow({
+    return this.prisma.book.findUniqueOrThrow({
       where: { id },
     });
-    return book;
   }
 
   async findMany(params: {
