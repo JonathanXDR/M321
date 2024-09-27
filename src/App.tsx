@@ -7,6 +7,9 @@ import { checkConnection } from './services/http.service';
 import BlankStateBackendError from './components/BlankState/BlankStateBackendError';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
+const SettingsPage = React.lazy(
+  () => import('./pages/SettingsPage/SettingsPage')
+);
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage/SignUpPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
 const PasswordResetPage = React.lazy(
@@ -34,6 +37,7 @@ const App: React.FC = () => {
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/password_reset" element={<PasswordResetPage />} />
