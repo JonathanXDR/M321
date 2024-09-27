@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   KebabHorizontalIcon,
   SignOutIcon,
@@ -13,7 +14,29 @@ import {
   Box,
 } from '@primer/react';
 import { logout } from '../services/auth.service';
+import { users } from '../services/http.service';
+import { User } from '../types/user.interface';
+
 function AccountActionMenu() {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await users.getCurrent();
+        setCurrentUser(response.data);
+      } catch (error) {
+        console.log('Error fetching current user:', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <ActionMenu>
       <ActionMenu.Anchor>
@@ -31,7 +54,7 @@ function AccountActionMenu() {
               color: 'fg.default',
             }}
           >
-            Jonathan Russ
+            {currentUser.firstname} {currentUser.lastname}
           </Text>
           <Avatar
             src="https://github.com/octocat.png"
@@ -68,7 +91,7 @@ function AccountActionMenu() {
                   fontWeight: 'bold',
                 }}
               >
-                Jonathan Russ
+                {currentUser.username}
               </Text>
             </Box>
           </ActionList.Item>

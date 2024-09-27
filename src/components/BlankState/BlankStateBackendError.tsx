@@ -1,7 +1,7 @@
 import { CloudOfflineIcon } from '@primer/octicons-react';
 import { Box, Button, Heading, Link, Text } from '@primer/react';
 
-function BlankStateConnectionError() {
+function BlankStateBackendError() {
   return (
     <Box
       sx={{
@@ -36,4 +36,4 @@ function BlankStateConnectionError() {
   );
 }
 
-export default BlankStateConnectionError;
+export default BlankStateBackendError;

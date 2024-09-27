@@ -15,6 +15,7 @@ export const checkConnection = async () => {
 
 const users = {
   getAll: () => api.get<User[]>('/users'),
+  getCurrent: () => api.get<User>('/users/me'),
   get: (id: string) => api.get<User>(`/users/${id}`),
   create: (user: Partial<User>) => api.post<User>('/users', user),
   update: (id: string, user: Partial<User>) =>

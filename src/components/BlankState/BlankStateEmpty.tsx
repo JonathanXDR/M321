@@ -1,9 +1,9 @@
 import { Box, Button, Heading, Link, Text } from '@primer/react';
-import { useNoteDialog, useNoteState } from '../utils/note.util';
+import { useNoteDialog, useNoteState } from '../../utils/note.util';
 import {
   useNoteCollectionDialog,
   useNoteCollectionState,
-} from '../utils/noteCollection.util';
+} from '../../utils/noteCollection.util';
 
 function BlankStateEmpty() {
   const { noteDialogIsOpen, openNoteDialog, closeNoteDialog } = useNoteDialog();

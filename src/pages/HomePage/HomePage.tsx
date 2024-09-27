@@ -25,7 +25,7 @@ import { notes, noteCollections } from '../../services/http.service';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AccountActionMenu from '../../components/AccountActionMenu';
 
-import { useHandleFlash } from '../../utils/general.util';
+import { fetchAllData, useHandleFlash } from '../../utils/general.util';
 
 import { useNoteState, useNoteDialog } from '../../utils/note.util';
 
@@ -35,9 +35,9 @@ import {
 } from '../../utils/noteCollection.util';
 import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
 import { Note } from '../../types/Note/note.interface';
-import BlankState from '../../components/BlankStateEmpty';
-import BlankStateEmpty from '../../components/BlankStateEmpty';
-import BlankStateConnectionError from '../../components/BlankStateConnectionError';
+import BlankState from '../../components/BlankState/BlankStateEmpty';
+import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
+import BlankStateBackendError from '../../components/BlankState/BlankStateBackendError';
 import UnderlineNavItem from '../../components/UnderlineNavItem';
 
 const HomePage: React.FC = () => {
@@ -58,17 +58,7 @@ const HomePage: React.FC = () => {
     useNoteCollectionState();
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      const allNotesResponse = await notes.getAll();
-      setNotesData(allNotesResponse.data);
-
-      const allNoteCollectionsResponse = await noteCollections.getAll();
-      setNoteCollectionsData(allNoteCollectionsResponse.data);
-
-      setLoading(false);
-    };
-
-    fetchAllData();
+    fetchAllData(setNotesData, setNoteCollectionsData, setLoading);
   }, []);
 
   const renderFilteredNoteItems = () =>

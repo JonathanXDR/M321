@@ -4,7 +4,7 @@ import '@primer/css/index.scss';
 import './App.css';
 import LoadingSpinner from './components/LoadingSpinner';
 import { checkConnection } from './services/http.service';
-import BlankStateConnectionError from './components/BlankStateConnectionError';
+import BlankStateConnectionError from './components/BlankState/BlankStateBackendError';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
