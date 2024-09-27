@@ -9,6 +9,7 @@ import {
   FormControl,
   Header,
   Heading,
+  IconButton,
   Link,
   PageLayout,
   Pagehead,
@@ -16,7 +17,7 @@ import {
   Text,
   TextInput,
 } from '@primer/react';
-import { AlertIcon, MarkGithubIcon } from '@primer/octicons-react';
+import { AlertIcon, MarkGithubIcon, XIcon } from '@primer/octicons-react';
 import { User } from '../../types/user.interface';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
 import { users } from '../../services/http.service';
@@ -76,6 +77,24 @@ const SettingsPage = () => {
             <AccountActionMenu />
           </Header.Item>
         </Header>
+        <Flash
+          full
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingY: '20px',
+            paddingX: '16px',
+          }}
+        >
+          Password changed successfully.
+          <IconButton
+            variant="invisible"
+            aria-label="Close flash"
+            icon={XIcon}
+            onClick={() => setError(false)}
+          />
+        </Flash>
       </PageLayout.Header>
       <PageLayout.Content padding="normal" width="xlarge">
         <Box
@@ -222,6 +241,16 @@ const SettingsPage = () => {
             Change password
           </Pagehead>
 
+          <Flash
+            variant="warning"
+            sx={{
+              paddingY: '20px',
+              paddingX: '16px',
+            }}
+          >
+            Old password isn't valid
+          </Flash>
+
           <Box as={'form'} onSubmit={handleSubmit}>
             <FormControl
               sx={{
@@ -344,7 +373,7 @@ const SettingsPage = () => {
             certain.
           </Text>
           <Button variant="danger">Delete your account</Button>
-          <Dialog isOpen={true}>
+          <Dialog isOpen={false}>
             <Dialog.Header>Are you sure you want to do this?</Dialog.Header>
             <Flash
               variant="danger"
