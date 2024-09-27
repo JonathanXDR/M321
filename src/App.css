@@ -27,3 +27,17 @@ div:has(~ div > svg.octicon-alert) > span {
 #\:r3\: {
   z-index: 1000;
 }
+
+.PRIVATE_TreeView-item-content {
+  padding: 4px !important;
+}
+
+.PRIVATE_TreeView-item-container:hover
+  .PRIVATE_TreeView-item-content-text
+  span[role='tooltip'] {
+  display: block;
+}
+
+.jvGCXG {
+  width: 50% !important;
+}

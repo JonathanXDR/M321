@@ -1,92 +1,164 @@
-import { AlertIcon } from '@primer/octicons-react';
+import { AlertIcon, CheckIcon, CopyIcon } from '@primer/octicons-react';
 import {
   Box,
   Button,
   Heading,
+  IconButton,
   Link,
   Text,
+  Tooltip,
   TreeView,
   useDetails,
 } from '@primer/react';
+import { useState } from 'react';
 
 interface BlankStateSystemErrorProps {
   httpError?: any;
 }
 
-function truncateToken(token: string, maxLength: number) {
-  if (token.length > maxLength) {
-    return token.slice(0, maxLength) + '...';
-  }
-  return token;
-}
-
-function getValue(key: string, error: any) {
-  const keys = key.split('.');
-  let value = error;
-  keys.forEach((k) => {
-    value = value && value[k];
-  });
-  if (key === 'config.headers.Authorization' && value) {
-    return truncateToken(value, 100);
-  }
-  return value;
-}
-
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
+  const [copied, setCopied] = useState<string | null>(null);
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
+    {}
+  );
 
-  const errorList = [
-    { label: 'Message', key: 'message' },
-    { label: 'Code', key: 'code' },
-    { label: 'Stack', key: 'stack' },
-    { label: 'Method', key: 'config.method' },
-    { label: 'Headers', key: 'config.headers' },
-    { label: 'Base URL', key: 'config.baseURL' },
-    { label: 'URL', key: 'config.url' },
-  ];
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(id);
+      setTimeout(() => {
+        setCopied(null);
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
 
-  const renderErrorTree = () => {
-    return (
-      <TreeView>
-        {errorList.map((errorItem) => {
-          const value = getValue(errorItem.key, httpError);
-          if (!value) return null;
+  const handleExpansionChange = (id: string, expanded: boolean) => {
+    setExpandedItems((prevExpandedItems) => ({
+      ...prevExpandedItems,
+      [id]: expanded,
+    }));
+  };
 
-          const isExpandable = typeof value === 'object' || value.length > 50;
-
-          return (
-            <TreeView.Item
-              key={errorItem.key}
-              id={errorItem.key}
-              expanded={isExpandable}
+  const renderErrorTree = (key: string, value: any, idPrefix: string = '') => {
+    if (value && typeof value === 'object') {
+      const itemId = `error-${idPrefix}`;
+      return (
+        <TreeView.Item
+          key={idPrefix}
+          id={itemId}
+          expanded={expandedItems[itemId] ?? false}
+          onExpandedChange={(expanded) =>
+            handleExpansionChange(itemId, expanded)
+          }
+        >
+          <Text
+            as="pre"
+            sx={{
+              whiteSpace: 'initial',
+              overflowWrap: 'anywhere',
+            }}
+          >
+            {key}:{' '}
+          </Text>
+          <TreeView.SubTree>
+            {Object.entries(value).map(([subKey, subValue], index) => {
+              const newIdPrefix = idPrefix
+                ? `${idPrefix}-${index}`
+                : `${index}`;
+              return renderErrorTree(subKey, subValue, newIdPrefix);
+            })}
+          </TreeView.SubTree>
+        </TreeView.Item>
+      );
+    } else {
+      const itemId = `error-${idPrefix}`;
+      return (
+        <TreeView.Item
+          key={idPrefix}
+          id={itemId}
+          expanded={expandedItems[itemId] ?? false}
+          onExpandedChange={(expanded) =>
+            handleExpansionChange(itemId, expanded)
+          }
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
             >
-              <Box
+              <Text
+                as="pre"
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
+                  whiteSpace: 'initial',
+                  overflowWrap: 'anywhere',
                 }}
               >
-                <Text as="pre">{errorItem.label}: </Text>
-                {isExpandable ? (
-                  <TreeView.SubTree>
-                    <TreeView.Item id={`${errorItem.key}-value`}>
-                      <Text as="pre" color="danger.fg">
-                        {value}
-                      </Text>
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                ) : (
-                  <Text as="pre" color="danger.fg">
-                    {value}
-                  </Text>
-                )}
-              </Box>
-            </TreeView.Item>
-          );
-        })}
-      </TreeView>
-    );
+                {key}:{' '}
+              </Text>
+              <Text
+                as="pre"
+                color="danger.fg"
+                sx={{
+                  whiteSpace: 'initial',
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                {String(value)}
+              </Text>
+            </Box>
+            <Tooltip
+              aria-label={copied === idPrefix ? 'Copied!' : 'Copy'}
+              direction="w"
+              sx={{
+                margin: '3px',
+                display: 'none',
+                alignSelf: 'flex-start',
+                animation: 'fade-in 200ms both;',
+              }}
+            >
+              <IconButton
+                aria-label="Copy"
+                icon={copied === idPrefix ? CheckIcon : CopyIcon}
+                // size="small"
+                onClick={() => copyToClipboard(String(value), idPrefix)}
+                sx={{
+                  transition: '80ms cubic-bezier(0.33, 1, 0.68, 1)',
+                  transitionProperty:
+                    'color,background-color,box-shadow,border-color',
+                  color: copied === idPrefix ? 'success.fg' : '',
+                  borderColor: copied === idPrefix ? 'success.emphasis' : '',
+                  boxShadow:
+                    copied === idPrefix
+                      ? '0 0 0 0.2em rgba(52,208,88,.4)'
+                      : 'none',
+
+                  '&:hover': {
+                    color: copied === idPrefix ? 'success.fg' : '',
+                    borderColor: copied === idPrefix ? 'success.emphasis' : '',
+
+                    '& svg': {
+                      fill: copied === idPrefix ? 'success.fg' : '',
+                    },
+                  },
+                }}
+              />
+            </Tooltip>
+          </Box>
+        </TreeView.Item>
+      );
+    }
   };
 
   return (
@@ -134,7 +206,19 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 onRetry={() => window.location.reload()}
                 onDismiss={() => setOpen(false)}
               >
-                {renderErrorTree()}
+                <Box
+                  sx={{
+                    maxHeight: '50vh',
+                    overflow: 'auto',
+                    msOverflowStyle: 'none',
+                    scrollbarWidth: 'none',
+                    '::-webkit-scrollbar': {
+                      display: 'none',
+                    },
+                  }}
+                >
+                  <TreeView>{renderErrorTree('Error', httpError)}</TreeView>
+                </Box>
               </TreeView.ErrorDialog>
             )}
           </Box>
