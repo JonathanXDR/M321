@@ -5,17 +5,90 @@ import {
   Heading,
   Link,
   Text,
+  TreeView,
   useDetails,
-  Details,
 } from '@primer/react';
-import { MarkdownViewer } from '@primer/react/drafts';
 
 interface BlankStateSystemErrorProps {
   httpError?: any;
 }
 
+function truncateToken(token: string, maxLength: number) {
+  if (token.length > maxLength) {
+    return token.slice(0, maxLength) + '...';
+  }
+  return token;
+}
+
+function getValue(key: string, error: any) {
+  const keys = key.split('.');
+  let value = error;
+  keys.forEach((k) => {
+    value = value && value[k];
+  });
+  if (key === 'config.headers.Authorization' && value) {
+    return truncateToken(value, 100);
+  }
+  return value;
+}
+
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
-  const { getDetailsProps } = useDetails({ closeOnOutsideClick: true });
+  const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
+
+  const errorList = [
+    { label: 'Message', key: 'message' },
+    { label: 'Code', key: 'code' },
+    { label: 'Stack', key: 'stack' },
+    { label: 'Method', key: 'config.method' },
+    { label: 'Headers', key: 'config.headers' },
+    { label: 'Base URL', key: 'config.baseURL' },
+    { label: 'URL', key: 'config.url' },
+  ];
+
+  const renderErrorTree = () => {
+    return (
+      <TreeView>
+        {errorList.map((errorItem) => {
+          const value = getValue(errorItem.key, httpError);
+          if (!value) return null;
+
+          const isExpandable = typeof value === 'object' || value.length > 50;
+
+          return (
+            <TreeView.Item
+              key={errorItem.key}
+              id={errorItem.key}
+              expanded={isExpandable}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <Text as="pre">{errorItem.label}: </Text>
+                {isExpandable ? (
+                  <TreeView.SubTree>
+                    <TreeView.Item id={`${errorItem.key}-value`}>
+                      <Text as="pre" color="danger.fg">
+                        {value}
+                      </Text>
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                ) : (
+                  <Text as="pre" color="danger.fg">
+                    {value}
+                  </Text>
+                )}
+              </Box>
+            </TreeView.Item>
+          );
+        })}
+      </TreeView>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -46,18 +119,24 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           </Button>
         </Box>
         {httpError && (
-          <Box
-            className="blankslate-action"
-            sx={{
-              width: '100%',
-            }}
-          >
-            <Details {...getDetailsProps()}>
-              <Link as="summary">Learn more</Link>
-              <Text as="pre" sx={{ marginTop: 2 }} color="danger.fg">
-                {httpError.message}
-              </Text>
-            </Details>
+          <Box className="blankslate-action">
+            <Link
+              onClick={() => setOpen(!open)}
+              sx={{
+                cursor: 'pointer',
+              }}
+            >
+              Learn more
+            </Link>
+            {open && (
+              <TreeView.ErrorDialog
+                title="Error Details"
+                onRetry={() => window.location.reload()}
+                onDismiss={() => setOpen(false)}
+              >
+                {renderErrorTree()}
+              </TreeView.ErrorDialog>
+            )}
           </Box>
         )}
       </Box>
