@@ -23,3 +23,7 @@ div:has(~ div > svg.octicon-alert) > span {
   color: rgb(210, 153, 34);
   fill: currentColor !important;
 }
+
+#\:r3\: {
+  z-index: 1000;
+}

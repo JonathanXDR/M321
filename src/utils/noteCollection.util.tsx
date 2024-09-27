@@ -22,8 +22,8 @@ export const useNoteCollectionDialog = () => {
   const [noteCollectionDialogIsOpen, setNoteCollectionDialogIsOpen] =
     useState(false);
   const [noteCollectionDialogType, setNoteCollectionDialogType] = useState<
-    'create' | 'update' | 'delete'
-  >('create');
+    'create' | 'update' | 'delete' | null
+  >(null);
 
   const openNoteCollectionDialog = useCallback(
     (type: 'create' | 'update' | 'delete') => {

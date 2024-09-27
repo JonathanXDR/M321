@@ -12,7 +12,7 @@ import {
   TypographyIcon,
 } from '@primer/octicons-react';
 import { ActionList, ActionMenu, Text } from '@primer/react';
-import { UnderlineNav } from '@primer/react/drafts';
+import { Hidden, UnderlineNav } from '@primer/react/drafts';
 import React from 'react';
 
 function UnderlineNavItem() {
@@ -50,73 +50,106 @@ function UnderlineNavItem() {
           key={item.navigation}
           icon={item.icon}
           aria-current={index === selectedNavIndex ? 'page' : undefined}
+          counter={item.counter}
           onSelect={(e) => {
             setSelectedNavIndex(index);
             e.preventDefault();
           }}
-          counter={item.counter}
+          sx={{
+            ':hover': {
+              textDecoration: 'none',
+            },
+          }}
         >
           {item.navigation}
         </UnderlineNav.Item>
       ))}
 
-      <ActionMenu>
-        <ActionMenu.Button aria-label="Select field type">
-          <Text
+      {/* <Hidden when={['narrow']}> */}
+      <UnderlineNav.Item
+        sx={{
+          ':hover': {
+            textDecoration: 'none',
+          },
+        }}
+      >
+        <ActionMenu>
+          <ActionMenu.Button aria-label="Select field type">
+            <Text
+              sx={{
+                color: 'fg.muted',
+              }}
+            >
+              Type:{' '}
+            </Text>
+            {selectedType.name}
+          </ActionMenu.Button>
+          <ActionMenu.Overlay
+            width="auto"
             sx={{
-              color: 'fg.muted',
+              zIndex: 1000,
             }}
           >
-            Type:{' '}
-          </Text>
-          {selectedType.name}
-        </ActionMenu.Button>
-        <ActionMenu.Overlay width="medium">
-          <ActionList selectionVariant="single">
-            {typeOptions.map((typeOption, index) => (
-              <ActionList.Item
-                key={index}
-                selected={index === selectedTypeIndex}
-                onSelect={() => setSelectedTypeIndex(index)}
-              >
-                <ActionList.LeadingVisual>
-                  <typeOption.icon />
-                </ActionList.LeadingVisual>
-                {typeOption.name}
-              </ActionList.Item>
-            ))}
-          </ActionList>
-        </ActionMenu.Overlay>
-      </ActionMenu>
+            <ActionList selectionVariant="single">
+              {typeOptions.map((typeOption, index) => (
+                <ActionList.Item
+                  key={index}
+                  selected={index === selectedTypeIndex}
+                  onSelect={() => setSelectedTypeIndex(index)}
+                >
+                  <ActionList.LeadingVisual>
+                    <typeOption.icon />
+                  </ActionList.LeadingVisual>
+                  {typeOption.name}
+                </ActionList.Item>
+              ))}
+            </ActionList>
+          </ActionMenu.Overlay>
+        </ActionMenu>
+      </UnderlineNav.Item>
 
-      <ActionMenu>
-        <ActionMenu.Button aria-label="Select field type">
-          <Text
+      <UnderlineNav.Item
+        sx={{
+          ':hover': {
+            textDecoration: 'none',
+          },
+        }}
+      >
+        <ActionMenu>
+          <ActionMenu.Button aria-label="Select field type">
+            <Text
+              sx={{
+                color: 'fg.muted',
+              }}
+            >
+              Sort:{' '}
+            </Text>
+            {selectedSort.name}
+          </ActionMenu.Button>
+          <ActionMenu.Overlay
+            width="auto"
             sx={{
-              color: 'fg.muted',
+              zIndex: 1000,
             }}
           >
-            Sort:{' '}
-          </Text>
-          {selectedSort.name}
-        </ActionMenu.Button>
-        <ActionMenu.Overlay width="medium">
-          <ActionList selectionVariant="single">
-            {sortOptions.map((sortOption, index) => (
-              <ActionList.Item
-                key={index}
-                selected={index === selectedSortIndex}
-                onSelect={() => setSelectedSortIndex(index)}
-              >
-                <ActionList.LeadingVisual>
-                  <sortOption.icon />
-                </ActionList.LeadingVisual>
-                {sortOption.name}
-              </ActionList.Item>
-            ))}
-          </ActionList>
-        </ActionMenu.Overlay>
-      </ActionMenu>
+            <ActionList selectionVariant="single">
+              {sortOptions.map((sortOption, index) => (
+                <ActionList.Item
+                  key={index}
+                  selected={index === selectedSortIndex}
+                  onSelect={() => setSelectedSortIndex(index)}
+                >
+                  <ActionList.LeadingVisual>
+                    <sortOption.icon />
+                  </ActionList.LeadingVisual>
+                  {sortOption.name}
+                </ActionList.Item>
+              ))}
+            </ActionList>
+          </ActionMenu.Overlay>
+        </ActionMenu>
+      </UnderlineNav.Item>
+      {/* </Hidden> */}
     </UnderlineNav>
   );
 }
