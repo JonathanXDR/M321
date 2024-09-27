@@ -5,11 +5,13 @@ import './App.css';
 import LoadingSpinner from './components/LoadingSpinner';
 import { checkConnection } from './services/http.service';
 import BlankStateConnectionError from './components/BlankState/BlankStateBackendError';
-import SignUpPage from './pages/SignUpPage';
-import PasswordResetPage from './pages/PasswordResetPage';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
+const SignUpPage = React.lazy(() => import('./pages/SignUpPage/SignUpPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
+const PasswordResetPage = React.lazy(
+  () => import('./pages/PasswordResetPage/PasswordResetPage')
+);
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
@@ -33,8 +35,8 @@ const App: React.FC = () => {
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/password_reset" element={<PasswordResetPage />} />
               <Route path="*" element={<div>404</div>} />
             </Routes>
