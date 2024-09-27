@@ -1,6 +1,3 @@
 {
-  "extends": [
-    // ...
-    "plugin:primer-react/recommended"
-  ]
+  "extends": ["plugin:primer-react/recommended"]
 }
