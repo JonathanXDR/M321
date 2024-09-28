@@ -15,6 +15,7 @@ CREATE TABLE `User` (
     `password` VARCHAR(100) NOT NULL,
     `firstname` VARCHAR(30) NOT NULL,
     `lastname` VARCHAR(30) NOT NULL,
+    `age` TINYINT NOT NULL,
     `gender` VARCHAR(10) NOT NULL,
 
     PRIMARY KEY (`id`)
