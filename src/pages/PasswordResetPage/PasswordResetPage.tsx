@@ -18,13 +18,15 @@ import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
 const PasswordResetPage = () => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [resetPasswordIsDisabled, setResetPasswordIsDisabled] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -136,7 +138,7 @@ const PasswordResetPage = () => {
               borderRadius: 6,
             }}
           >
-            <FormControl>
+            <FormControl required>
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -160,7 +162,7 @@ const PasswordResetPage = () => {
                 }}
               />
             </FormControl>
-            <FormControl>
+            <FormControl required>
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -188,7 +190,7 @@ const PasswordResetPage = () => {
                 position: 'relative',
               }}
             >
-              <FormControl>
+              <FormControl required>
                 <FormControl.Label
                   sx={{
                     marginBottom: 2,
@@ -212,8 +214,13 @@ const PasswordResetPage = () => {
                 />
               </FormControl>
 
-              <FormControl>
-                <Button type="submit" variant="primary" block>
+              <FormControl required>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={resetPasswordIsDisabled}
+                  block
+                >
                   Reset password
                 </Button>
               </FormControl>

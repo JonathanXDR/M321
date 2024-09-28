@@ -20,13 +20,15 @@ import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
 const SignUpPage = () => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [createAccountIsDisabled, setCreateAccountIsDisabled] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -73,7 +75,7 @@ const SignUpPage = () => {
       <PageLayout.Content>
         <Box
           sx={{
-            width: '340px',
+            width: '480px',
             margin: '0 auto',
             paddingX: 3,
           }}
@@ -138,7 +140,12 @@ const SignUpPage = () => {
               borderRadius: 6,
             }}
           >
-            <FormControl>
+            <FormControl
+              required
+              sx={{
+                width: '100%',
+              }}
+            >
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -162,35 +169,176 @@ const SignUpPage = () => {
                 }}
               />
             </FormControl>
-            <FormControl>
-              <FormControl.Label
-                sx={{
-                  marginBottom: 2,
-                  fontWeight: '400',
-                  textAlign: 'left',
-                }}
-              >
-                Create a password
-              </FormControl.Label>
-              <TextInput
-                type="text"
-                validationStatus="error"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                sx={{
-                  marginTop: 1,
-                  marginBottom: 4,
-                  width: '100%',
-                  paddingY: '5px',
-                }}
-              />
-            </FormControl>
             <Box
               sx={{
-                position: 'relative',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
-              <FormControl>
+              <FormControl
+                required
+                sx={{
+                  width: '100%',
+                  marginRight: 4,
+                }}
+              >
+                <FormControl.Label
+                  sx={{
+                    marginBottom: 2,
+                    marginRight: 2,
+                    fontWeight: '400',
+                    textAlign: 'left',
+                  }}
+                >
+                  Enter your firstname
+                </FormControl.Label>
+                <TextInput
+                  type="text"
+                  validationStatus="error"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter firstname"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 4,
+                    width: '100%',
+                    paddingY: '5px',
+                  }}
+                />
+              </FormControl>
+              <FormControl
+                required
+                sx={{
+                  width: '100%',
+                }}
+              >
+                <FormControl.Label
+                  sx={{
+                    marginBottom: 2,
+                    fontWeight: '400',
+                    textAlign: 'left',
+                  }}
+                >
+                  Enter your lastname
+                </FormControl.Label>
+                <TextInput
+                  type="text"
+                  validationStatus="error"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter lastname"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 4,
+                    width: '100%',
+                    paddingY: '5px',
+                  }}
+                />
+              </FormControl>
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <FormControl
+                sx={{
+                  width: '100%',
+                  marginRight: 4,
+                }}
+              >
+                <FormControl.Label
+                  sx={{
+                    marginBottom: 2,
+                    marginRight: 2,
+                    fontWeight: '400',
+                    textAlign: 'left',
+                  }}
+                >
+                  Enter your age
+                </FormControl.Label>
+                <TextInput
+                  type="text"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter age"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 4,
+                    width: '100%',
+                    paddingY: '5px',
+                  }}
+                />
+              </FormControl>
+              <FormControl
+                sx={{
+                  width: '100%',
+                }}
+              >
+                <FormControl.Label
+                  sx={{
+                    marginBottom: 2,
+                    fontWeight: '400',
+                    textAlign: 'left',
+                  }}
+                >
+                  Enter your gender
+                </FormControl.Label>
+                <TextInput
+                  type="text"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter gender"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 4,
+                    width: '100%',
+                    paddingY: '5px',
+                  }}
+                />
+              </FormControl>
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <FormControl
+                required
+                sx={{
+                  width: '100%',
+                  marginRight: 4,
+                }}
+              >
+                <FormControl.Label
+                  sx={{
+                    marginBottom: 2,
+                    fontWeight: '400',
+                    textAlign: 'left',
+                  }}
+                >
+                  Create a password
+                </FormControl.Label>
+                <TextInput
+                  type="text"
+                  validationStatus="error"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 4,
+                    width: '100%',
+                    paddingY: '5px',
+                  }}
+                />
+              </FormControl>
+              <FormControl
+                required
+                sx={{
+                  width: '100%',
+                }}
+              >
                 <FormControl.Label
                   sx={{
                     marginBottom: 2,
@@ -205,21 +353,25 @@ const SignUpPage = () => {
                   validationStatus="error"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm password"
+                  block
                   sx={{
                     marginTop: 1,
                     marginBottom: 4,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />
               </FormControl>
-
-              <FormControl>
-                <Button type="submit" variant="primary" block>
-                  Reset password
-                </Button>
-              </FormControl>
             </Box>
+            <FormControl required>
+              <Button
+                type="submit"
+                variant="primary"
+                block
+                disabled={createAccountIsDisabled}
+              >
+                Create account
+              </Button>
+            </FormControl>
           </Box>
 
           <Text

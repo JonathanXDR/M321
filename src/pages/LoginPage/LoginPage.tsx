@@ -20,11 +20,14 @@ import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [signInIsDisabled, setSignInIsDisabled] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -136,7 +139,7 @@ const LoginPage = () => {
               borderRadius: 6,
             }}
           >
-            <FormControl>
+            <FormControl required>
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -162,7 +165,7 @@ const LoginPage = () => {
                 position: 'relative',
               }}
             >
-              <FormControl>
+              <FormControl required>
                 <FormControl.Label
                   sx={{
                     marginBottom: 2,
@@ -184,8 +187,13 @@ const LoginPage = () => {
                 />
               </FormControl>
 
-              <FormControl>
-                <Button type="submit" variant="primary" block>
+              <FormControl required>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={signInIsDisabled}
+                  block
+                >
                   Sign in
                 </Button>
               </FormControl>

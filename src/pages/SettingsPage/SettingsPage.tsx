@@ -27,14 +27,23 @@ import './SettingsPage.module.css';
 import MainNavbar from '../../components/Navbar/MainNavbar';
 
 const SettingsPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [usernameInfoDialogIsOpen, setUsernameInfoDialogIsOpen] =
+    useState(false);
+  const [usernameDialogIsOpen, setUsernameDialogIsOpen] = useState(false);
+  const [accountDialogIsOpen, setAccountDialogIsOpen] = useState(false);
+
+  const [updatePasswordIsDisabled, setUpdatePasswordIsDisabled] =
+    useState(true);
+  const [deleteAccountIsDisabled, setDeleteAccountIsDisabled] = useState(true);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -159,6 +168,153 @@ const SettingsPage = () => {
             </Box>
           </Box>
         </Box>
+
+        <Box>
+          <Pagehead
+            as="h2"
+            sx={{
+              padding: 0,
+              margin: 0,
+              fontWeight: '400',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 3,
+              paddingBottom: 2,
+            }}
+          >
+            Public profile
+          </Pagehead>
+
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <FormControl
+              required
+              sx={{
+                width: '100%',
+                marginRight: 4,
+              }}
+            >
+              <FormControl.Label
+                sx={{
+                  marginBottom: 2,
+                  marginRight: 2,
+                  fontWeight: '400',
+                  textAlign: 'left',
+                }}
+              >
+                Enter your firstname
+              </FormControl.Label>
+              <TextInput
+                type="text"
+                validationStatus="error"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter firstname"
+                sx={{
+                  marginTop: 1,
+                  marginBottom: 4,
+                  width: '100%',
+                  paddingY: '5px',
+                }}
+              />
+            </FormControl>
+            <FormControl
+              required
+              sx={{
+                width: '100%',
+              }}
+            >
+              <FormControl.Label
+                sx={{
+                  marginBottom: 2,
+                  fontWeight: '400',
+                  textAlign: 'left',
+                }}
+              >
+                Enter your lastname
+              </FormControl.Label>
+              <TextInput
+                type="text"
+                validationStatus="error"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter lastname"
+                sx={{
+                  marginTop: 1,
+                  marginBottom: 4,
+                  width: '100%',
+                  paddingY: '5px',
+                }}
+              />
+            </FormControl>
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <FormControl
+              sx={{
+                width: '100%',
+                marginRight: 4,
+              }}
+            >
+              <FormControl.Label
+                sx={{
+                  marginBottom: 2,
+                  marginRight: 2,
+                  fontWeight: '400',
+                  textAlign: 'left',
+                }}
+              >
+                Enter your age
+              </FormControl.Label>
+              <TextInput
+                type="text"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter age"
+                sx={{
+                  marginTop: 1,
+                  marginBottom: 4,
+                  width: '100%',
+                  paddingY: '5px',
+                }}
+              />
+            </FormControl>
+            <FormControl
+              sx={{
+                width: '100%',
+              }}
+            >
+              <FormControl.Label
+                sx={{
+                  marginBottom: 2,
+                  fontWeight: '400',
+                  textAlign: 'left',
+                }}
+              >
+                Enter your gender
+              </FormControl.Label>
+              <TextInput
+                type="text"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter gender"
+                sx={{
+                  marginTop: 1,
+                  marginBottom: 4,
+                  width: '100%',
+                  paddingY: '5px',
+                }}
+              />
+            </FormControl>
+          </Box>
+        </Box>
         <Box>
           <Pagehead
             as="h2"
@@ -175,8 +331,10 @@ const SettingsPage = () => {
           >
             Change username
           </Pagehead>
-          <Button>Change username</Button>
-          <Dialog isOpen={false}>
+          <Button onClick={() => setUsernameInfoDialogIsOpen(true)}>
+            Change username
+          </Button>
+          <Dialog isOpen={usernameInfoDialogIsOpen}>
             <Dialog.Header>Really change your username?</Dialog.Header>
             <Flash
               variant="danger"
@@ -208,7 +366,43 @@ const SettingsPage = () => {
                 </li>
                 <li>Renaming may take a few minutes to complete.</li>
               </ul>
-              <Button variant="danger" block>
+              <Button
+                variant="danger"
+                block
+                onClick={() => {
+                  setUsernameInfoDialogIsOpen(false);
+                  setUsernameDialogIsOpen(true);
+                }}
+              >
+                I understand, let’s change my username
+              </Button>
+            </Box>
+          </Dialog>
+          <Dialog isOpen={usernameDialogIsOpen}>
+            <Dialog.Header>Really change your username?</Dialog.Header>
+            <Flash
+              variant="danger"
+              full
+              sx={{
+                paddingY: '20px',
+                paddingX: '16px',
+              }}
+            >
+              <StyledOcticon icon={AlertIcon} />
+              Unexpected bad things will happen if you don’t read this!
+            </Flash>
+            <Box
+              sx={{
+                padding: 3,
+              }}
+            >
+              <Button
+                variant="danger"
+                block
+                onClick={() => {
+                  setUsernameDialogIsOpen(false);
+                }}
+              >
                 I understand, let’s change my username
               </Button>
             </Box>
@@ -244,6 +438,7 @@ const SettingsPage = () => {
 
           <Box as={'form'} onSubmit={handleSubmit}>
             <FormControl
+              required
               sx={{
                 marginY: '15px',
               }}
@@ -267,6 +462,7 @@ const SettingsPage = () => {
               />
             </FormControl>
             <FormControl
+              required
               sx={{
                 marginY: '15px',
               }}
@@ -289,6 +485,7 @@ const SettingsPage = () => {
               />
             </FormControl>
             <FormControl
+              required
               sx={{
                 marginY: '15px',
               }}
@@ -325,6 +522,7 @@ const SettingsPage = () => {
               .
             </Text>
             <FormControl
+              required
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -332,6 +530,7 @@ const SettingsPage = () => {
               }}
             >
               <Button
+                disabled={updatePasswordIsDisabled}
                 sx={{
                   marginRight: 2,
                 }}
@@ -363,8 +562,10 @@ const SettingsPage = () => {
             Once you delete your account, there is no going back. Please be
             certain.
           </Text>
-          <Button variant="danger">Delete your account</Button>
-          <Dialog isOpen={false}>
+          <Button variant="danger" onClick={() => setAccountDialogIsOpen(true)}>
+            Delete your account
+          </Button>
+          <Dialog isOpen={accountDialogIsOpen}>
             <Dialog.Header>Are you sure you want to do this?</Dialog.Header>
             <Flash
               variant="danger"
@@ -402,6 +603,7 @@ const SettingsPage = () => {
               <hr></hr>
               <Box as={'form'} onSubmit={handleSubmit}>
                 <FormControl
+                  required
                   sx={{
                     marginY: '15px',
                   }}
@@ -419,6 +621,7 @@ const SettingsPage = () => {
                   />
                 </FormControl>
                 <FormControl
+                  required
                   sx={{
                     marginY: '15px',
                   }}
@@ -446,6 +649,7 @@ const SettingsPage = () => {
                   />
                 </FormControl>
                 <FormControl
+                  required
                   sx={{
                     marginY: '15px',
                   }}
@@ -462,8 +666,13 @@ const SettingsPage = () => {
                   />
                 </FormControl>
 
-                <FormControl>
-                  <Button variant="danger" block>
+                <FormControl required>
+                  <Button
+                    variant="danger"
+                    disabled={deleteAccountIsDisabled}
+                    block
+                    onClick={() => setAccountDialogIsOpen(false)}
+                  >
                     Delete this account
                   </Button>
                 </FormControl>
