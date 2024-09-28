@@ -11,7 +11,7 @@ export class UsersService {
       where: { id },
     });
     if (!user) {
-      throw new NotFoundException();
+      throw new NotFoundException('User not found');
     }
     return user;
   }
@@ -30,37 +30,6 @@ export class UsersService {
       cursor,
       where,
       orderBy,
-    });
-  }
-
-  async createUser(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
-  }
-
-  async updateUser(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }): Promise<User> {
-    const { data, where } = params;
-    const user = await this.findOne(params.where.id);
-    if (!user) {
-      throw new NotFoundException();
-    }
-    return this.prisma.user.update({
-      data,
-      where,
-    });
-  }
-
-  async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
-    const user = await this.findOne(where.id);
-    if (!user) {
-      throw new NotFoundException();
-    }
-    return this.prisma.user.delete({
-      where,
     });
   }
 }

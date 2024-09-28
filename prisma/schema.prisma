@@ -9,16 +9,16 @@ datasource db {
 
 model Book {
   id          Int    @id @default(autoincrement())
-  title       String
-  releaseYear Int
-  author      String
+  title       String @db.VarChar(100)
+  releaseYear Int    @db.Year()
+  author      String @db.VarChar(30)
 }
 
 model User {
   id        Int    @id @default(autoincrement())
-  username  String
-  password  String
-  firstname String
-  lastname  String
-  gender    String
+  username  String @db.VarChar(30)
+  password  String @db.VarChar(100)
+  firstname String @db.VarChar(30)
+  lastname  String @db.VarChar(30)
+  gender    String @db.VarChar(10)
 }

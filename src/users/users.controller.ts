@@ -1,3 +1,4 @@
+import { UserRequest } from './dto/user.request';
 import {
   Controller,
   Get,
@@ -7,47 +8,31 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User as UserModel } from '@prisma/client';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
 
-@Controller()
+@Controller('users')
 @ApiTags('users')
 export class UsersController {
-  constructor(private readonly UsersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
-  @Get('users')
+  @Get()
   @ApiOkResponse({ type: [UserEntity] })
   async getAllUsers(): Promise<UserModel[]> {
-    return this.UsersService.findMany({});
+    return this.usersService.findMany({});
   }
 
-  @Get('users/:id')
+  @Get(':id')
   @ApiOkResponse({ type: UserEntity })
   async getUser(@Param('id', ParseIntPipe) id: number): Promise<UserModel> {
-    return this.UsersService.findOne(id);
-  }
-
-  @Post('users')
-  @ApiCreatedResponse({ type: UserEntity })
-  async createUser(@Body() data: UserModel): Promise<UserModel> {
-    return this.UsersService.createUser(data);
-  }
-
-  @Put('users/:id')
-  @ApiOkResponse({ type: UserEntity })
-  async updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() data: UserModel,
-  ): Promise<UserModel> {
-    return this.UsersService.updateUser({ where: { id: id }, data: data });
-  }
-
-  @Delete('users/:id')
-  @ApiOkResponse({ type: UserEntity })
-  async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<UserModel> {
-    return this.UsersService.deleteUser({ id: id });
+    try {
+      return this.usersService.findOne(id);
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 }

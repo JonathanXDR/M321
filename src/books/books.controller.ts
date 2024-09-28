@@ -50,7 +50,7 @@ export class BooksController {
   ): Promise<BookModel> {
     try {
       return this.booksService.updateBook({
-        where: { id: id },
+        where: { id },
         data: request,
       });
     } catch (error) {
@@ -61,6 +61,6 @@ export class BooksController {
   @Delete(':id')
   @ApiOkResponse({ type: BookEntity })
   async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<BookModel> {
-    return this.booksService.deleteBook({ id: id });
+    return this.booksService.deleteBook({ id });
   }
 }

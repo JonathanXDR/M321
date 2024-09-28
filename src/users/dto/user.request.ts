@@ -6,7 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class BookRequest {
+export class UserRequest {
   @IsOptional()
   @IsNotEmpty()
   @IsNumber()
@@ -15,15 +15,30 @@ export class BookRequest {
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  title: string;
-
-  @IsDefined()
-  @IsNotEmpty()
-  @IsNumber()
-  releaseYear: number;
+  username: string;
 
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  author: string;
+  password: string;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  lastname: string;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  firstname: string;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @IsNumber()
+  age: number;
+
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  gender: string;
 }
