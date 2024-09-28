@@ -185,7 +185,7 @@ const LoginPage = () => {
               </FormControl>
 
               <FormControl>
-                <Button type="submit" variant="primary" sx={{ width: '100%' }}>
+                <Button type="submit" variant="primary" block>
                   Sign in
                 </Button>
               </FormControl>

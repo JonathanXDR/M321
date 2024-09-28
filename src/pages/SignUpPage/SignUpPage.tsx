@@ -215,7 +215,7 @@ const SignUpPage = () => {
               </FormControl>
 
               <FormControl>
-                <Button type="submit" variant="primary" sx={{ width: '100%' }}>
+                <Button type="submit" variant="primary" block>
                   Reset password
                 </Button>
               </FormControl>

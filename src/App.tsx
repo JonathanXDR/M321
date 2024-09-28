@@ -12,6 +12,7 @@ const SettingsPage = React.lazy(
 );
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage/SignUpPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
+const LogoutPage = React.lazy(() => import('./pages/LogoutPage/LogoutPage'));
 const PasswordResetPage = React.lazy(
   () => import('./pages/PasswordResetPage/PasswordResetPage')
 );
@@ -40,6 +41,7 @@ const App: React.FC = () => {
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/logout" element={<LogoutPage />} />
               <Route path="/password_reset" element={<PasswordResetPage />} />
               <Route path="*" element={<div>404</div>} />
             </Routes>
