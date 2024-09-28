@@ -7,14 +7,15 @@ import {
   FormControl,
   Heading,
   IconButton,
-  Link,
   PageLayout,
   TextInput,
 } from '@primer/react';
-import { MarkGithubIcon, XIcon } from '@primer/octicons-react';
+import { XIcon } from '@primer/octicons-react';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './PasswordResetPage.module.css';
+import LoginNavbar from '../../components/Navbar/LoginNavbar';
+import LoginFooter from '../../components/Footer/LoginFooter';
 
 const PasswordResetPage = () => {
   const [username, setUsername] = useState('');
@@ -65,16 +66,8 @@ const PasswordResetPage = () => {
           position: 'relative',
         }}
       >
-        <Link
-          sx={{
-            color: 'fg.default',
-          }}
-          href="https://github.com/"
-        >
-          <MarkGithubIcon size={48} />
-        </Link>
+        <LoginNavbar />
       </PageLayout.Header>
-
       <PageLayout.Content>
         <Box
           sx={{
@@ -228,7 +221,6 @@ const PasswordResetPage = () => {
           </Box>
         </Box>
       </PageLayout.Content>
-
       <PageLayout.Footer
         sx={{
           maxWidth: 1012,
@@ -241,47 +233,7 @@ const PasswordResetPage = () => {
           fontSize: '12px',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              marginRight: 3,
-            }}
-          >
-            <Link href="/site/terms">Terms</Link>
-          </Box>
-          <Box
-            sx={{
-              marginRight: 3,
-            }}
-          >
-            <Link href="/site/privacy">Privacy</Link>
-          </Box>
-          <Box
-            sx={{
-              marginRight: 3,
-            }}
-          >
-            <Link href="/security">Security</Link>
-          </Box>
-          <Box>
-            <Link
-              sx={{
-                color: 'fg.muted',
-                '&:hover': {
-                  color: 'accent.fg',
-                },
-              }}
-              href="https://github.com/contact"
-            >
-              Contact GitHub
-            </Link>
-          </Box>
-        </Box>
+        <LoginFooter />
       </PageLayout.Footer>
     </PageLayout>
   );

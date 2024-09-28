@@ -35,6 +35,7 @@ import NoteCollectionDialog from '../../components/NoteCollection/NoteCollection
 import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
 import UnderlineNavItem from '../../components/UnderlineNavItem';
 import './HomePage.module.css';
+import MainNavbar from '../../components/Navbar/MainNavbar';
 
 const HomePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -115,17 +116,7 @@ const HomePage: React.FC = () => {
   return (
     <PageLayout containerWidth="full" padding="none">
       <PageLayout.Header>
-        <Header>
-          <Header.Item full>
-            <Header.Link href="/">
-              <StyledOcticon icon={MarkGithubIcon} size={32} sx={{ mr: 2 }} />
-              <Text>GitHub</Text>
-            </Header.Link>
-          </Header.Item>
-          <Header.Item>
-            <AccountActionMenu />
-          </Header.Item>
-        </Header>
+        <MainNavbar />
       </PageLayout.Header>
       <PageLayout.Content padding="normal" width="xlarge">
         {flashVisible && (

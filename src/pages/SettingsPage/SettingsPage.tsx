@@ -24,6 +24,7 @@ import { users } from '../../services/http.service';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AccountActionMenu from '../../components/AccountActionMenu';
 import './SettingsPage.module.css';
+import MainNavbar from '../../components/Navbar/MainNavbar';
 
 const SettingsPage = () => {
   const [username, setUsername] = useState('');
@@ -66,17 +67,7 @@ const SettingsPage = () => {
           margin: '0 !important',
         }}
       >
-        <Header>
-          <Header.Item full>
-            <Header.Link href="/">
-              <StyledOcticon icon={MarkGithubIcon} size={32} sx={{ mr: 2 }} />
-              <Text>GitHub</Text>
-            </Header.Link>
-          </Header.Item>
-          <Header.Item>
-            <AccountActionMenu />
-          </Header.Item>
-        </Header>
+        <MainNavbar />
         <Flash
           full
           sx={{
