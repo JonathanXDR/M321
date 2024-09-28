@@ -5,7 +5,7 @@ import api from './api.service';
 
 export const checkConnection = async () => {
   try {
-    await api.get('/users');
+    await api.get('/');
     return true;
   } catch (error) {
     console.log(error);
