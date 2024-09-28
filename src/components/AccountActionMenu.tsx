@@ -42,7 +42,7 @@ function AccountActionMenu() {
               color: 'fg.default',
             }}
           >
-            {currentUser?.firstname} {currentUser?.lastname}
+            {currentUser?.firstName} {currentUser?.lastName}
           </Text>
           <Avatar
             src="https://github.com/octocat.png"

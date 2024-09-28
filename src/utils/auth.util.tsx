@@ -1,3 +1,4 @@
+import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { login, checkToken } from '../services/auth.service';
 
 export const handleCheckToken = async (token: string, navigate: any) => {
@@ -19,16 +20,38 @@ export const handleLoginSubmit = async (
     navigate('/');
     return { error: false };
   } catch (error: any) {
-    if (
-      error.response &&
-      (error.response.status === 401 ||
-        error.response.status === 403 ||
-        error.response.status === 404)
-    ) {
+    if (error.response && error.response.status === 401) {
       return { error: true };
     } else {
-      console.error('Login error:', error);
+      <BlankStateSystemError httpError={error} />;
       return { error: false };
     }
   }
 };
+
+// export const handleCreateAccountSubmit = async (
+//   username: string,
+//   password: string,
+//   firstName: string,
+//   lastName: string,
+//   age: number,
+//   gender: string
+// ) => {
+//   try {
+//     (await users.create(
+//       username,
+//       password,
+//       firstName,
+//       lastName,
+//       age,
+//       gender
+//     )) as User;
+//     navigate('/');
+//   } catch (error: any) {
+//     if (error.response && error.response.status === 409) {
+//       return 'Username already exists.';
+//     } else {
+//       <BlankStateSystemError httpError={error} />;
+//     }
+//   }
+// };

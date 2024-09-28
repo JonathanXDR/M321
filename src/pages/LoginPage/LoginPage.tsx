@@ -21,13 +21,12 @@ import LoginFooter from '../../components/Footer/LoginFooter';
 
 const LoginPage = () => {
   const [error, setError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const [signInIsDisabled, setSignInIsDisabled] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -39,6 +38,10 @@ const LoginPage = () => {
       setLoading(false);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    setIsValid(!!username.trim() && !!password.trim());
+  }, [username, password]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,26 +108,24 @@ const LoginPage = () => {
             </Heading>
           </Box>
 
-          <Box>
-            <Flash variant="danger" hidden={!error}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingX: 2,
-                }}
-              >
-                Incorrect username or password.
-                <IconButton
-                  variant="invisible"
-                  aria-label="Close flash"
-                  icon={XIcon}
-                  onClick={() => setError(false)}
-                />
-              </Box>
-            </Flash>
-          </Box>
+          <Flash variant="danger" hidden={!error}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingX: 2,
+              }}
+            >
+              Incorrect username or password.
+              <IconButton
+                variant="invisible"
+                aria-label="Close flash"
+                icon={XIcon}
+                onClick={() => setError(false)}
+              />
+            </Box>
+          </Flash>
 
           <Box
             as={'form'}
@@ -191,7 +192,7 @@ const LoginPage = () => {
                 <Button
                   type="submit"
                   variant="primary"
-                  disabled={signInIsDisabled}
+                  disabled={!isValid}
                   block
                 >
                   Sign in

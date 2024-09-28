@@ -12,8 +12,12 @@ import {
   Text,
   TextInput,
 } from '@primer/react';
-import { XIcon } from '@primer/octicons-react';
-import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
+import { StopIcon, XIcon } from '@primer/octicons-react';
+import {
+  handleLoginSubmit,
+  handleCheckToken,
+  // handleCreateAccountSubmit,
+} from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
@@ -26,9 +30,13 @@ const SignUpPage = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [createAccountIsDisabled, setCreateAccountIsDisabled] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -41,10 +49,28 @@ const SignUpPage = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    setIsValid(
+      !!username.trim() &&
+        !!firstName.trim() &&
+        !!lastName.trim() &&
+        !!password.trim() &&
+        !!confirmPassword.trim() &&
+        password === confirmPassword
+    );
+  }, [username, firstName, lastName, password, confirmPassword]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await handleLoginSubmit(username, password, navigate);
-    setError(result.error);
+    // const result = await handleCreateAccountSubmit(
+    //   username,
+    //   password,
+    //   firstName,
+    //   lastName,
+    //   age,
+    //   gender
+    // );
+    navigate('/login');
   };
 
   if (loading) {
@@ -106,26 +132,65 @@ const SignUpPage = () => {
             </Heading>
           </Box>
 
-          <Box>
-            <Flash variant="danger" hidden={!error}>
+          <Flash variant="danger">
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'baseline',
+                paddingX: 2,
+              }}
+            >
+              <Text
+                sx={{
+                  marginRight: 3,
+                }}
+              >
+                <StopIcon />
+              </Text>
               <Box
                 sx={{
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingX: 2,
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'center',
                 }}
               >
-                {/* either "Passwords don't match" or "Username {username} is not available" */}
-                <IconButton
-                  variant="invisible"
-                  aria-label="Close flash"
-                  icon={XIcon}
-                  onClick={() => setError(false)}
-                />
+                <Text
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  The following inputs have errors:
+                </Text>
+                <Box>
+                  {/* Dynamically show all Input Titles, which the validation failed */}
+                  <Text
+                    sx={{
+                      textDecoration: 'Underline',
+                    }}
+                  >
+                    Last name
+                  </Text>
+                  ,{' '}
+                  <Text
+                    sx={{
+                      textDecoration: 'Underline',
+                    }}
+                  >
+                    ZIP code
+                  </Text>
+                  ,{' '}
+                  <Text
+                    sx={{
+                      textDecoration: 'Underline',
+                    }}
+                  >
+                    email address
+                  </Text>
+                </Box>
               </Box>
-            </Flash>
-          </Box>
+            </Box>
+          </Flash>
 
           <Box
             as={'form'}
@@ -158,8 +223,9 @@ const SignUpPage = () => {
               <TextInput
                 type="text"
                 loading={true}
-                validationStatus="error"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
                 placeholder="Enter username"
                 sx={{
                   marginTop: 1,
@@ -195,8 +261,9 @@ const SignUpPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="text"
-                  validationStatus="error"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   placeholder="Enter firstname"
                   sx={{
                     marginTop: 1,
@@ -223,8 +290,9 @@ const SignUpPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="text"
-                  validationStatus="error"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
                   placeholder="Enter lastname"
                   sx={{
                     marginTop: 1,
@@ -322,7 +390,6 @@ const SignUpPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="text"
-                  validationStatus="error"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                   sx={{
@@ -350,7 +417,6 @@ const SignUpPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="password"
-                  validationStatus="error"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm password"
                   block
@@ -362,13 +428,30 @@ const SignUpPage = () => {
                 />
               </FormControl>
             </Box>
+            <Text
+              sx={{
+                color: 'fg.muted',
+                fontSize: '12px',
+              }}
+            >
+              <Text as="p">
+                Make sure it's{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>at least 15 characters</Text> OR{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>at least 8 characters</Text>{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>including a number</Text>{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>and a lowercase letter</Text>.{' '}
+                <Link href="https://docs.github.com/articles/creating-a-strong-password">
+                  Learn more
+                </Link>
+                .
+              </Text>
+            </Text>
             <FormControl required>
-              <Button
-                type="submit"
-                variant="primary"
-                block
-                disabled={createAccountIsDisabled}
-              >
+              <Button type="submit" variant="primary" block disabled={!isValid}>
                 Create account
               </Button>
             </FormControl>

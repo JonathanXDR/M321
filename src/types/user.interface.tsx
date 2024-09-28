@@ -5,8 +5,8 @@ export interface User {
   id: string;
   username: string;
   password: string;
-  lastname: string;
-  firstname: string;
+  firstName: string;
+  lastName: string;
   age: number;
   gender: string;
   noteCollections: NoteCollection[];
