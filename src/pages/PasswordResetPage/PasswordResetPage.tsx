@@ -6,16 +6,14 @@ import {
   Flash,
   FormControl,
   Heading,
-  IconButton,
-  PageLayout,
-  TextInput,
   Text,
   Link,
+  PageLayout,
+  TextInput,
 } from '@primer/react';
-import { StopIcon, XIcon } from '@primer/octicons-react';
+import { StopIcon } from '@primer/octicons-react';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import './PasswordResetPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
@@ -44,14 +42,48 @@ const PasswordResetPage = () => {
       !!username.trim() &&
         !!password.trim() &&
         !!confirmPassword.trim() &&
-        password === confirmPassword
+        password === confirmPassword &&
+        isValidPassword(password)
     );
-  }, [username, password]);
+  }, [username, password, confirmPassword]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await handleLoginSubmit(username, password, navigate);
     navigate('/login');
+  };
+
+  function isValidPassword(password: string) {
+    const minLength = 15;
+    const minLengthWithRequirements = 8;
+    const hasNumber = /\d/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+
+    return (
+      password.length >= minLength ||
+      (password.length >= minLengthWithRequirements &&
+        hasNumber &&
+        hasLowercase)
+    );
+  }
+
+  function getValidationStyle(validation: boolean) {
+    return {
+      color: validation ? 'success.fg' : 'danger.fg',
+      fontWeight: validation ? '' : 'bold',
+    };
+  }
+
+  function getMutedStyle(condition: boolean) {
+    return condition ? { color: 'fg.muted', fontWeight: '' } : {};
+  }
+
+  const validations = {
+    minLength: password.length >= 15,
+    minLengthWithRequirements:
+      password.length >= 8 && /\d/.test(password) && /[a-z]/.test(password),
+    hasNumber: /\d/.test(password),
+    hasLowercase: /[a-z]/.test(password),
   };
 
   if (loading) {
@@ -221,7 +253,10 @@ const PasswordResetPage = () => {
               </FormControl.Label>
               <TextInput
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setIsValid(isValidPassword(e.target.value));
+                }}
                 placeholder="Enter password"
                 sx={{
                   marginTop: 1,
@@ -248,7 +283,10 @@ const PasswordResetPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    // setIsValid(isValidPassword(e.target.value));
+                  }}
                   placeholder="Confirm password"
                   sx={{
                     marginTop: 1,
@@ -264,16 +302,45 @@ const PasswordResetPage = () => {
                   fontSize: '12px',
                 }}
               >
+                {/* Password description */}
                 <Text as="p">
                   Make sure it's{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>at least 15 characters</Text> OR{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>at least 8 characters</Text>{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>including a number</Text>{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>and a lowercase letter</Text>.{' '}
+                  <Text
+                    sx={{
+                      ...getValidationStyle(validations.minLength),
+                      ...getMutedStyle(validations.minLengthWithRequirements),
+                    }}
+                  >
+                    at least 15 characters
+                  </Text>{' '}
+                  OR{' '}
+                  <Text
+                    sx={{
+                      ...getValidationStyle(
+                        validations.minLengthWithRequirements
+                      ),
+                      ...getMutedStyle(validations.minLength),
+                    }}
+                  >
+                    at least 8 characters
+                  </Text>{' '}
+                  <Text
+                    sx={{
+                      ...getValidationStyle(validations.hasNumber),
+                      ...getMutedStyle(validations.minLength),
+                    }}
+                  >
+                    including a number
+                  </Text>{' '}
+                  <Text
+                    sx={{
+                      ...getValidationStyle(validations.hasLowercase),
+                      ...getMutedStyle(validations.minLength),
+                    }}
+                  >
+                    and a lowercase letter
+                  </Text>
+                  .{' '}
                   <Link href="https://docs.github.com/articles/creating-a-strong-password">
                     Learn more
                   </Link>
