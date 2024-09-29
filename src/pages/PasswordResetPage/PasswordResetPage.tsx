@@ -12,19 +12,27 @@ import {
   TextInput,
 } from '@primer/react';
 import { StopIcon } from '@primer/octicons-react';
-import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
+import {
+  handleLoginSubmit,
+  handleCheckToken,
+  usePasswordValidation,
+} from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
 const PasswordResetPage = () => {
   const [loading, setLoading] = useState(true);
-  const [isValid, setIsValid] = useState(false);
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const {
+    password,
+    confirmPassword,
+    setPassword,
+    setConfirmPassword,
+    isValid,
+    validations,
+  } = usePasswordValidation();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -37,34 +45,10 @@ const PasswordResetPage = () => {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    setIsValid(
-      !!username.trim() &&
-        !!password.trim() &&
-        !!confirmPassword.trim() &&
-        password === confirmPassword &&
-        isValidPassword(password)
-    );
-  }, [username, password, confirmPassword]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await handleLoginSubmit(username, password, navigate);
     navigate('/login');
-  };
-
-  const isValidPassword = (password: string) => {
-    const minLength = 15;
-    const minLengthWithRequirements = 8;
-    const hasNumber = /\d/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-
-    return (
-      password.length >= minLength ||
-      (password.length >= minLengthWithRequirements &&
-        hasNumber &&
-        hasLowercase)
-    );
   };
 
   const getValidationStyle = (validation: boolean) => ({
@@ -74,14 +58,6 @@ const PasswordResetPage = () => {
 
   const getMutedStyle = (condition: boolean) =>
     condition ? { color: 'fg.muted', fontWeight: '' } : {};
-
-  const validations = {
-    minLength: password.length >= 15,
-    minLengthWithRequirements:
-      password.length >= 8 && /\d/.test(password) && /[a-z]/.test(password),
-    hasNumber: /\d/.test(password),
-    hasLowercase: /[a-z]/.test(password),
-  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -252,7 +228,6 @@ const PasswordResetPage = () => {
                 type="password"
                 onChange={(e) => {
                   setPassword(e.target.value);
-                  setIsValid(isValidPassword(e.target.value));
                 }}
                 placeholder="Enter password"
                 sx={{

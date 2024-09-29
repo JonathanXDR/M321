@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { login, checkToken } from '../services/auth.service';
 
@@ -8,6 +9,51 @@ export const handleCheckToken = async (token: string, navigate: any) => {
   } catch {
     localStorage.removeItem('access_token');
   }
+};
+
+export const usePasswordValidation = () => {
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [validations, setValidations] = useState({
+    minLength: false,
+    minLengthWithRequirements: false,
+    hasNumber: false,
+    hasLowercase: false,
+  });
+
+  useEffect(() => {
+    const minLength = 15;
+    const minLengthWithRequirements = 8;
+    const hasNumber = /\d/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+
+    const newValidations = {
+      minLength: password.length >= minLength,
+      minLengthWithRequirements:
+        password.length >= minLengthWithRequirements &&
+        hasNumber &&
+        hasLowercase,
+      hasNumber,
+      hasLowercase,
+    };
+
+    setValidations(newValidations);
+  }, [password]);
+
+  const isValid =
+    !!password.trim() &&
+    !!confirmPassword.trim() &&
+    password === confirmPassword &&
+    (validations.minLength || validations.minLengthWithRequirements);
+
+  return {
+    password,
+    confirmPassword,
+    setPassword,
+    setConfirmPassword,
+    isValid,
+    validations,
+  };
 };
 
 export const handleLoginSubmit = async (
