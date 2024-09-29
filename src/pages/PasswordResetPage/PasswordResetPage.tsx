@@ -53,7 +53,7 @@ const PasswordResetPage = () => {
     navigate('/login');
   };
 
-  function isValidPassword(password: string) {
+  const isValidPassword = (password: string) => {
     const minLength = 15;
     const minLengthWithRequirements = 8;
     const hasNumber = /\d/.test(password);
@@ -65,18 +65,15 @@ const PasswordResetPage = () => {
         hasNumber &&
         hasLowercase)
     );
-  }
+  };
 
-  function getValidationStyle(validation: boolean) {
-    return {
-      color: validation ? 'success.fg' : 'danger.fg',
-      fontWeight: validation ? '' : 'bold',
-    };
-  }
+  const getValidationStyle = (validation: boolean) => ({
+    color: validation ? 'success.fg' : 'danger.fg',
+    fontWeight: validation ? '' : 'bold',
+  });
 
-  function getMutedStyle(condition: boolean) {
-    return condition ? { color: 'fg.muted', fontWeight: '' } : {};
-  }
+  const getMutedStyle = (condition: boolean) =>
+    condition ? { color: 'fg.muted', fontWeight: '' } : {};
 
   const validations = {
     minLength: password.length >= 15,
