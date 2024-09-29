@@ -31,12 +31,12 @@ const LoginPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      handleCheckToken(token, navigate).finally(() => {
+      handleCheckToken(token).finally(() => {
+        navigate('/');
         setLoading(false);
       });
-    } else {
-      setLoading(false);
     }
+    setLoading(false);
   }, [navigate]);
 
   useEffect(() => {
@@ -140,7 +140,12 @@ const LoginPage = () => {
               borderRadius: 6,
             }}
           >
-            <FormControl required>
+            <FormControl
+              required
+              sx={{
+                marginBottom: 4,
+              }}
+            >
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -155,18 +160,28 @@ const LoginPage = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{
                   marginTop: 1,
-                  marginBottom: 4,
                   width: '100%',
                   paddingY: '5px',
                 }}
               />
+              {/* Show if validation of this field failed */}
+              {!isValid && (
+                <FormControl.Validation variant="error">
+                  Is required
+                </FormControl.Validation>
+              )}
             </FormControl>
             <Box
               sx={{
                 position: 'relative',
               }}
             >
-              <FormControl required>
+              <FormControl
+                required
+                sx={{
+                  marginBottom: 4,
+                }}
+              >
                 <FormControl.Label
                   sx={{
                     marginBottom: 2,
@@ -181,11 +196,16 @@ const LoginPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
 
               <FormControl required>

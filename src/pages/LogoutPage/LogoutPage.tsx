@@ -21,16 +21,13 @@ import LoginFooter from '../../components/Footer/LoginFooter';
 import { logout } from '../../services/auth.service';
 
 const LogoutPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      handleCheckToken(token, navigate).finally(() => {
+      handleCheckToken(token).finally(() => {
         setLoading(false);
       });
     } else {

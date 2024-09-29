@@ -52,17 +52,6 @@ const SignUpPage = () => {
   const getMutedStyle = (condition: boolean) =>
     condition ? { color: 'fg.muted', fontWeight: '' } : {};
 
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      handleCheckToken(token, navigate).finally(() => {
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
-  }, [navigate]);
-
   // useEffect(() => {
   //   setIsValid(
   //     !!username.trim() &&
@@ -223,6 +212,7 @@ const SignUpPage = () => {
               required
               sx={{
                 width: '100%',
+                marginBottom: 4,
               }}
             >
               <FormControl.Label
@@ -243,11 +233,16 @@ const SignUpPage = () => {
                 placeholder="Enter username"
                 sx={{
                   marginTop: 1,
-                  marginBottom: 4,
                   width: '100%',
                   paddingY: '5px',
                 }}
               />
+              {/* Show if validation of this field failed */}
+              {!isValid && (
+                <FormControl.Validation variant="error">
+                  Is required
+                </FormControl.Validation>
+              )}
             </FormControl>
             <Box
               sx={{
@@ -260,6 +255,7 @@ const SignUpPage = () => {
                 required
                 sx={{
                   width: '100%',
+                  marginBottom: 4,
                   marginRight: 4,
                 }}
               >
@@ -281,16 +277,22 @@ const SignUpPage = () => {
                   placeholder="Enter firstname"
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
               <FormControl
                 required
                 sx={{
                   width: '100%',
+                  marginBottom: 4,
                 }}
               >
                 <FormControl.Label
@@ -310,11 +312,16 @@ const SignUpPage = () => {
                   placeholder="Enter lastname"
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
             </Box>
             <Box
@@ -327,6 +334,7 @@ const SignUpPage = () => {
               <FormControl
                 sx={{
                   width: '100%',
+                  marginBottom: 4,
                   marginRight: 4,
                 }}
               >
@@ -346,15 +354,21 @@ const SignUpPage = () => {
                   placeholder="Enter age"
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
               <FormControl
                 sx={{
                   width: '100%',
+                  marginBottom: 4,
                 }}
               >
                 <FormControl.Label
@@ -372,11 +386,16 @@ const SignUpPage = () => {
                   placeholder="Enter gender"
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
             </Box>
             <Box
@@ -390,6 +409,7 @@ const SignUpPage = () => {
                 required
                 sx={{
                   width: '100%',
+                  marginBottom: 4,
                   marginRight: 4,
                 }}
               >
@@ -408,16 +428,22 @@ const SignUpPage = () => {
                   placeholder="Enter password"
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
               <FormControl
                 required
                 sx={{
                   width: '100%',
+                  marginBottom: 4,
                 }}
               >
                 <FormControl.Label
@@ -436,10 +462,15 @@ const SignUpPage = () => {
                   block
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
             </Box>
             <Text

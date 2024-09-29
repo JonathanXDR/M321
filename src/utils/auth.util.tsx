@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { login, checkToken } from '../services/auth.service';
 
-export const handleCheckToken = async (token: string, navigate: any) => {
+export const handleCheckToken = async (token: string) => {
   try {
     await checkToken(token);
-    navigate('/');
   } catch {
     localStorage.removeItem('access_token');
   }
