@@ -16,6 +16,7 @@ import { StopIcon, XIcon } from '@primer/octicons-react';
 import {
   handleLoginSubmit,
   handleCheckToken,
+  usePasswordValidation,
   // handleCreateAccountSubmit,
 } from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -29,14 +30,27 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    password,
+    confirmPassword,
+    setPassword,
+    setConfirmPassword,
+    isValid,
+    validations,
+  } = usePasswordValidation();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [isValid, setIsValid] = useState(false);
+  const getValidationStyle = (validation: boolean) => ({
+    color: validation ? 'success.fg' : 'danger.fg',
+    fontWeight: validation ? '' : 'bold',
+  });
+
+  const getMutedStyle = (condition: boolean) =>
+    condition ? { color: 'fg.muted', fontWeight: '' } : {};
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -49,16 +63,16 @@ const SignUpPage = () => {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    setIsValid(
-      !!username.trim() &&
-        !!firstName.trim() &&
-        !!lastName.trim() &&
-        !!password.trim() &&
-        !!confirmPassword.trim() &&
-        password === confirmPassword
-    );
-  }, [username, firstName, lastName, password, confirmPassword]);
+  // useEffect(() => {
+  //   setIsValid(
+  //     !!username.trim() &&
+  //       !!firstName.trim() &&
+  //       !!lastName.trim() &&
+  //       !!password.trim() &&
+  //       !!confirmPassword.trim() &&
+  //       password === confirmPassword
+  //   );
+  // }, [username, firstName, lastName, password, confirmPassword]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -389,7 +403,7 @@ const SignUpPage = () => {
                   Create a password
                 </FormControl.Label>
                 <TextInput
-                  type="text"
+                  type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                   sx={{
@@ -436,14 +450,42 @@ const SignUpPage = () => {
             >
               <Text as="p">
                 Make sure it's{' '}
-                {/* add red color & bold text if validation of password failed. else add green color */}
-                <Text>at least 15 characters</Text> OR{' '}
-                {/* add red color & bold text if validation of password failed. else add green color */}
-                <Text>at least 8 characters</Text>{' '}
-                {/* add red color & bold text if validation of password failed. else add green color */}
-                <Text>including a number</Text>{' '}
-                {/* add red color & bold text if validation of password failed. else add green color */}
-                <Text>and a lowercase letter</Text>.{' '}
+                <Text
+                  sx={{
+                    ...getValidationStyle(validations.minLength),
+                    ...getMutedStyle(validations.minLengthWithRequirements),
+                  }}
+                >
+                  at least 15 characters
+                </Text>{' '}
+                OR{' '}
+                <Text
+                  sx={{
+                    ...getValidationStyle(
+                      validations.minLengthWithRequirements
+                    ),
+                    ...getMutedStyle(validations.minLength),
+                  }}
+                >
+                  at least 8 characters
+                </Text>{' '}
+                <Text
+                  sx={{
+                    ...getValidationStyle(validations.hasNumber),
+                    ...getMutedStyle(validations.minLength),
+                  }}
+                >
+                  including a number
+                </Text>{' '}
+                <Text
+                  sx={{
+                    ...getValidationStyle(validations.hasLowercase),
+                    ...getMutedStyle(validations.minLength),
+                  }}
+                >
+                  and a lowercase letter
+                </Text>
+                .{' '}
                 <Link href="https://docs.github.com/articles/creating-a-strong-password">
                   Learn more
                 </Link>

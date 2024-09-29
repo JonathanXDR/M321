@@ -34,6 +34,14 @@ const PasswordResetPage = () => {
     validations,
   } = usePasswordValidation();
 
+  const getValidationStyle = (validation: boolean) => ({
+    color: validation ? 'success.fg' : 'danger.fg',
+    fontWeight: validation ? '' : 'bold',
+  });
+
+  const getMutedStyle = (condition: boolean) =>
+    condition ? { color: 'fg.muted', fontWeight: '' } : {};
+
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -50,14 +58,6 @@ const PasswordResetPage = () => {
     const result = await handleLoginSubmit(username, password, navigate);
     navigate('/login');
   };
-
-  const getValidationStyle = (validation: boolean) => ({
-    color: validation ? 'success.fg' : 'danger.fg',
-    fontWeight: validation ? '' : 'bold',
-  });
-
-  const getMutedStyle = (condition: boolean) =>
-    condition ? { color: 'fg.muted', fontWeight: '' } : {};
 
   if (loading) {
     return <LoadingSpinner />;
