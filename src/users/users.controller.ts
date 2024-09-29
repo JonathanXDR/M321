@@ -1,12 +1,7 @@
-import { UserRequest } from './dto/user.request';
 import {
   Controller,
   Get,
   Param,
-  Post,
-  Body,
-  Put,
-  Delete,
   ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
@@ -30,7 +25,7 @@ export class UsersController {
   @ApiOkResponse({ type: UserEntity })
   async getUser(@Param('id', ParseIntPipe) id: number): Promise<UserModel> {
     try {
-      return this.usersService.findOne(id);
+      return this.usersService.findOneById(id);
     } catch (error) {
       throw new NotFoundException();
     }

@@ -1,17 +1,6 @@
-import {
-  IsDefined,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsDefined, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class BookRequest {
-  @IsOptional()
-  @IsNotEmpty()
-  @IsNumber()
-  id: number;
-
   @IsDefined()
   @IsNotEmpty()
   @IsString()
