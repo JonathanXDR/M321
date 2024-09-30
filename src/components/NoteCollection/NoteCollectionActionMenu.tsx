@@ -12,15 +12,24 @@ import {
   IconButton,
 } from '@primer/react';
 import NoteCollectionDialog from './NoteCollectionDialog';
-import { useNoteCollectionDialog } from '../../contexts/noteCollection.context';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
 function NoteCollectionActionMenu({ noteCollection }: any) {
   const {
+    noteCollectionsData,
+    setNoteCollectionsData,
+    newNoteCollection,
+    setNewNoteCollection,
     noteCollectionDialogIsOpen,
+    setNoteCollectionDialogIsOpen,
     noteCollectionDialogType,
+    setNoteCollectionDialogType,
     openNoteCollectionDialog,
     closeNoteCollectionDialog,
-  } = useNoteCollectionDialog();
+    handleCreateNoteCollection,
+    handleUpdateNoteCollection,
+    handleDeleteNoteCollection,
+  } = useNoteCollectionContext();
   return (
     <>
       <ActionMenu>

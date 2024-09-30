@@ -11,15 +11,24 @@ import { NoteCollectionItemProps } from '../../types/NoteCollection/noteCollecti
 
 import NoteCollectionDialog from './NoteCollectionDialog';
 import NoteCollectionActionMenu from '../NoteCollection/NoteCollectionActionMenu';
-import { useNoteCollectionDialog } from '../../contexts/noteCollection.context';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
 function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
   const {
+    noteCollectionsData,
+    setNoteCollectionsData,
+    newNoteCollection,
+    setNewNoteCollection,
     noteCollectionDialogIsOpen,
+    setNoteCollectionDialogIsOpen,
     noteCollectionDialogType,
+    setNoteCollectionDialogType,
     openNoteCollectionDialog,
     closeNoteCollectionDialog,
-  } = useNoteCollectionDialog();
+    handleCreateNoteCollection,
+    handleUpdateNoteCollection,
+    handleDeleteNoteCollection,
+  } = useNoteCollectionContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],

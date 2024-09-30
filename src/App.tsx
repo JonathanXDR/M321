@@ -5,6 +5,10 @@ import './App.css';
 import LoadingSpinner from './components/LoadingSpinner';
 import { checkConnection } from './services/http.service';
 import BlankStateBackendError from './components/BlankState/BlankStateBackendError';
+import { GeneralProvider } from './contexts/general.context';
+import { AuthProvider } from './contexts/auth.context';
+import { NoteProvider } from './contexts/note.context';
+import { NoteCollectionProvider } from './contexts/noteCollection.context';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const SettingsPage = React.lazy(
@@ -34,19 +38,35 @@ const App: React.FC = () => {
       {isConnected === false ? (
         <BlankStateBackendError />
       ) : (
-        <Router>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/logout" element={<LogoutPage />} />
-              <Route path="/password_reset" element={<PasswordResetPage />} />
-              <Route path="*" element={<div>404</div>} />
-            </Routes>
-          </Suspense>
-        </Router>
+        <Suspense fallback={<LoadingSpinner />}>
+          <AuthProvider>
+            <GeneralProvider>
+              <Router>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <NoteProvider>
+                        <NoteCollectionProvider>
+                          <HomePage />
+                        </NoteCollectionProvider>
+                      </NoteProvider>
+                    }
+                  />
+                  <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/signup" element={<SignUpPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/logout" element={<LogoutPage />} />
+                  <Route
+                    path="/password_reset"
+                    element={<PasswordResetPage />}
+                  />
+                  <Route path="*" element={<div>404</div>} />
+                </Routes>{' '}
+              </Router>
+            </GeneralProvider>
+          </AuthProvider>
+        </Suspense>
       )}
     </>
   );

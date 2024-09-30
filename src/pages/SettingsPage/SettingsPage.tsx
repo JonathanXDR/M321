@@ -24,15 +24,13 @@ import {
   XIcon,
 } from '@primer/octicons-react';
 import { User } from '../../types/user.interface';
-import {
-  handleLoginSubmit,
-  handleCheckToken,
-} from '../../contexts/auth.context';
+import { useAuthContext } from '../../contexts/auth.context';
 import { users } from '../../services/http.service';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AccountActionMenu from '../../components/AccountActionMenu';
 import './SettingsPage.module.css';
 import MainNavbar from '../../components/Navbar/MainNavbar';
+import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 
 const SettingsPage = () => {
   const [error, setError] = useState(false);
@@ -41,8 +39,17 @@ const SettingsPage = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const {
+    handleCheckToken,
+    password,
+    confirmPassword,
+    setPassword,
+    setConfirmPassword,
+    isValid,
+    validations,
+    handleLoginSubmit,
+  } = useAuthContext();
 
   const [usernameInfoDialogIsOpen, setUsernameInfoDialogIsOpen] =
     useState(false);
@@ -59,7 +66,7 @@ const SettingsPage = () => {
         const response = await users.getCurrent();
         setCurrentUser(response.data);
       } catch (error) {
-        console.log('Error fetching current user:', error);
+        <BlankStateSystemError httpError={error} />;
       }
     };
 

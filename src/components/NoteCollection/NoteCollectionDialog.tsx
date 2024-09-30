@@ -3,14 +3,9 @@ import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { Note } from '../../types/Note/note.interface';
 import { NoteCollectionDialogProps } from '../../types/NoteCollection/noteCollectionDialogProps.interface';
 import AutoCompleteTokenInput from '../AutoCompleteTokenInput';
-import {
-  useNoteCollectionState,
-  useNoteCollectionDialog,
-  useCreateNoteCollection,
-  useUpdateNoteCollection,
-  useDeleteNoteCollection,
-} from '../../contexts/noteCollection.context';
+
 import { useState } from 'react';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
 interface Token {
   id: string;
@@ -29,26 +24,16 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
     setNoteCollectionsData,
     newNoteCollection,
     setNewNoteCollection,
-  } = useNoteCollectionState();
-  const { closeNoteCollectionDialog, noteCollectionDialogType } =
-    useNoteCollectionDialog();
-
-  const handleCreateNoteCollection = useCreateNoteCollection(
-    newNoteCollection,
-    noteCollectionsData,
-    setNoteCollectionsData,
-    setNewNoteCollection
-  );
-
-  const handleUpdateNoteCollection = useUpdateNoteCollection(
-    noteCollectionsData,
-    setNoteCollectionsData
-  );
-
-  const handleDeleteNoteCollection = useDeleteNoteCollection(
-    noteCollectionsData,
-    setNoteCollectionsData
-  );
+    noteCollectionDialogIsOpen,
+    setNoteCollectionDialogIsOpen,
+    noteCollectionDialogType,
+    setNoteCollectionDialogType,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
+    handleCreateNoteCollection,
+    handleUpdateNoteCollection,
+    handleDeleteNoteCollection,
+  } = useNoteCollectionContext();
 
   const handleCancel = () => {
     setUpdatedTitle(noteCollection.title);

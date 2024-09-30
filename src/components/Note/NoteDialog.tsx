@@ -2,13 +2,7 @@ import { Box, FormControl, TextInput, Textarea } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { useState } from 'react';
 import { NoteDialogProps } from '../../types/Note/noteDialogProps.interface';
-import {
-  useNoteState,
-  useNoteDialog,
-  useCreateNote,
-  useUpdateNote,
-  useDeleteNote,
-} from '../../contexts/note.context';
+import { useNoteContext } from '../../contexts/note.context';
 
 function NoteDialog({ note }: NoteDialogProps) {
   const [updatedTitle, setUpdatedTitle] = useState(note.title);
@@ -16,18 +10,21 @@ function NoteDialog({ note }: NoteDialogProps) {
   const [createdTitle, setCreatedTitle] = useState('');
   const [createdContent, setCreatedContent] = useState('');
 
-  const { notesData, setNotesData, newNote, setNewNote } = useNoteState();
-  const { closeNoteDialog, noteDialogType, setNoteDialogIsOpen } =
-    useNoteDialog();
-
-  const handleCreateNote = useCreateNote(
-    newNote,
+  const {
     notesData,
     setNotesData,
-    setNewNote
-  );
-  const handleUpdateNote = useUpdateNote(notesData, setNotesData);
-  const handleDeleteNote = useDeleteNote(notesData, setNotesData);
+    newNote,
+    setNewNote,
+    noteDialogIsOpen,
+    setNoteDialogIsOpen,
+    noteDialogType,
+    setNoteDialogType,
+    openNoteDialog,
+    closeNoteDialog,
+    handleCreateNote,
+    handleUpdateNote,
+    handleDeleteNote,
+  } = useNoteContext();
 
   const handleCancel = () => {
     setUpdatedTitle(note.title);
@@ -36,7 +33,6 @@ function NoteDialog({ note }: NoteDialogProps) {
   };
 
   const getDialogTitle = () => {
-    console.log('noteDialogType: ', noteDialogType);
     switch (noteDialogType) {
       case 'create':
         return 'Create note';

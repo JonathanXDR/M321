@@ -13,10 +13,7 @@ import {
   TextInput,
 } from '@primer/react';
 import { XIcon } from '@primer/octicons-react';
-import {
-  handleLoginSubmit,
-  handleCheckToken,
-} from '../../contexts/auth.context';
+import { useAuthContext } from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './LogoutPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
@@ -26,6 +23,17 @@ import { logout } from '../../services/auth.service';
 const LogoutPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const {
+    handleCheckToken,
+    password,
+    confirmPassword,
+    setPassword,
+    setConfirmPassword,
+    isValid,
+    validations,
+    handleLoginSubmit,
+  } = useAuthContext();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');

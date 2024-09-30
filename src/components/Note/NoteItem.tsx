@@ -11,11 +11,24 @@ import { NoteItemProps } from '../../types/Note/noteItemProps.interface';
 
 import NoteDialog from './NoteDialog';
 import NoteActionMenu from './NoteActionMenu';
-import { useNoteDialog } from '../../contexts/note.context';
+import { useNoteContext } from '../../contexts/note.context';
 
 function NoteItem({ note }: NoteItemProps) {
-  const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
-    useNoteDialog();
+  const {
+    notesData,
+    setNotesData,
+    newNote,
+    setNewNote,
+    noteDialogIsOpen,
+    setNoteDialogIsOpen,
+    noteDialogType,
+    setNoteDialogType,
+    openNoteDialog,
+    closeNoteDialog,
+    handleCreateNote,
+    handleUpdateNote,
+    handleDeleteNote,
+  } = useNoteContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],

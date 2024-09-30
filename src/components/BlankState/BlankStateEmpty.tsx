@@ -1,20 +1,10 @@
 import { Box, Button, Heading, Text } from '@primer/react';
-import { useNoteDialog, useNoteState } from '../../contexts/note.context';
-import {
-  useNoteCollectionDialog,
-  useNoteCollectionState,
-} from '../../contexts/noteCollection.context';
+import { useNoteContext } from '../../contexts/note.context';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
 function BlankStateEmpty() {
-  const { noteDialogIsOpen, openNoteDialog, closeNoteDialog } = useNoteDialog();
-  const {
-    noteCollectionDialogIsOpen,
-    openNoteCollectionDialog,
-    closeNoteCollectionDialog,
-  } = useNoteCollectionDialog();
-  const { notesData, setNotesData } = useNoteState();
-  const { noteCollectionsData, setNoteCollectionsData } =
-    useNoteCollectionState();
+  const { openNoteDialog } = useNoteContext();
+  const { openNoteCollectionDialog } = useNoteCollectionContext();
 
   return (
     <Box

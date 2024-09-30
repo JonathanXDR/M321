@@ -12,11 +12,7 @@ import {
   TextInput,
 } from '@primer/react';
 import { StopIcon } from '@primer/octicons-react';
-import {
-  handleLoginSubmit,
-  handleCheckToken,
-  usePasswordValidation,
-} from '../../contexts/auth.context';
+import { useAuthContext } from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
@@ -25,14 +21,17 @@ const PasswordResetPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
+
   const {
+    handleCheckToken,
     password,
     confirmPassword,
     setPassword,
     setConfirmPassword,
     isValid,
     validations,
-  } = usePasswordValidation();
+    handleLoginSubmit,
+  } = useAuthContext();
 
   const getValidationStyle = (validation: boolean) => ({
     color: validation ? 'success.fg' : 'danger.fg',

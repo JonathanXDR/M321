@@ -13,12 +13,7 @@ import {
   TextInput,
 } from '@primer/react';
 import { StopIcon, XIcon } from '@primer/octicons-react';
-import {
-  handleLoginSubmit,
-  handleCheckToken,
-  usePasswordValidation,
-  // handleCreateAccountSubmit,
-} from '../../contexts/auth.context';
+import { useAuthContext } from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
@@ -31,13 +26,15 @@ const SignUpPage = () => {
 
   const [username, setUsername] = useState('');
   const {
+    handleCheckToken,
     password,
     confirmPassword,
     setPassword,
     setConfirmPassword,
     isValid,
     validations,
-  } = usePasswordValidation();
+    handleLoginSubmit,
+  } = useAuthContext();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

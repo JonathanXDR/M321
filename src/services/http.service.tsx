@@ -2,13 +2,14 @@ import { User } from '../types/user.interface';
 import { Note } from '../types/Note/note.interface';
 import { NoteCollection } from '../types/NoteCollection/noteCollection.interface';
 import api from './api.service';
+import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 
 export const checkConnection = async () => {
   try {
     await api.get('/');
     return true;
   } catch (error) {
-    console.log(error);
+    <BlankStateSystemError httpError={error} />;
     return false;
   }
 };

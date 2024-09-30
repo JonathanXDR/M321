@@ -4,6 +4,7 @@ import { logout } from '../services/auth.service';
 import { users } from '../services/http.service';
 import { User } from '../types/user.interface';
 import LoadingSpinner from './LoadingSpinner';
+import BlankStateSystemError from './BlankState/BlankStateSystemError';
 
 function AccountActionMenu() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -14,7 +15,7 @@ function AccountActionMenu() {
         const response = await users.getCurrent();
         setCurrentUser(response.data);
       } catch (error) {
-        console.log('Error fetching current user:', error);
+        <BlankStateSystemError httpError={error} />;
       }
     };
 

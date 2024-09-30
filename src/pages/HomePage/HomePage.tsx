@@ -20,11 +20,10 @@ import {
 } from '@primer/react';
 
 import { Note } from '../../types/Note/note.interface';
-import { fetchAllData, useHandleFlash } from '../../contexts/general.context';
-import { useNoteState, useNoteDialog } from '../../contexts/note.context';
+import { NoteProvider, useNoteContext } from '../../contexts/note.context';
 import {
-  useNoteCollectionState,
-  useNoteCollectionDialog,
+  NoteCollectionProvider,
+  useNoteCollectionContext,
 } from '../../contexts/noteCollection.context';
 import NoteDialog from '../../components/Note/NoteDialog';
 import NoteItem from '../../components/Note/NoteItem';
@@ -36,29 +35,60 @@ import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
 import UnderlineNavItem from '../../components/UnderlineNavItem';
 import './HomePage.module.css';
 import MainNavbar from '../../components/Navbar/MainNavbar';
+import { NoteCollection } from '../../types/NoteCollection/noteCollection.interface';
+import { useGeneralContext } from '../../contexts/general.context';
 
 const HomePage: React.FC = () => {
-  const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = React.useState<string[]>([]);
 
-  const { flashVisible, flashMessage } = useHandleFlash();
+  const {
+    notesData,
+    noteCollectionsData,
+    loading,
+    fetchAllData,
+    flashVisible,
+    flashMessage,
+    handleFlash,
+  } = useGeneralContext();
 
-  const { noteDialogIsOpen, openNoteDialog } = useNoteDialog();
-  const { notesData, setNotesData } = useNoteState();
+  const {
+    setNotesData,
+    newNote,
+    setNewNote,
+    noteDialogIsOpen,
+    setNoteDialogIsOpen,
+    noteDialogType,
+    setNoteDialogType,
+    openNoteDialog,
+    closeNoteDialog,
+    handleCreateNote,
+    handleUpdateNote,
+    handleDeleteNote,
+  } = useNoteContext();
 
-  const { noteCollectionDialogIsOpen, openNoteCollectionDialog } =
-    useNoteCollectionDialog();
-  const { noteCollectionsData, setNoteCollectionsData } =
-    useNoteCollectionState();
+  const {
+    setNoteCollectionsData,
+    newNoteCollection,
+    setNewNoteCollection,
+    noteCollectionDialogIsOpen,
+    setNoteCollectionDialogIsOpen,
+    noteCollectionDialogType,
+    setNoteCollectionDialogType,
+    openNoteCollectionDialog,
+    closeNoteCollectionDialog,
+    handleCreateNoteCollection,
+    handleUpdateNoteCollection,
+    handleDeleteNoteCollection,
+  } = useNoteCollectionContext();
 
   useEffect(() => {
-    fetchAllData(setNotesData, setNoteCollectionsData, setLoading);
+    fetchAllData();
   }, []);
 
   const renderFilteredNoteItems = () =>
     notesData
-      .filter((note) => !note.noteCollectionId)
-      .map((note) => <NoteItem key={note.id} note={note} />);
+      .filter((note: Note) => !note.noteCollectionId)
+      .map((note: Note) => <NoteItem key={note.id} note={note} />);
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
@@ -72,9 +102,9 @@ const HomePage: React.FC = () => {
     ));
 
   const renderNoteCollections = () =>
-    noteCollectionsData.map((noteCollection) => {
+    noteCollectionsData.map((noteCollection: NoteCollection) => {
       const filteredNotes = notesData.filter(
-        (note) => note.noteCollectionId === noteCollection.id
+        (note: Note) => note.noteCollectionId === noteCollection.id
       );
 
       return (
@@ -164,7 +194,10 @@ const HomePage: React.FC = () => {
                           setExpanded(
                             expanded.length > 0
                               ? []
-                              : noteCollectionsData.map((nc) => nc.id)
+                              : noteCollectionsData.map(
+                                  (noteCollection: NoteCollection) =>
+                                    noteCollection.id
+                                )
                           )
                         }
                       >
