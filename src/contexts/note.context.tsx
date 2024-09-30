@@ -1,20 +1,50 @@
-import { useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Note } from '../types/Note/note.interface';
 import { notes } from '../services/http.service';
-import { useHandleFlash } from './general.context';
+import { useGeneralContext } from './general.context';
 
-export const useNoteState = () => {
-  const [notesData, setNotesData] = useState<Note[]>([]);
-  const [newNote, setNewNote] = useState('');
+interface NoteProviderProps extends React.PropsWithChildren<{}> {}
+interface NoteContextData {
+  notesData: Note[];
+  setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
+  newNote: string;
+  setNewNote: React.Dispatch<React.SetStateAction<string>>;
+  noteDialogIsOpen: boolean;
+  setNoteDialogIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  noteDialogType: 'create' | 'update' | 'delete' | null;
+  setNoteDialogType: React.Dispatch<
+    React.SetStateAction<'create' | 'update' | 'delete' | null>
+  >;
+  openNoteDialog: (type: 'create' | 'update' | 'delete') => void;
+  closeNoteDialog: () => void;
+  handleCreateNote: () => Promise<void>;
+  handleUpdateNote: (
+    id: string,
+    title: string,
+    content: string
+  ) => Promise<void>;
+  handleDeleteNote: (id: string) => Promise<void>;
+}
 
-  return { notesData, setNotesData, newNote, setNewNote };
+const NoteContext = createContext<NoteContextData | null>(null);
+
+export const useNoteContext = () => {
+  const context = useContext(NoteContext);
+  if (!context) {
+    throw new Error('useNoteContext must be used within a NoteProvider');
+  }
+  return context;
 };
 
-export const useNoteDialog = () => {
+export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
+  const [notesData, setNotesData] = useState<Note[]>([]);
+  const [newNote, setNewNote] = useState('');
   const [noteDialogIsOpen, setNoteDialogIsOpen] = useState(false);
   const [noteDialogType, setNoteDialogType] = useState<
     'create' | 'update' | 'delete' | null
   >(null);
+
+  const { handleFlash } = useGeneralContext();
 
   const openNoteDialog = useCallback((type: 'create' | 'update' | 'delete') => {
     setNoteDialogType(type);
@@ -24,25 +54,6 @@ export const useNoteDialog = () => {
   const closeNoteDialog = useCallback(() => {
     setNoteDialogIsOpen(false);
   }, []);
-
-  return {
-    noteDialogIsOpen,
-    setNoteDialogIsOpen,
-    noteDialogType,
-    setNoteDialogType,
-    openNoteDialog,
-    closeNoteDialog,
-  };
-};
-
-export const useCreateNote = (
-  newNote: string,
-  notesData: Note[],
-  setNotesData: Function,
-  setNewNote: Function
-) => {
-  const { handleFlash } = useHandleFlash();
-  const { closeNoteDialog } = useNoteDialog();
 
   const handleCreateNote = useCallback(async () => {
     if (!newNote) return;
@@ -63,13 +74,6 @@ export const useCreateNote = (
     closeNoteDialog,
   ]);
 
-  return handleCreateNote;
-};
-
-export const useUpdateNote = (notesData: Note[], setNotesData: Function) => {
-  const { handleFlash } = useHandleFlash();
-  const { closeNoteDialog } = useNoteDialog();
-
   const handleUpdateNote = useCallback(
     async (id: string, title: string, content: string) => {
       const updatedNote = await notes.update(id, { title, content });
@@ -82,13 +86,6 @@ export const useUpdateNote = (notesData: Note[], setNotesData: Function) => {
     [notesData, setNotesData, handleFlash, closeNoteDialog]
   );
 
-  return handleUpdateNote;
-};
-
-export const useDeleteNote = (notesData: Note[], setNotesData: Function) => {
-  const { handleFlash } = useHandleFlash();
-  const { closeNoteDialog } = useNoteDialog();
-
   const handleDeleteNote = useCallback(
     async (id: string) => {
       await notes.delete(id);
@@ -99,5 +96,25 @@ export const useDeleteNote = (notesData: Note[], setNotesData: Function) => {
     [notesData, setNotesData, handleFlash, closeNoteDialog]
   );
 
-  return handleDeleteNote;
+  return (
+    <NoteContext.Provider
+      value={{
+        notesData,
+        setNotesData,
+        newNote,
+        setNewNote,
+        noteDialogIsOpen,
+        setNoteDialogIsOpen,
+        noteDialogType,
+        setNoteDialogType,
+        openNoteDialog,
+        closeNoteDialog,
+        handleCreateNote,
+        handleUpdateNote,
+        handleDeleteNote,
+      }}
+    >
+      {children}
+    </NoteContext.Provider>
+  );
 };

@@ -1,16 +1,39 @@
-import { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { login, checkToken } from '../services/auth.service';
 
-export const handleCheckToken = async (token: string) => {
-  try {
-    await checkToken(token);
-  } catch {
-    localStorage.removeItem('access_token');
+interface AuthProviderProps extends React.PropsWithChildren<{}> {}
+interface AuthContextData {
+  handleCheckToken: (token: string) => Promise<void>;
+  password: string;
+  confirmPassword: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
+  isValid: boolean;
+  validations: {
+    minLength: boolean;
+    minLengthWithRequirements: boolean;
+    hasNumber: boolean;
+    hasLowercase: boolean;
+  };
+  handleLoginSubmit: (
+    username: string,
+    password: string,
+    navigate: any
+  ) => Promise<{ error: boolean }>;
+}
+
+const AuthContext = createContext<AuthContextData | null>(null);
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuthContext must be used within an AuthProvider');
   }
+  return context;
 };
 
-export const usePasswordValidation = () => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validations, setValidations] = useState({
@@ -45,58 +68,47 @@ export const usePasswordValidation = () => {
     password === confirmPassword &&
     (validations.minLength || validations.minLengthWithRequirements);
 
-  return {
-    password,
-    confirmPassword,
-    setPassword,
-    setConfirmPassword,
-    isValid,
-    validations,
-  };
-};
-
-export const handleLoginSubmit = async (
-  username: string,
-  password: string,
-  navigate: any
-) => {
-  try {
-    await login(username, password);
-    navigate('/');
-    return { error: false };
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      return { error: true };
-    } else {
-      <BlankStateSystemError httpError={error} />;
-      return { error: false };
+  const handleCheckToken = async (token: string) => {
+    try {
+      await checkToken(token);
+    } catch {
+      localStorage.removeItem('access_token');
     }
-  }
-};
+  };
 
-// export const handleCreateAccountSubmit = async (
-//   username: string,
-//   password: string,
-//   firstName: string,
-//   lastName: string,
-//   age: number,
-//   gender: string
-// ) => {
-//   try {
-//     (await users.create(
-//       username,
-//       password,
-//       firstName,
-//       lastName,
-//       age,
-//       gender
-//     )) as User;
-//     navigate('/');
-//   } catch (error: any) {
-//     if (error.response && error.response.status === 409) {
-//       return 'Username already exists.';
-//     } else {
-//       <BlankStateSystemError httpError={error} />;
-//     }
-//   }
-// };
+  const handleLoginSubmit = async (
+    username: string,
+    password: string,
+    navigate: any
+  ) => {
+    try {
+      await login(username, password);
+      navigate('/');
+      return { error: false };
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        return { error: true };
+      } else {
+        <BlankStateSystemError httpError={error} />;
+        return { error: false };
+      }
+    }
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        handleCheckToken,
+        password,
+        confirmPassword,
+        setPassword,
+        setConfirmPassword,
+        isValid,
+        validations,
+        handleLoginSubmit,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
