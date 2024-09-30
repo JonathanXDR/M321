@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -19,14 +19,17 @@ import './LoginPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const [error, setError] = useState(false);
-  const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -39,12 +42,18 @@ const LoginPage = () => {
     setLoading(false);
   }, [navigate]);
 
-  useEffect(() => {
-    setIsValid(!!username.trim() && !!password.trim());
-  }, [username, password]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitAttempted(true);
+    if (!username.trim() || !password.trim()) {
+      if (!username.trim()) {
+        usernameInputRef.current?.focus();
+      } else {
+        passwordInputRef.current?.focus();
+      }
+      return;
+    }
+
     const result = await handleLoginSubmit(username, password, navigate);
     setError(result.error);
   };
@@ -52,6 +61,10 @@ const LoginPage = () => {
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  const showError = (field: string) => {
+    return submitAttempted && !field.trim();
+  };
 
   return (
     <PageLayout
@@ -141,7 +154,6 @@ const LoginPage = () => {
             }}
           >
             <FormControl
-              required
               sx={{
                 marginBottom: 4,
               }}
@@ -156,6 +168,7 @@ const LoginPage = () => {
                 Username or email address
               </FormControl.Label>
               <TextInput
+                ref={usernameInputRef}
                 type="text"
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{
@@ -164,8 +177,7 @@ const LoginPage = () => {
                   paddingY: '5px',
                 }}
               />
-              {/* Show if validation of this field failed */}
-              {!isValid && (
+              {showError(username) && (
                 <FormControl.Validation variant="error">
                   Is required
                 </FormControl.Validation>
@@ -177,7 +189,6 @@ const LoginPage = () => {
               }}
             >
               <FormControl
-                required
                 sx={{
                   marginBottom: 4,
                 }}
@@ -192,6 +203,7 @@ const LoginPage = () => {
                   Password
                 </FormControl.Label>
                 <TextInput
+                  ref={passwordInputRef}
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{
@@ -200,21 +212,16 @@ const LoginPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {showError(password) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
                 )}
               </FormControl>
 
-              <FormControl required>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={!isValid}
-                  block
-                >
+              <FormControl>
+                <FormControl.Label visuallyHidden>Sign in</FormControl.Label>
+                <Button type="submit" variant="primary" block>
                   Sign in
                 </Button>
               </FormControl>

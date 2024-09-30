@@ -524,6 +524,9 @@ const SignUpPage = () => {
               </Text>
             </Text>
             <FormControl required>
+              <FormControl.Label visuallyHidden>
+                Create Account
+              </FormControl.Label>
               <Button type="submit" variant="primary" block disabled={!isValid}>
                 Create account
               </Button>
