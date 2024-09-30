@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User as UserModel } from '@prisma/client';
+import { User } from '@prisma/client';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
 
@@ -17,13 +17,13 @@ export class UsersController {
 
   @Get()
   @ApiOkResponse({ type: [UserEntity] })
-  async getAllUsers(): Promise<UserModel[]> {
+  async getAllUsers(): Promise<User[]> {
     return this.usersService.findMany({});
   }
 
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
-  async getUser(@Param('id', ParseIntPipe) id: number): Promise<UserModel> {
+  async getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     try {
       return this.usersService.findOneById(id);
     } catch (error) {

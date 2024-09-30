@@ -13,7 +13,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { Book as BookModel } from '@prisma/client';
+import { Book } from '@prisma/client';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { BookEntity } from './book.entity';
 
@@ -25,7 +25,7 @@ export class BooksController {
 
   @Get()
   @ApiOkResponse({ type: [BookEntity] })
-  async getAllBooks(@Request() req): Promise<BookModel[]> {
+  async getAllBooks(@Request() req): Promise<Book[]> {
     return this.booksService.findMany({});
   }
 
@@ -34,7 +34,7 @@ export class BooksController {
   async getBook(
     @Request() req,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<BookModel> {
+  ): Promise<Book> {
     try {
       return this.booksService.findOne(id);
     } catch (error) {
@@ -47,7 +47,7 @@ export class BooksController {
   async createBook(
     @Request() req,
     @Body() request: BookRequest,
-  ): Promise<BookModel> {
+  ): Promise<Book> {
     return this.booksService.createBook(request);
   }
 
@@ -57,7 +57,7 @@ export class BooksController {
     @Request() req,
     @Param('id', ParseIntPipe) id: number,
     @Body() request: BookRequest,
-  ): Promise<BookModel> {
+  ): Promise<Book> {
     try {
       return this.booksService.updateBook({
         where: { id },
@@ -70,7 +70,7 @@ export class BooksController {
 
   @Delete(':id')
   @ApiOkResponse({ type: BookEntity })
-  async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<BookModel> {
+  async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<Book> {
     return this.booksService.deleteBook({ id });
   }
 }
