@@ -11,7 +11,7 @@ import { NoteCollectionItemProps } from '../../types/NoteCollection/noteCollecti
 
 import NoteCollectionDialog from './NoteCollectionDialog';
 import NoteCollectionActionMenu from '../NoteCollection/NoteCollectionActionMenu';
-import { useNoteCollectionDialog } from '../../utils/noteCollection.util';
+import { useNoteCollectionDialog } from '../../contexts/noteCollection.context';
 
 function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
   const {

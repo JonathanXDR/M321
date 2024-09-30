@@ -20,12 +20,12 @@ import {
 } from '@primer/react';
 
 import { Note } from '../../types/Note/note.interface';
-import { fetchAllData, useHandleFlash } from '../../utils/general.util';
-import { useNoteState, useNoteDialog } from '../../utils/note.util';
+import { fetchAllData, useHandleFlash } from '../../contexts/general.context';
+import { useNoteState, useNoteDialog } from '../../contexts/note.context';
 import {
   useNoteCollectionState,
   useNoteCollectionDialog,
-} from '../../utils/noteCollection.util';
+} from '../../contexts/noteCollection.context';
 import NoteDialog from '../../components/Note/NoteDialog';
 import NoteItem from '../../components/Note/NoteItem';
 import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';

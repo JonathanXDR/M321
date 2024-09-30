@@ -24,7 +24,10 @@ import {
   XIcon,
 } from '@primer/octicons-react';
 import { User } from '../../types/user.interface';
-import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
+import {
+  handleLoginSubmit,
+  handleCheckToken,
+} from '../../contexts/auth.context';
 import { users } from '../../services/http.service';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AccountActionMenu from '../../components/AccountActionMenu';

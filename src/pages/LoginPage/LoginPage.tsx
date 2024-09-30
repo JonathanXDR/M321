@@ -13,7 +13,10 @@ import {
   TextInput,
 } from '@primer/react';
 import { XIcon } from '@primer/octicons-react';
-import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
+import {
+  handleLoginSubmit,
+  handleCheckToken,
+} from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './LoginPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';

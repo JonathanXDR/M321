@@ -16,7 +16,7 @@ import {
   handleLoginSubmit,
   handleCheckToken,
   usePasswordValidation,
-} from '../../utils/auth.util';
+} from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';

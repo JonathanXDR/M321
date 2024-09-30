@@ -11,7 +11,7 @@ import { NoteItemProps } from '../../types/Note/noteItemProps.interface';
 
 import NoteDialog from './NoteDialog';
 import NoteActionMenu from './NoteActionMenu';
-import { useNoteDialog } from '../../utils/note.util';
+import { useNoteDialog } from '../../contexts/note.context';
 
 function NoteItem({ note }: NoteItemProps) {
   const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =

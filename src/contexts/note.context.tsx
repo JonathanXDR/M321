@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { Note } from '../types/Note/note.interface';
 import { notes } from '../services/http.service';
-import { useHandleFlash } from './general.util';
+import { useHandleFlash } from './general.context';
 
 export const useNoteState = () => {
   const [notesData, setNotesData] = useState<Note[]>([]);

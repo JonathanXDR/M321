@@ -18,7 +18,7 @@ import {
   handleCheckToken,
   usePasswordValidation,
   // handleCreateAccountSubmit,
-} from '../../utils/auth.util';
+} from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';

@@ -12,7 +12,7 @@ import {
   IconButton,
 } from '@primer/react';
 import NoteCollectionDialog from './NoteCollectionDialog';
-import { useNoteCollectionDialog } from '../../utils/noteCollection.util';
+import { useNoteCollectionDialog } from '../../contexts/noteCollection.context';
 
 function NoteCollectionActionMenu({ noteCollection }: any) {
   const {

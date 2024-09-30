@@ -8,7 +8,7 @@ import {
   useCreateNote,
   useUpdateNote,
   useDeleteNote,
-} from '../../utils/note.util';
+} from '../../contexts/note.context';
 
 function NoteDialog({ note }: NoteDialogProps) {
   const [updatedTitle, setUpdatedTitle] = useState(note.title);

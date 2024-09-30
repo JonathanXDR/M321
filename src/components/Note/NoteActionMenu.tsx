@@ -13,7 +13,7 @@ import {
   ConfirmationDialog,
   IconButton,
 } from '@primer/react';
-import { useNoteDialog } from '../../utils/note.util';
+import { useNoteDialog } from '../../contexts/note.context';
 import NoteDialog from './NoteDialog';
 function NoteActionMenu({ note }: any) {
   const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =

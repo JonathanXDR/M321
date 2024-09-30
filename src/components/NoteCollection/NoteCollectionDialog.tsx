@@ -9,7 +9,7 @@ import {
   useCreateNoteCollection,
   useUpdateNoteCollection,
   useDeleteNoteCollection,
-} from '../../utils/noteCollection.util';
+} from '../../contexts/noteCollection.context';
 import { useState } from 'react';
 
 interface Token {

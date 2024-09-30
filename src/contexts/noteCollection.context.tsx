@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { NoteCollection } from '../types/NoteCollection/noteCollection.interface';
 import { noteCollections } from '../services/http.service';
-import { useHandleFlash } from './general.util';
+import { useHandleFlash } from './general.context';
 import { Note } from '../types/Note/note.interface';
 
 export const useNoteCollectionState = () => {
