@@ -20,27 +20,18 @@ import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
 const LoginPage: React.FC = () => {
-  const [error, setError] = useState(false);
+  const [isValid, setIsValid] = useState(true);
   const [loading, setLoading] = useState(true);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('');
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
-  const {
-    handleCheckToken,
-    password,
-    confirmPassword,
-    setPassword,
-    setConfirmPassword,
-    isValid,
-    validations,
-    handleLoginSubmit,
-  } = useAuthContext();
+  const { handleCheckToken, handleLoginSubmit } = useAuthContext();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -66,7 +57,7 @@ const LoginPage: React.FC = () => {
     }
 
     const result = await handleLoginSubmit(username, password, navigate);
-    setError(result.error);
+    setIsValid(!result.error);
   };
 
   if (loading) {
@@ -132,7 +123,7 @@ const LoginPage: React.FC = () => {
             </Heading>
           </Box>
 
-          <Flash variant="danger" hidden={!error}>
+          <Flash variant="danger" hidden={isValid}>
             <Box
               sx={{
                 display: 'flex',
@@ -146,7 +137,7 @@ const LoginPage: React.FC = () => {
                 variant="invisible"
                 aria-label="Close flash"
                 icon={XIcon}
-                onClick={() => setError(false)}
+                onClick={() => setIsValid(true)}
               />
             </Box>
           </Flash>
