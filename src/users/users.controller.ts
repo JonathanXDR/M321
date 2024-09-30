@@ -23,7 +23,7 @@ export class UsersController {
 
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
-  async getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
+  async getUser(@Param('id', ParseIntPipe) id: string): Promise<User> {
     try {
       return this.usersService.findOneById(id);
     } catch (error) {

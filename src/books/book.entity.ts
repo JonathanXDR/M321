@@ -3,7 +3,7 @@ import { Book } from '@prisma/client';
 
 export class BookEntity implements Book {
   @ApiProperty()
-  id: number;
+  id: string;
 
   @ApiProperty()
   title: string;

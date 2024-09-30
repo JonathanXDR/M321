@@ -33,7 +33,7 @@ export class BooksController {
   @ApiOkResponse({ type: BookEntity })
   async getBook(
     @Request() req,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: string,
   ): Promise<Book> {
     try {
       return this.booksService.findOne(id);
@@ -55,7 +55,7 @@ export class BooksController {
   @ApiOkResponse({ type: BookEntity })
   async updateBook(
     @Request() req,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: string,
     @Body() request: BookRequest,
   ): Promise<Book> {
     try {
@@ -70,7 +70,7 @@ export class BooksController {
 
   @Delete(':id')
   @ApiOkResponse({ type: BookEntity })
-  async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<Book> {
+  async deleteBook(@Param('id', ParseIntPipe) id: string): Promise<Book> {
     return this.booksService.deleteBook({ id });
   }
 }
