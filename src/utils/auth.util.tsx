@@ -11,15 +11,8 @@ export const handleCheckToken = async (token: string) => {
 };
 
 export const usePasswordValidation = () => {
-  const [firstName, setFirstName] = useState<string | null>('');
-  const [lastName, setLastName] = useState<string | null>('');
-  const [age, setAge] = useState<number | null>(0);
-  const [gender, setGender] = useState<string | null>('');
-
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
   const [validations, setValidations] = useState({
     minLength: false,
     minLengthWithRequirements: false,
@@ -47,11 +40,6 @@ export const usePasswordValidation = () => {
   }, [password]);
 
   const isValid =
-    !!firstName?.trim() &&
-    !!lastName?.trim() &&
-    !!age &&
-    !!gender?.trim() &&
-    !!username.trim() &&
     !!password.trim() &&
     !!confirmPassword.trim() &&
     password === confirmPassword &&
