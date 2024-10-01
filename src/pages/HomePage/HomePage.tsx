@@ -1,90 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
-  CheckIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   FileDirectoryIcon,
-  MarkGithubIcon,
   NoteIcon,
-  XIcon,
 } from '@primer/octicons-react';
 import {
   Box,
   Button,
   ButtonGroup,
-  Flash,
-  Header,
   PageLayout,
-  StyledOcticon,
   TreeView,
-  Text,
-  IconButton,
   ConfirmationDialog,
 } from '@primer/react';
 
 import { Note } from '../../types/Note/note.interface';
-import { NoteProvider, useNoteContext } from '../../contexts/note.context';
-import {
-  NoteCollectionProvider,
-  useNoteCollectionContext,
-} from '../../contexts/noteCollection.context';
-import NoteDialog from '../../components/Note/NoteDialog';
-import NoteItem from '../../components/Note/NoteItem';
-import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import AccountActionMenu from '../../components/AccountActionMenu';
-import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
-import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
-import UnderlineNavItem from '../../components/UnderlineNavItem';
-import './HomePage.module.css';
-import MainNavbar from '../../components/Navbar/MainNavbar';
 import { NoteCollection } from '../../types/NoteCollection/noteCollection.interface';
 import { useGeneralContext } from '../../contexts/general.context';
+import { useNoteContext } from '../../contexts/note.context';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
+
+import MainNavbar from '../../components/Navbar/MainNavbar';
 import GeneralFlash from '../../components/Flash/GeneralFlash';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import NoteItem from '../../components/Note/NoteItem';
+import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
+import NoteDialog from '../../components/Note/NoteDialog';
+import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
+import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
+
+import './HomePage.module.css';
 
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
 
-  const {
-    notesData,
-    noteCollectionsData,
-    loading,
-    fetchAllData,
-    flashVisible,
-    flashIcon,
-    flashVariant,
-    flashMessage,
-    handleFlash,
-  } = useGeneralContext();
+  const { notesData, noteCollectionsData, loading, fetchAllData } =
+    useGeneralContext();
+
+  const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
+    useNoteContext();
 
   const {
-    setNotesData,
-    newNote,
-    setNewNote,
-    noteDialogIsOpen,
-    setNoteDialogIsOpen,
-    noteDialogType,
-    setNoteDialogType,
-    openNoteDialog,
-    closeNoteDialog,
-    handleCreateNote,
-    handleUpdateNote,
-    handleDeleteNote,
-  } = useNoteContext();
-
-  const {
-    setNoteCollectionsData,
-    newNoteCollection,
-    setNewNoteCollection,
     noteCollectionDialogIsOpen,
-    setNoteCollectionDialogIsOpen,
     noteCollectionDialogType,
-    setNoteCollectionDialogType,
     openNoteCollectionDialog,
     closeNoteCollectionDialog,
-    handleCreateNoteCollection,
-    handleUpdateNoteCollection,
-    handleDeleteNoteCollection,
   } = useNoteCollectionContext();
 
   useEffect(() => {
