@@ -4,6 +4,7 @@ import { Note } from '../types/note.interface';
 import { noteCollections } from '../services/http.service';
 import { useGeneralContext } from './general.context';
 import { CheckIcon } from '@primer/octicons-react';
+import { useConfirm } from '@primer/react';
 
 interface NoteCollectionProviderProps extends React.PropsWithChildren<{}> {}
 
@@ -35,6 +36,7 @@ interface NoteCollectionContextData {
     notes: Note[]
   ) => Promise<void>;
   handleDeleteNoteCollection: (id: string) => Promise<void>;
+  confirmDeleteNoteCollection: () => Promise<void>;
 }
 
 const defaultNoteCollection = {
@@ -76,6 +78,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
     useState<NoteCollectionDialogType>(null);
 
   const { handleFlash } = useGeneralContext();
+  const confirm = useConfirm();
 
   const openNoteCollectionDialog = useCallback(
     (type: NoteCollectionDialogType) => {
@@ -88,6 +91,18 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
   const closeNoteCollectionDialog = useCallback(() => {
     setNoteCollectionDialogIsOpen(false);
   }, []);
+
+  const confirmDeleteNoteCollection = async () => {
+    if (
+      await confirm({
+        title: 'Confirm action?',
+        content: 'Are you sure you want to delete this note collection?',
+        confirmButtonType: 'danger',
+      })
+    ) {
+      handleDeleteNoteCollection(selectedNoteCollection.id);
+    }
+  };
 
   const handleCreateNoteCollection = useCallback(async () => {
     if (!newNoteCollection) return;
@@ -153,6 +168,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
         handleCreateNoteCollection,
         handleUpdateNoteCollection,
         handleDeleteNoteCollection,
+        confirmDeleteNoteCollection,
       }}
     >
       {children}

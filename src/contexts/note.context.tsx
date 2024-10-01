@@ -3,6 +3,7 @@ import { Note } from '../types/note.interface';
 import { notes } from '../services/http.service';
 import { useGeneralContext } from './general.context';
 import { CheckIcon } from '@primer/octicons-react';
+import { useConfirm } from '@primer/react';
 
 interface NoteProviderProps extends React.PropsWithChildren<{}> {}
 
@@ -28,6 +29,7 @@ interface NoteContextData {
     content: string
   ) => Promise<void>;
   handleDeleteNote: (id: string) => Promise<void>;
+  confirmDeleteNote: () => Promise<void>;
 }
 
 const defaultNote = {
@@ -53,6 +55,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const [noteDialogType, setNoteDialogType] = useState<NoteDialogType>(null);
 
   const { handleFlash } = useGeneralContext();
+  const confirm = useConfirm();
 
   const openNoteDialog = useCallback((type: NoteDialogType) => {
     setNoteDialogType(type);
@@ -62,6 +65,18 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const closeNoteDialog = useCallback(() => {
     setNoteDialogIsOpen(false);
   }, []);
+
+  const confirmDeleteNote = async () => {
+    if (
+      await confirm({
+        title: 'Confirm action?',
+        content: 'Are you sure you want to delete this note?',
+        confirmButtonType: 'danger',
+      })
+    ) {
+      handleDeleteNote(selectedNote.id);
+    }
+  };
 
   const handleCreateNote = useCallback(async () => {
     if (!newNote) return;
@@ -115,6 +130,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
         handleCreateNote,
         handleUpdateNote,
         handleDeleteNote,
+        confirmDeleteNote,
       }}
     >
       {children}

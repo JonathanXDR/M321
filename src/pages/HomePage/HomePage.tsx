@@ -12,6 +12,7 @@ import {
   PageLayout,
   TreeView,
   ConfirmationDialog,
+  useConfirm,
 } from '@primer/react';
 
 import { Note } from '../../types/note.interface';
@@ -33,19 +34,35 @@ import './HomePage.module.css';
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
   const { notesData, noteCollectionsData, fetchAllData } = useGeneralContext();
-  const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
-    useNoteContext();
+  const {
+    noteDialogIsOpen,
+    noteDialogType,
+    openNoteDialog,
+    confirmDeleteNote,
+  } = useNoteContext();
 
   const {
     noteCollectionDialogIsOpen,
     noteCollectionDialogType,
     openNoteCollectionDialog,
-    closeNoteCollectionDialog,
+    confirmDeleteNoteCollection,
   } = useNoteCollectionContext();
 
   useEffect(() => {
     fetchAllData();
   }, []);
+
+  useEffect(() => {
+    if (noteDialogIsOpen && noteDialogType === 'delete') {
+      confirmDeleteNote();
+    }
+  }, [noteDialogIsOpen, noteDialogType]);
+
+  useEffect(() => {
+    if (noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete') {
+      confirmDeleteNoteCollection();
+    }
+  }, [noteCollectionDialogIsOpen, noteCollectionDialogType]);
 
   const renderFilteredNoteItems = () =>
     notesData
@@ -60,16 +77,6 @@ const HomePage: React.FC = () => {
         </TreeView.LeadingVisual>
         <NoteItem note={note} />
         {noteDialogIsOpen && noteDialogType !== 'delete' && <NoteDialog />}
-
-        {noteDialogIsOpen && noteDialogType === 'delete' && (
-          <ConfirmationDialog
-            title="Confirm action?"
-            onClose={() => closeNoteDialog()}
-            confirmButtonType="danger"
-          >
-            Are you sure you want to delete this note?
-          </ConfirmationDialog>
-        )}
       </TreeView.Item>
     ));
 
@@ -107,10 +114,10 @@ const HomePage: React.FC = () => {
             noteCollectionDialogType === 'delete' && (
               <ConfirmationDialog
                 title="Confirm action?"
-                onClose={() => closeNoteCollectionDialog()}
+                onClose={() => console.log('Hello')}
                 confirmButtonType="danger"
               >
-                Are you sure you want to delete this note?
+                Are you sure you want to delete this noteCollection?
               </ConfirmationDialog>
             )}
           <TreeView.SubTree>
