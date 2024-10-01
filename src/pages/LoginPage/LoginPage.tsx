@@ -18,6 +18,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import './LoginPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
+import { useValidationContext } from '../../contexts/validation.context';
 
 const LoginPage: React.FC = () => {
   const [isValid, setIsValid] = useState(true);
@@ -32,6 +33,11 @@ const LoginPage: React.FC = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const { handleCheckToken, handleLoginSubmit } = useAuthContext();
+  const { handleFormSubmit, hasError } =
+    useValidationContext().useInputValidation([
+      usernameInputRef,
+      passwordInputRef,
+    ]);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -46,22 +52,14 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitAttempted(true);
-    if (!username.trim() || !password.trim()) {
-      if (!username.trim()) {
-        usernameInputRef.current?.focus();
-      } else {
-        passwordInputRef.current?.focus();
-      }
-      return;
-    }
-
-    const result = await handleLoginSubmit(username, password, navigate);
-    setIsValid(!result.error);
+    await handleFormSubmit(async () => {
+      const result = await handleLoginSubmit(username, password, navigate);
+      setIsValid(!result.error);
+    });
   };
 
   const showError = (field: string) => {
-    return submitAttempted && !field.trim();
+    return hasError(field);
   };
 
   if (loading) {
