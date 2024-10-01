@@ -19,6 +19,7 @@ import {
   TreeView,
   Text,
   IconButton,
+  ConfirmationDialog,
 } from '@primer/react';
 
 import { Note } from '../../types/Note/note.interface';
@@ -97,12 +98,24 @@ const HomePage: React.FC = () => {
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
-      <TreeView.Item id="note" key={note.id}>
+      <TreeView.Item id={note.id} key={note.id}>
         <TreeView.LeadingVisual>
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
         <NoteItem note={note} />
-        {noteDialogIsOpen && <NoteDialog note={note} />}
+        {noteDialogIsOpen && noteDialogType !== 'delete' && (
+          <NoteDialog key={note.id} note={note} />
+        )}
+
+        {noteDialogIsOpen && noteDialogType === 'delete' && (
+          <ConfirmationDialog
+            title="Confirm action?"
+            onClose={() => closeNoteDialog()}
+            confirmButtonType="danger"
+          >
+            Are you sure you want to delete this note?
+          </ConfirmationDialog>
+        )}
       </TreeView.Item>
     ));
 
@@ -114,7 +127,7 @@ const HomePage: React.FC = () => {
 
       return (
         <TreeView.Item
-          id="noteCollection"
+          id={noteCollection.id}
           key={noteCollection.id}
           expanded={expanded.includes(noteCollection.id)}
           onExpandedChange={(isExpanded: boolean) => {
@@ -134,9 +147,24 @@ const HomePage: React.FC = () => {
             <TreeView.DirectoryIcon />
           </TreeView.LeadingVisual>
           <NoteCollectionItem noteCollection={noteCollection} />
-          {noteCollectionDialogIsOpen && (
-            <NoteCollectionDialog noteCollection={noteCollection} />
-          )}
+          {noteCollectionDialogIsOpen &&
+            noteCollectionDialogType !== 'delete' && (
+              <NoteCollectionDialog
+                key={noteCollection.id}
+                noteCollection={noteCollection}
+              />
+            )}
+
+          {noteCollectionDialogIsOpen &&
+            noteCollectionDialogType === 'delete' && (
+              <ConfirmationDialog
+                title="Confirm action?"
+                onClose={() => closeNoteCollectionDialog()}
+                confirmButtonType="danger"
+              >
+                Are you sure you want to delete this note?
+              </ConfirmationDialog>
+            )}
           <TreeView.SubTree>
             {renderFilteredNoteItemTrees(filteredNotes)}
           </TreeView.SubTree>

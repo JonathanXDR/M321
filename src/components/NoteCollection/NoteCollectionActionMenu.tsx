@@ -1,35 +1,13 @@
 import {
   KebabHorizontalIcon,
   PencilIcon,
-  ArchiveIcon,
   TrashIcon,
-  UnlinkIcon,
 } from '@primer/octicons-react';
-import {
-  ActionList,
-  ActionMenu,
-  ConfirmationDialog,
-  IconButton,
-} from '@primer/react';
-import NoteCollectionDialog from './NoteCollectionDialog';
+import { ActionList, ActionMenu, IconButton } from '@primer/react';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
-function NoteCollectionActionMenu({ noteCollection }: any) {
-  const {
-    noteCollectionsData,
-    setNoteCollectionsData,
-    newNoteCollection,
-    setNewNoteCollection,
-    noteCollectionDialogIsOpen,
-    setNoteCollectionDialogIsOpen,
-    noteCollectionDialogType,
-    setNoteCollectionDialogType,
-    openNoteCollectionDialog,
-    closeNoteCollectionDialog,
-    handleCreateNoteCollection,
-    handleUpdateNoteCollection,
-    handleDeleteNoteCollection,
-  } = useNoteCollectionContext();
+function NoteCollectionActionMenu() {
+  const { openNoteCollectionDialog } = useNoteCollectionContext();
   return (
     <>
       <ActionMenu>
@@ -73,23 +51,6 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
           </ActionList>
         </ActionMenu.Overlay>
       </ActionMenu>
-
-      {noteCollectionDialogIsOpen && noteCollectionDialogType !== 'delete' && (
-        <NoteCollectionDialog
-          key={noteCollection.id}
-          noteCollection={noteCollection}
-        />
-      )}
-
-      {noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete' && (
-        <ConfirmationDialog
-          title="Confirm action?"
-          onClose={() => closeNoteCollectionDialog()}
-          confirmButtonType="danger"
-        >
-          Are you sure you want to delete this note?
-        </ConfirmationDialog>
-      )}
     </>
   );
 }

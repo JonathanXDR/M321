@@ -1,34 +1,13 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  ConfirmationDialog,
-  Text,
-} from '@primer/react';
+import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { PencilIcon, TrashIcon } from '@primer/octicons-react';
 import { Hidden } from '@primer/react/drafts';
 import { NoteCollectionItemProps } from '../../types/NoteCollection/noteCollectionItemProps.interface';
 
-import NoteCollectionDialog from './NoteCollectionDialog';
-import NoteCollectionActionMenu from '../NoteCollection/NoteCollectionActionMenu';
+import NoteCollectionActionMenu from './NoteCollectionActionMenu';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
-function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
-  const {
-    noteCollectionsData,
-    setNoteCollectionsData,
-    newNoteCollection,
-    setNewNoteCollection,
-    noteCollectionDialogIsOpen,
-    setNoteCollectionDialogIsOpen,
-    noteCollectionDialogType,
-    setNoteCollectionDialogType,
-    openNoteCollectionDialog,
-    closeNoteCollectionDialog,
-    handleCreateNoteCollection,
-    handleUpdateNoteCollection,
-    handleDeleteNoteCollection,
-  } = useNoteCollectionContext();
+const NoteCollectionItem = ({ noteCollection }: NoteCollectionItemProps) => {
+  const { openNoteCollectionDialog } = useNoteCollectionContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -46,63 +25,41 @@ function NoteCollectionItem({ noteCollection }: NoteCollectionItemProps) {
   };
 
   return (
-    <>
-      <Box sx={boxStyle}>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Text fontWeight="bold" sx={textStyle}>
-            {noteCollection.title}
-          </Text>
-          <Text color="fg.subtle" sx={textStyle}>
-            {noteCollection.notes.map((note) => note.title).join(', ')}
-          </Text>
-        </Box>
-        <Box onClick={(e) => e.stopPropagation()}>
-          <Hidden when={['narrow']}>
-            <ButtonGroup>
-              <Button
-                leadingIcon={PencilIcon}
-                variant="outline"
-                onClick={() => openNoteCollectionDialog('update')}
-              >
-                Edit
-              </Button>
-              <Button
-                leadingIcon={TrashIcon}
-                variant="danger"
-                onClick={() => openNoteCollectionDialog('delete')}
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </Hidden>
-
-          <Hidden when={['regular', 'wide']}>
-            <NoteCollectionActionMenu
-              key={noteCollection.id}
-              noteCollection={noteCollection}
-            />
-          </Hidden>
-        </Box>
+    <Box sx={boxStyle}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Text fontWeight="bold" sx={textStyle}>
+          {noteCollection.title}
+        </Text>
+        <Text color="fg.subtle" sx={textStyle}>
+          {noteCollection.notes.map((note) => note.title).join(', ')}
+        </Text>
       </Box>
+      <Box onClick={(e) => e.stopPropagation()}>
+        <Hidden when={['narrow']}>
+          <ButtonGroup>
+            <Button
+              leadingIcon={PencilIcon}
+              variant="outline"
+              onClick={() => openNoteCollectionDialog('update')}
+            >
+              Edit
+            </Button>
+            <Button
+              leadingIcon={TrashIcon}
+              variant="danger"
+              onClick={() => openNoteCollectionDialog('delete')}
+            >
+              Delete
+            </Button>
+          </ButtonGroup>
+        </Hidden>
 
-      {noteCollectionDialogIsOpen && noteCollectionDialogType !== 'delete' && (
-        <NoteCollectionDialog
-          key={noteCollection.id}
-          noteCollection={noteCollection}
-        />
-      )}
-
-      {noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete' && (
-        <ConfirmationDialog
-          title="Confirm action?"
-          onClose={() => closeNoteCollectionDialog()}
-          confirmButtonType="danger"
-        >
-          Are you sure you want to delete this note?
-        </ConfirmationDialog>
-      )}
-    </>
+        <Hidden when={['regular', 'wide']}>
+          <NoteCollectionActionMenu key={noteCollection.id} />
+        </Hidden>
+      </Box>
+    </Box>
   );
-}
+};
 
 export default NoteCollectionItem;

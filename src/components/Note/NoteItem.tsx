@@ -1,34 +1,13 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  ConfirmationDialog,
-  Text,
-} from '@primer/react';
+import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { PencilIcon, TrashIcon } from '@primer/octicons-react';
 import { Hidden } from '@primer/react/drafts';
 import { NoteItemProps } from '../../types/Note/noteItemProps.interface';
 
-import NoteDialog from './NoteDialog';
 import NoteActionMenu from './NoteActionMenu';
 import { useNoteContext } from '../../contexts/note.context';
 
-function NoteItem({ note }: NoteItemProps) {
-  const {
-    notesData,
-    setNotesData,
-    newNote,
-    setNewNote,
-    noteDialogIsOpen,
-    setNoteDialogIsOpen,
-    noteDialogType,
-    setNoteDialogType,
-    openNoteDialog,
-    closeNoteDialog,
-    handleCreateNote,
-    handleUpdateNote,
-    handleDeleteNote,
-  } = useNoteContext();
+const NoteItem = ({ note }: NoteItemProps) => {
+  const { openNoteDialog } = useNoteContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -46,56 +25,40 @@ function NoteItem({ note }: NoteItemProps) {
   };
 
   return (
-    <>
-      <Box sx={boxStyle}>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Text fontWeight="bold" sx={textStyle}>
-            {note.title}
-          </Text>
-          <Text color="fg.subtle" sx={textStyle}>
-            {note.content}
-          </Text>
-        </Box>
-
-        <Hidden when={['narrow']}>
-          <ButtonGroup>
-            <Button
-              leadingIcon={PencilIcon}
-              variant="outline"
-              onClick={() => openNoteDialog('update')}
-            >
-              Edit
-            </Button>
-            <Button
-              leadingIcon={TrashIcon}
-              variant="danger"
-              onClick={() => openNoteDialog('delete')}
-            >
-              Delete
-            </Button>
-          </ButtonGroup>
-        </Hidden>
-
-        <Hidden when={['regular', 'wide']}>
-          <NoteActionMenu key={note.id} note={note} />
-        </Hidden>
+    <Box sx={boxStyle}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Text fontWeight="bold" sx={textStyle}>
+          {note.title}
+        </Text>
+        <Text color="fg.subtle" sx={textStyle}>
+          {note.content}
+        </Text>
       </Box>
 
-      {noteDialogIsOpen && noteDialogType !== 'delete' && (
-        <NoteDialog key={note.id} note={note} />
-      )}
+      <Hidden when={['narrow']}>
+        <ButtonGroup>
+          <Button
+            leadingIcon={PencilIcon}
+            variant="outline"
+            onClick={() => openNoteDialog('update')}
+          >
+            Edit
+          </Button>
+          <Button
+            leadingIcon={TrashIcon}
+            variant="danger"
+            onClick={() => openNoteDialog('delete')}
+          >
+            Delete
+          </Button>
+        </ButtonGroup>
+      </Hidden>
 
-      {noteDialogIsOpen && noteDialogType === 'delete' && (
-        <ConfirmationDialog
-          title="Confirm action?"
-          onClose={() => closeNoteDialog()}
-          confirmButtonType="danger"
-        >
-          Are you sure you want to delete this note?
-        </ConfirmationDialog>
-      )}
-    </>
+      <Hidden when={['regular', 'wide']}>
+        <NoteActionMenu key={note.id} />
+      </Hidden>
+    </Box>
   );
-}
+};
 
 export default NoteItem;
