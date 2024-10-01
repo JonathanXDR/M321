@@ -65,7 +65,7 @@ const NoteCollectionItem = ({ noteCollection }: any) => {
         </Hidden>
 
         <Hidden when={['regular', 'wide']}>
-          <NoteCollectionActionMenu />
+          <NoteCollectionActionMenu noteCollection={noteCollection} />
         </Hidden>
       </Box>
     </Box>

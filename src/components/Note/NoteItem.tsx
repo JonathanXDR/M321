@@ -62,7 +62,7 @@ const NoteItem = ({ note }: any) => {
       </Hidden>
 
       <Hidden when={['regular', 'wide']}>
-        <NoteActionMenu />
+        <NoteActionMenu note={note} />
       </Hidden>
     </Box>
   );

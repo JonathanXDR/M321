@@ -3,11 +3,13 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@primer/octicons-react';
-import { ActionList, ActionMenu, Box, IconButton } from '@primer/react';
+import { ActionList, ActionMenu, IconButton } from '@primer/react';
 import { useNoteContext } from '../../contexts/note.context';
 
-function NoteActionMenu() {
-  const { openNoteDialog } = useNoteContext();
+function NoteActionMenu({ note }: any) {
+  const { openNoteDialog, setSelectedNote, confirmDeleteNote } =
+    useNoteContext();
+
   return (
     <>
       <ActionMenu>
@@ -21,7 +23,12 @@ function NoteActionMenu() {
 
         <ActionMenu.Overlay>
           <ActionList>
-            <ActionList.Item onSelect={() => openNoteDialog('update')}>
+            <ActionList.Item
+              onSelect={() => {
+                setSelectedNote(note);
+                openNoteDialog('update');
+              }}
+            >
               <ActionList.LeadingVisual>
                 <PencilIcon />
               </ActionList.LeadingVisual>
@@ -38,7 +45,10 @@ function NoteActionMenu() {
             {/* <ActionList.Divider /> */}
             <ActionList.Item
               variant="danger"
-              onSelect={() => openNoteDialog('delete')}
+              onSelect={() => {
+                setSelectedNote(note);
+                confirmDeleteNote();
+              }}
             >
               <ActionList.LeadingVisual>
                 <TrashIcon />

@@ -6,8 +6,12 @@ import {
 import { ActionList, ActionMenu, IconButton } from '@primer/react';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
-function NoteCollectionActionMenu() {
-  const { openNoteCollectionDialog } = useNoteCollectionContext();
+function NoteCollectionActionMenu({ noteCollection }: any) {
+  const {
+    openNoteCollectionDialog,
+    setSelectedNoteCollection,
+    confirmDeleteNoteCollection,
+  } = useNoteCollectionContext();
   return (
     <>
       <ActionMenu>
@@ -22,7 +26,10 @@ function NoteCollectionActionMenu() {
         <ActionMenu.Overlay>
           <ActionList>
             <ActionList.Item
-              onSelect={() => openNoteCollectionDialog('update')}
+              onSelect={() => {
+                setSelectedNoteCollection(noteCollection);
+                openNoteCollectionDialog('update');
+              }}
             >
               <ActionList.LeadingVisual>
                 <PencilIcon />
@@ -40,7 +47,10 @@ function NoteCollectionActionMenu() {
             {/* <ActionList.Divider /> */}
             <ActionList.Item
               variant="danger"
-              onSelect={() => openNoteCollectionDialog('delete')}
+              onSelect={() => {
+                setSelectedNoteCollection(noteCollection);
+                confirmDeleteNoteCollection();
+              }}
             >
               <ActionList.LeadingVisual>
                 <TrashIcon />
