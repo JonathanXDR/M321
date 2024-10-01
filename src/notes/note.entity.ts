@@ -6,11 +6,14 @@ export class NoteEntity implements Note {
   id: string;
 
   @ApiProperty()
-  title?: string;
+  title: string;
 
   @ApiProperty()
   content: string;
 
   @ApiProperty()
   noteCollection: NoteCollection;
+
+  @ApiProperty()
+  noteCollectionId: string;
 }

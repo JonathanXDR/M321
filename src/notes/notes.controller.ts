@@ -9,7 +9,6 @@ import {
   Body,
   Put,
   Delete,
-  ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
@@ -31,10 +30,7 @@ export class NotesController {
 
   @Get(':id')
   @ApiOkResponse({ type: NoteEntity })
-  async getNote(
-    @Request() req,
-    @Param('id', ParseIntPipe) id: string,
-  ): Promise<Note> {
+  async getNote(@Request() req, @Param('id') id: string): Promise<Note> {
     try {
       return this.notesService.findOne(id);
     } catch (error) {
@@ -55,7 +51,7 @@ export class NotesController {
   @ApiOkResponse({ type: NoteEntity })
   async updateNote(
     @Request() req,
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id') id: string,
     @Body() request: NoteRequest,
   ): Promise<Note> {
     try {
@@ -70,7 +66,7 @@ export class NotesController {
 
   @Delete(':id')
   @ApiOkResponse({ type: NoteEntity })
-  async deleteNote(@Param('id', ParseIntPipe) id: string): Promise<Note> {
+  async deleteNote(@Param('id') id: string): Promise<Note> {
     return this.notesService.deleteNote({ id });
   }
 }

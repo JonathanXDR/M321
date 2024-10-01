@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  IsObject,
 } from 'class-validator';
 
 export class NoteRequest {
@@ -13,7 +14,7 @@ export class NoteRequest {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  title?: string;
+  title: string;
 
   @ApiProperty()
   @IsDefined()
@@ -24,6 +25,6 @@ export class NoteRequest {
   @ApiProperty()
   @IsDefined()
   @IsNotEmpty()
-  @IsString()
+  @IsObject()
   noteCollection: NoteCollection;
 }

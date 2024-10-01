@@ -9,7 +9,6 @@ import {
   Body,
   Put,
   Delete,
-  ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { NoteCollectionsService } from './noteCollections.service';
@@ -35,7 +34,7 @@ export class NoteCollectionsController {
   @ApiOkResponse({ type: NoteCollectionEntity })
   async getNoteCollection(
     @Request() req,
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
       return this.noteCollectionsService.findOne(id);
@@ -57,7 +56,7 @@ export class NoteCollectionsController {
   @ApiOkResponse({ type: NoteCollectionEntity })
   async updateNoteCollection(
     @Request() req,
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id') id: string,
     @Body() request: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     try {
@@ -72,9 +71,7 @@ export class NoteCollectionsController {
 
   @Delete(':id')
   @ApiOkResponse({ type: NoteCollectionEntity })
-  async deleteNoteCollection(
-    @Param('id', ParseIntPipe) id: string,
-  ): Promise<NoteCollection> {
+  async deleteNoteCollection(@Param('id') id: string): Promise<NoteCollection> {
     return this.noteCollectionsService.deleteNoteCollection({ id });
   }
 }

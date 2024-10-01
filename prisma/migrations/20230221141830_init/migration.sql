@@ -25,7 +25,7 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Note` (
     `id` VARCHAR(36) NOT NULL,
-    `title` VARCHAR(100) NOT NULL,
+    `title` VARCHAR(100) NULL,
     `content` TEXT NOT NULL,
     `noteCollectionId` VARCHAR(191) NOT NULL,
 

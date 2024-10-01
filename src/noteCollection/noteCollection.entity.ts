@@ -10,4 +10,7 @@ export class NoteCollectionEntity implements NoteCollection {
 
   @ApiProperty()
   notes: Note[];
+
+  @ApiProperty()
+  userId: string;
 }

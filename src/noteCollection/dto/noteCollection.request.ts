@@ -1,6 +1,6 @@
 import { Note } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDefined, IsNotEmpty, IsString, IsArray } from 'class-validator';
 
 export class NoteCollectionRequest {
   @ApiProperty()
@@ -12,6 +12,6 @@ export class NoteCollectionRequest {
   @ApiProperty()
   @IsDefined()
   @IsNotEmpty()
-  @IsNumber()
+  @IsArray()
   notes: Note[];
 }

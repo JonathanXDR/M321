@@ -9,7 +9,6 @@ import {
   Body,
   Put,
   Delete,
-  ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
@@ -31,10 +30,7 @@ export class BooksController {
 
   @Get(':id')
   @ApiOkResponse({ type: BookEntity })
-  async getBook(
-    @Request() req,
-    @Param('id', ParseIntPipe) id: string,
-  ): Promise<Book> {
+  async getBook(@Request() req, @Param('id') id: string): Promise<Book> {
     try {
       return this.booksService.findOne(id);
     } catch (error) {
@@ -55,7 +51,7 @@ export class BooksController {
   @ApiOkResponse({ type: BookEntity })
   async updateBook(
     @Request() req,
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id') id: string,
     @Body() request: BookRequest,
   ): Promise<Book> {
     try {
@@ -70,7 +66,7 @@ export class BooksController {
 
   @Delete(':id')
   @ApiOkResponse({ type: BookEntity })
-  async deleteBook(@Param('id', ParseIntPipe) id: string): Promise<Book> {
+  async deleteBook(@Param('id') id: string): Promise<Book> {
     return this.booksService.deleteBook({ id });
   }
 }
