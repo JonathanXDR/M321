@@ -5,6 +5,9 @@ import { useGeneralContext } from './general.context';
 import { CheckIcon } from '@primer/octicons-react';
 
 interface NoteProviderProps extends React.PropsWithChildren<{}> {}
+
+type NoteDialogType = 'create' | 'update' | 'delete' | null;
+
 interface NoteContextData {
   notesData: Note[];
   setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
@@ -12,11 +15,9 @@ interface NoteContextData {
   setNewNote: React.Dispatch<React.SetStateAction<string>>;
   noteDialogIsOpen: boolean;
   setNoteDialogIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  noteDialogType: 'create' | 'update' | 'delete' | null;
-  setNoteDialogType: React.Dispatch<
-    React.SetStateAction<'create' | 'update' | 'delete' | null>
-  >;
-  openNoteDialog: (type: 'create' | 'update' | 'delete') => void;
+  noteDialogType: NoteDialogType;
+  setNoteDialogType: React.Dispatch<React.SetStateAction<NoteDialogType>>;
+  openNoteDialog: (type: NoteDialogType) => void;
   closeNoteDialog: () => void;
   handleCreateNote: () => Promise<void>;
   handleUpdateNote: (
@@ -41,13 +42,11 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const [notesData, setNotesData] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
   const [noteDialogIsOpen, setNoteDialogIsOpen] = useState(false);
-  const [noteDialogType, setNoteDialogType] = useState<
-    'create' | 'update' | 'delete' | null
-  >(null);
+  const [noteDialogType, setNoteDialogType] = useState<NoteDialogType>(null);
 
   const { handleFlash } = useGeneralContext();
 
-  const openNoteDialog = useCallback((type: 'create' | 'update' | 'delete') => {
+  const openNoteDialog = useCallback((type: NoteDialogType) => {
     setNoteDialogType(type);
     setNoteDialogIsOpen(true);
   }, []);
@@ -66,14 +65,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     setNewNote('');
     handleFlash('Note created successfully!', CheckIcon, 'success');
     closeNoteDialog();
-  }, [
-    newNote,
-    notesData,
-    setNotesData,
-    setNewNote,
-    handleFlash,
-    closeNoteDialog,
-  ]);
+  }, [newNote, notesData, handleFlash, closeNoteDialog]);
 
   const handleUpdateNote = useCallback(
     async (id: string, title: string, content: string) => {
@@ -84,7 +76,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       handleFlash('Note updated successfully!', CheckIcon, 'success');
       closeNoteDialog();
     },
-    [notesData, setNotesData, handleFlash, closeNoteDialog]
+    [notesData, handleFlash, closeNoteDialog]
   );
 
   const handleDeleteNote = useCallback(
@@ -94,7 +86,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       handleFlash('Note deleted successfully!', CheckIcon, 'success');
       closeNoteDialog();
     },
-    [notesData, setNotesData, handleFlash, closeNoteDialog]
+    [notesData, handleFlash, closeNoteDialog]
   );
 
   return (

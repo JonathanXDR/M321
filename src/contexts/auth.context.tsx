@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { login, checkToken } from '../services/auth.service';
 
 interface AuthProviderProps extends React.PropsWithChildren<{}> {}
@@ -49,7 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const hasNumber = /\d/.test(password);
     const hasLowercase = /[a-z]/.test(password);
 
-    const newValidations = {
+    setValidations({
       minLength: password.length >= minLength,
       minLengthWithRequirements:
         password.length >= minLengthWithRequirements &&
@@ -57,9 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         hasLowercase,
       hasNumber,
       hasLowercase,
-    };
-
-    setValidations(newValidations);
+    });
   }, [password]);
 
   const isValid =
@@ -89,7 +86,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (error.response && error.response.status === 401) {
         return { error: true };
       } else {
-        <BlankStateSystemError httpError={error} />;
         return { error: false };
       }
     }
