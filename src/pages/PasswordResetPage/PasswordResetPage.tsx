@@ -16,9 +16,10 @@ import { useAuthContext } from '../../contexts/auth.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
+import ValidationFlash from '../../components/Flash/ValidationFlash';
 
 const PasswordResetPage = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
@@ -106,65 +107,7 @@ const PasswordResetPage = () => {
             </Heading>
           </Box>
 
-          <Flash variant="danger">
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'baseline',
-                paddingX: 2,
-              }}
-            >
-              <Text
-                sx={{
-                  marginRight: 3,
-                }}
-              >
-                <StopIcon />
-              </Text>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  The following inputs have errors:
-                </Text>
-                <Box>
-                  {/* Dynamically show all Input Titles, which the validation failed */}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    Last name
-                  </Text>
-                  ,{' '}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    ZIP code
-                  </Text>
-                  ,{' '}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    email address
-                  </Text>
-                </Box>
-              </Box>
-            </Box>
-          </Flash>
+          {/* <ValidationFlash /> */}
 
           <Box
             as={'form'}

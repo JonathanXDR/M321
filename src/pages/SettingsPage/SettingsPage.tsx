@@ -31,6 +31,9 @@ import AccountActionMenu from '../../components/AccountActionMenu';
 import './SettingsPage.module.css';
 import MainNavbar from '../../components/Navbar/MainNavbar';
 import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
+import { useGeneralContext } from '../../contexts/general.context';
+import GeneralFlash from '../../components/Flash/GeneralFlash';
+import ValidationFlash from '../../components/Flash/ValidationFlash';
 
 const SettingsPage = () => {
   const [error, setError] = useState(false);
@@ -39,6 +42,15 @@ const SettingsPage = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [username, setUsername] = useState('');
+
+  const {
+    fetchAllData,
+    flashVisible,
+    flashIcon,
+    flashVariant,
+    flashMessage,
+    handleFlash,
+  } = useGeneralContext();
 
   const {
     handleCheckToken,
@@ -59,6 +71,11 @@ const SettingsPage = () => {
   const [updatePasswordIsDisabled, setUpdatePasswordIsDisabled] =
     useState(true);
   const [deleteAccountIsDisabled, setDeleteAccountIsDisabled] = useState(true);
+
+  const handleUpdatePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    handleFlash('Password changed successfully.');
+  };
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -86,24 +103,7 @@ const SettingsPage = () => {
         }}
       >
         <MainNavbar />
-        <Flash
-          full
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingY: '20px',
-            paddingX: '16px',
-          }}
-        >
-          Password changed successfully.
-          <IconButton
-            variant="invisible"
-            aria-label="Close flash"
-            icon={XIcon}
-            onClick={() => setError(false)}
-          />
-        </Flash>
+        <GeneralFlash />
       </PageLayout.Header>
       <PageLayout.Content padding="normal" width="xlarge">
         <Box
@@ -443,70 +443,9 @@ const SettingsPage = () => {
             Old password isn't valid
           </Flash>
 
-          <Flash variant="danger">
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'baseline',
-                paddingX: 2,
-              }}
-            >
-              <Text
-                sx={{
-                  marginRight: 3,
-                }}
-              >
-                <StopIcon />
-              </Text>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  The following inputs have errors:
-                </Text>
-                <Box>
-                  {/* Dynamically show all Input Titles, which the validation failed */}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    Last name
-                  </Text>
-                  ,{' '}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    ZIP code
-                  </Text>
-                  ,{' '}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    email address
-                  </Text>
-                </Box>
-              </Box>
-            </Box>
-          </Flash>
+          {/* <ValidationFlash /> */}
 
-          <Box
-            as={'form'}
-            // onSubmit={handleUpdatePasswordSubmit}
-          >
+          <Box as={'form'} onSubmit={handleUpdatePasswordSubmit}>
             <FormControl
               required
               sx={{

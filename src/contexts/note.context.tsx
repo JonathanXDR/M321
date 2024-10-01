@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Note } from '../types/Note/note.interface';
 import { notes } from '../services/http.service';
 import { useGeneralContext } from './general.context';
+import { CheckIcon } from '@primer/octicons-react';
 
 interface NoteProviderProps extends React.PropsWithChildren<{}> {}
 interface NoteContextData {
@@ -63,7 +64,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     });
     setNotesData([...notesData, createdNote.data]);
     setNewNote('');
-    handleFlash('Note created successfully!');
+    handleFlash('Note created successfully!', CheckIcon, 'success');
     closeNoteDialog();
   }, [
     newNote,
@@ -80,7 +81,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       setNotesData(
         notesData.map((note) => (note.id === id ? updatedNote.data : note))
       );
-      handleFlash('Note updated successfully!');
+      handleFlash('Note updated successfully!', CheckIcon, 'success');
       closeNoteDialog();
     },
     [notesData, setNotesData, handleFlash, closeNoteDialog]
@@ -90,7 +91,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     async (id: string) => {
       await notes.delete(id);
       setNotesData(notesData.filter((note) => note.id !== id));
-      handleFlash('Note deleted successfully!');
+      handleFlash('Note deleted successfully!', CheckIcon, 'success');
       closeNoteDialog();
     },
     [notesData, setNotesData, handleFlash, closeNoteDialog]

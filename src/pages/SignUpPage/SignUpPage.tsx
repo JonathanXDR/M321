@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -18,10 +18,13 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
+import ValidationFlash, {
+  ValidationError,
+} from '../../components/Flash/ValidationFlash';
 
 const SignUpPage = () => {
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
@@ -40,6 +43,28 @@ const SignUpPage = () => {
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState('');
+
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const ageRef = useRef<HTMLInputElement>(null);
+  const genderRef = useRef<HTMLInputElement>(null);
+
+  const errors: ValidationError[] = [
+    { key: 'username', title: 'Username', ref: usernameRef },
+    { key: 'password', title: 'Password', ref: passwordRef },
+    {
+      key: 'confirm-password',
+      title: 'Confirm password',
+      ref: confirmPasswordRef,
+    },
+    { key: 'first-name', title: 'First name', ref: firstNameRef },
+    { key: 'last-name', title: 'Last name', ref: lastNameRef },
+    { key: 'age', title: 'Age', ref: ageRef },
+    { key: 'gender', title: 'Gender', ref: genderRef },
+  ];
 
   const getValidationStyle = (validation: boolean) => ({
     color: validation ? 'success.fg' : 'danger.fg',
@@ -132,65 +157,7 @@ const SignUpPage = () => {
             </Heading>
           </Box>
 
-          <Flash variant="danger">
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'baseline',
-                paddingX: 2,
-              }}
-            >
-              <Text
-                sx={{
-                  marginRight: 3,
-                }}
-              >
-                <StopIcon />
-              </Text>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  The following inputs have errors:
-                </Text>
-                <Box>
-                  {/* Dynamically show all Input Titles, which the validation failed */}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    Last name
-                  </Text>
-                  ,{' '}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    ZIP code
-                  </Text>
-                  ,{' '}
-                  <Text
-                    sx={{
-                      textDecoration: 'Underline',
-                    }}
-                  >
-                    email address
-                  </Text>
-                </Box>
-              </Box>
-            </Box>
-          </Flash>
+          <ValidationFlash errors={errors} />
 
           <Box
             as={'form'}
@@ -222,6 +189,7 @@ const SignUpPage = () => {
                 Enter a username
               </FormControl.Label>
               <TextInput
+                ref={usernameRef}
                 type="text"
                 loading={true}
                 onChange={(e) => {
@@ -267,6 +235,7 @@ const SignUpPage = () => {
                   Enter your firstname
                 </FormControl.Label>
                 <TextInput
+                  ref={firstNameRef}
                   type="text"
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -302,6 +271,7 @@ const SignUpPage = () => {
                   Enter your lastname
                 </FormControl.Label>
                 <TextInput
+                  ref={lastNameRef}
                   type="text"
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
@@ -346,6 +316,7 @@ const SignUpPage = () => {
                   Enter your age
                 </FormControl.Label>
                 <TextInput
+                  ref={ageRef}
                   type="text"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter age"
@@ -378,6 +349,7 @@ const SignUpPage = () => {
                   Enter your gender
                 </FormControl.Label>
                 <TextInput
+                  ref={genderRef}
                   type="text"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter gender"
@@ -420,6 +392,7 @@ const SignUpPage = () => {
                   Create a password
                 </FormControl.Label>
                 <TextInput
+                  ref={passwordRef}
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
@@ -453,6 +426,7 @@ const SignUpPage = () => {
                   Confirm your password
                 </FormControl.Label>
                 <TextInput
+                  ref={confirmPasswordRef}
                   type="password"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm password"

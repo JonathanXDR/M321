@@ -6,6 +6,7 @@ import {
   FileDirectoryIcon,
   MarkGithubIcon,
   NoteIcon,
+  XIcon,
 } from '@primer/octicons-react';
 import {
   Box,
@@ -17,6 +18,7 @@ import {
   StyledOcticon,
   TreeView,
   Text,
+  IconButton,
 } from '@primer/react';
 
 import { Note } from '../../types/Note/note.interface';
@@ -37,6 +39,7 @@ import './HomePage.module.css';
 import MainNavbar from '../../components/Navbar/MainNavbar';
 import { NoteCollection } from '../../types/NoteCollection/noteCollection.interface';
 import { useGeneralContext } from '../../contexts/general.context';
+import GeneralFlash from '../../components/Flash/GeneralFlash';
 
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
@@ -47,6 +50,8 @@ const HomePage: React.FC = () => {
     loading,
     fetchAllData,
     flashVisible,
+    flashIcon,
+    flashVariant,
     flashMessage,
     handleFlash,
   } = useGeneralContext();
@@ -147,15 +152,9 @@ const HomePage: React.FC = () => {
     <PageLayout containerWidth="full" padding="none">
       <PageLayout.Header>
         <MainNavbar />
+        <GeneralFlash />
       </PageLayout.Header>
       <PageLayout.Content padding="normal" width="xlarge">
-        {flashVisible && (
-          <Flash variant="success" sx={{ marginBottom: '4' }}>
-            <StyledOcticon icon={CheckIcon} />
-            {flashMessage}
-          </Flash>
-        )}
-
         {!notesData.length && !noteCollectionsData.length ? (
           <BlankStateEmpty />
         ) : (

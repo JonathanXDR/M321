@@ -60,13 +60,13 @@ const LoginPage: React.FC = () => {
     setIsValid(!result.error);
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   const showError = (field: string) => {
     return submitAttempted && !field.trim();
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <PageLayout

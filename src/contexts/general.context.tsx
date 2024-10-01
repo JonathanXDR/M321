@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Note } from '../types/Note/note.interface';
 import { NoteCollection } from '../types/NoteCollection/noteCollection.interface';
-import { notes, noteCollections } from '../services/http.service';
+import { Icon } from '@primer/octicons-react';
+import { noteCollections, notes } from '../services/http.service';
 
 interface GeneralProviderProps extends React.PropsWithChildren<{}> {}
 interface GeneralContextData {
@@ -11,7 +12,13 @@ interface GeneralContextData {
   fetchAllData: () => Promise<void>;
   flashVisible: boolean;
   flashMessage: string;
-  handleFlash: (message: string) => void;
+  flashIcon: Icon | null;
+  flashVariant: 'default' | 'success' | 'warning' | 'danger';
+  handleFlash: (
+    message: string,
+    icon?: Icon,
+    variant?: 'default' | 'success' | 'warning' | 'danger'
+  ) => void;
 }
 
 const GeneralContext = createContext<GeneralContextData | null>(null);
@@ -45,9 +52,19 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
 
   const [flashVisible, setFlashVisible] = useState(false);
   const [flashMessage, setFlashMessage] = useState('');
+  const [flashIcon, setFlashIcon] = useState<Icon | null>(null);
+  const [flashVariant, setFlashVariant] = useState<
+    'default' | 'success' | 'warning' | 'danger'
+  >('default');
 
-  const handleFlash = (message: string) => {
+  const handleFlash = (
+    message: string,
+    icon?: Icon,
+    variant?: 'default' | 'success' | 'warning' | 'danger'
+  ) => {
     setFlashMessage(message);
+    setFlashVariant(variant || 'default');
+    setFlashIcon(icon || null);
     setFlashVisible(true);
 
     setTimeout(() => {
@@ -64,6 +81,8 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         fetchAllData,
         flashVisible,
         flashMessage,
+        flashIcon,
+        flashVariant,
         handleFlash,
       }}
     >

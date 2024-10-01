@@ -3,6 +3,7 @@ import { NoteCollection } from '../types/NoteCollection/noteCollection.interface
 import { Note } from '../types/Note/note.interface';
 import { noteCollections } from '../services/http.service';
 import { useGeneralContext } from './general.context';
+import { CheckIcon } from '@primer/octicons-react';
 
 interface NoteCollectionProviderProps extends React.PropsWithChildren<{}> {}
 interface NoteCollectionContextData {
@@ -82,7 +83,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       createdNoteCollection.data,
     ]);
     setNewNoteCollection('');
-    handleFlash('NoteCollection created successfully!');
+    handleFlash('NoteCollection created successfully!', CheckIcon, 'success');
     closeNoteCollectionDialog();
   }, [
     newNoteCollection,
@@ -101,7 +102,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
           noteCollection.id === id ? updatedNoteCollection.data : noteCollection
         )
       );
-      handleFlash('NoteCollection updated successfully!');
+      handleFlash('NoteCollection updated successfully!', CheckIcon, 'success');
       closeNoteCollectionDialog();
     },
     [
@@ -118,7 +119,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       setNoteCollectionsData(
         noteCollectionsData.filter((noteCollection) => noteCollection.id !== id)
       );
-      handleFlash('NoteCollection deleted successfully!');
+      handleFlash('NoteCollection deleted successfully!', CheckIcon, 'success');
       closeNoteCollectionDialog();
     },
     [
