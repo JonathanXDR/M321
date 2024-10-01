@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Note } from '../types/Note/note.interface';
-import { NoteCollection } from '../types/NoteCollection/noteCollection.interface';
+import { Note } from '../types/note.interface';
+import { NoteCollection } from '../types/noteCollection.interface';
 import { Icon } from '@primer/octicons-react';
 import { noteCollections, notes } from '../services/http.service';
 

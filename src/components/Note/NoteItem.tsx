@@ -1,13 +1,13 @@
 import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { PencilIcon, TrashIcon } from '@primer/octicons-react';
 import { Hidden } from '@primer/react/drafts';
-import { NoteItemProps } from '../../types/Note/noteItemProps.interface';
 
 import NoteActionMenu from './NoteActionMenu';
 import { useNoteContext } from '../../contexts/note.context';
+import { Note } from '../../types/note.interface';
 
-const NoteItem = ({ note }: NoteItemProps) => {
-  const { openNoteDialog } = useNoteContext();
+const NoteItem = ({ note }: any) => {
+  const { openNoteDialog, setSelectedNote } = useNoteContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -40,14 +40,20 @@ const NoteItem = ({ note }: NoteItemProps) => {
           <Button
             leadingIcon={PencilIcon}
             variant="outline"
-            onClick={() => openNoteDialog('update')}
+            onClick={() => {
+              setSelectedNote(note);
+              openNoteDialog('update');
+            }}
           >
             Edit
           </Button>
           <Button
             leadingIcon={TrashIcon}
             variant="danger"
-            onClick={() => openNoteDialog('delete')}
+            onClick={() => {
+              setSelectedNote(note);
+              openNoteDialog('delete');
+            }}
           >
             Delete
           </Button>
@@ -55,7 +61,7 @@ const NoteItem = ({ note }: NoteItemProps) => {
       </Hidden>
 
       <Hidden when={['regular', 'wide']}>
-        <NoteActionMenu key={note.id} />
+        <NoteActionMenu />
       </Hidden>
     </Box>
   );

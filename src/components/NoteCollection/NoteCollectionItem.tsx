@@ -1,13 +1,14 @@
 import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { PencilIcon, TrashIcon } from '@primer/octicons-react';
 import { Hidden } from '@primer/react/drafts';
-import { NoteCollectionItemProps } from '../../types/NoteCollection/noteCollectionItemProps.interface';
 
 import NoteCollectionActionMenu from './NoteCollectionActionMenu';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
+import { Note } from '../../types/note.interface';
 
-const NoteCollectionItem = ({ noteCollection }: NoteCollectionItemProps) => {
-  const { openNoteCollectionDialog } = useNoteCollectionContext();
+const NoteCollectionItem = ({ noteCollection }: any) => {
+  const { openNoteCollectionDialog, setSelectedNoteCollection } =
+    useNoteCollectionContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -31,7 +32,7 @@ const NoteCollectionItem = ({ noteCollection }: NoteCollectionItemProps) => {
           {noteCollection.title}
         </Text>
         <Text color="fg.subtle" sx={textStyle}>
-          {noteCollection.notes.map((note) => note.title).join(', ')}
+          {noteCollection.notes.map((note: Note) => note.title).join(', ')}
         </Text>
       </Box>
       <Box onClick={(e) => e.stopPropagation()}>
@@ -40,14 +41,20 @@ const NoteCollectionItem = ({ noteCollection }: NoteCollectionItemProps) => {
             <Button
               leadingIcon={PencilIcon}
               variant="outline"
-              onClick={() => openNoteCollectionDialog('update')}
+              onClick={() => {
+                setSelectedNoteCollection(noteCollection);
+                openNoteCollectionDialog('update');
+              }}
             >
               Edit
             </Button>
             <Button
               leadingIcon={TrashIcon}
               variant="danger"
-              onClick={() => openNoteCollectionDialog('delete')}
+              onClick={() => {
+                setSelectedNoteCollection(noteCollection);
+                openNoteCollectionDialog('delete');
+              }}
             >
               Delete
             </Button>
@@ -55,7 +62,7 @@ const NoteCollectionItem = ({ noteCollection }: NoteCollectionItemProps) => {
         </Hidden>
 
         <Hidden when={['regular', 'wide']}>
-          <NoteCollectionActionMenu key={noteCollection.id} />
+          <NoteCollectionActionMenu />
         </Hidden>
       </Box>
     </Box>

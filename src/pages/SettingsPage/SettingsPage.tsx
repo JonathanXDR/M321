@@ -26,7 +26,6 @@ import {
 import { User } from '../../types/user.interface';
 import { useAuthContext } from '../../contexts/auth.context';
 import { users } from '../../services/http.service';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import AccountActionMenu from '../../components/AccountActionMenu';
 import './SettingsPage.module.css';
 import MainNavbar from '../../components/Navbar/MainNavbar';
@@ -37,7 +36,6 @@ import ValidationFlash from '../../components/Flash/ValidationFlash';
 
 const SettingsPage = () => {
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -89,10 +87,6 @@ const SettingsPage = () => {
 
     fetchCurrentUser();
   }, []);
-
-  if (loading && !currentUser) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout containerWidth="full" padding="none">

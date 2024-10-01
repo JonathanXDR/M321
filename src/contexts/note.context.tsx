@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { Note } from '../types/Note/note.interface';
+import { Note } from '../types/note.interface';
 import { notes } from '../services/http.service';
 import { useGeneralContext } from './general.context';
 import { CheckIcon } from '@primer/octicons-react';
@@ -9,6 +9,8 @@ interface NoteProviderProps extends React.PropsWithChildren<{}> {}
 type NoteDialogType = 'create' | 'update' | 'delete' | null;
 
 interface NoteContextData {
+  setSelectedNote: React.Dispatch<React.SetStateAction<Note>>;
+  selectedNote: Note;
   notesData: Note[];
   setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
   newNote: string;
@@ -28,6 +30,11 @@ interface NoteContextData {
   handleDeleteNote: (id: string) => Promise<void>;
 }
 
+const defaultNote = {
+  title: '',
+  content: '',
+} as Note;
+
 const NoteContext = createContext<NoteContextData | null>(null);
 
 export const useNoteContext = () => {
@@ -39,6 +46,7 @@ export const useNoteContext = () => {
 };
 
 export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
+  const [selectedNote, setSelectedNote] = useState<Note>(defaultNote);
   const [notesData, setNotesData] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
   const [noteDialogIsOpen, setNoteDialogIsOpen] = useState(false);
@@ -92,6 +100,8 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   return (
     <NoteContext.Provider
       value={{
+        setSelectedNote,
+        selectedNote,
         notesData,
         setNotesData,
         newNote,

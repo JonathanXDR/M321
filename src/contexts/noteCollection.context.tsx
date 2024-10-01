@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { NoteCollection } from '../types/NoteCollection/noteCollection.interface';
-import { Note } from '../types/Note/note.interface';
+import { NoteCollection } from '../types/noteCollection.interface';
+import { Note } from '../types/note.interface';
 import { noteCollections } from '../services/http.service';
 import { useGeneralContext } from './general.context';
 import { CheckIcon } from '@primer/octicons-react';
@@ -10,6 +10,10 @@ interface NoteCollectionProviderProps extends React.PropsWithChildren<{}> {}
 type NoteCollectionDialogType = 'create' | 'update' | 'delete' | null;
 
 interface NoteCollectionContextData {
+  setSelectedNoteCollection: React.Dispatch<
+    React.SetStateAction<NoteCollection>
+  >;
+  selectedNoteCollection: NoteCollection;
   noteCollectionsData: NoteCollection[];
   setNoteCollectionsData: React.Dispatch<
     React.SetStateAction<NoteCollection[]>
@@ -33,6 +37,16 @@ interface NoteCollectionContextData {
   handleDeleteNoteCollection: (id: string) => Promise<void>;
 }
 
+const defaultNoteCollection = {
+  title: '',
+  notes: [
+    {
+      title: '',
+      content: '',
+    },
+  ],
+} as NoteCollection;
+
 const NoteCollectionContext = createContext<NoteCollectionContextData | null>(
   null
 );
@@ -50,6 +64,8 @@ export const useNoteCollectionContext = () => {
 export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
   children,
 }) => {
+  const [selectedNoteCollection, setSelectedNoteCollection] =
+    useState<NoteCollection>(defaultNoteCollection);
   const [noteCollectionsData, setNoteCollectionsData] = useState<
     NoteCollection[]
   >([]);
@@ -122,6 +138,8 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
   return (
     <NoteCollectionContext.Provider
       value={{
+        setSelectedNoteCollection,
+        selectedNoteCollection,
         noteCollectionsData,
         setNoteCollectionsData,
         newNoteCollection,

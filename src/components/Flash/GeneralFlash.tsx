@@ -13,7 +13,6 @@ const GeneralFlash = () => {
   const {
     notesData,
     noteCollectionsData,
-    loading,
     fetchAllData,
     flashVisible,
     flashIcon,

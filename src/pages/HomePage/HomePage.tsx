@@ -14,15 +14,14 @@ import {
   ConfirmationDialog,
 } from '@primer/react';
 
-import { Note } from '../../types/Note/note.interface';
-import { NoteCollection } from '../../types/NoteCollection/noteCollection.interface';
+import { Note } from '../../types/note.interface';
+import { NoteCollection } from '../../types/noteCollection.interface';
 import { useGeneralContext } from '../../contexts/general.context';
 import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
 import MainNavbar from '../../components/Navbar/MainNavbar';
 import GeneralFlash from '../../components/Flash/GeneralFlash';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import NoteItem from '../../components/Note/NoteItem';
 import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
 import NoteDialog from '../../components/Note/NoteDialog';
@@ -33,10 +32,7 @@ import './HomePage.module.css';
 
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
-
-  const { notesData, noteCollectionsData, loading, fetchAllData } =
-    useGeneralContext();
-
+  const { notesData, noteCollectionsData, fetchAllData } = useGeneralContext();
   const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
     useNoteContext();
 
@@ -54,18 +50,16 @@ const HomePage: React.FC = () => {
   const renderFilteredNoteItems = () =>
     notesData
       .filter((note: Note) => !note.noteCollectionId)
-      .map((note: Note) => <NoteItem key={note.id} note={note} />);
+      .map((note: Note) => <NoteItem note={note} />);
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
-      <TreeView.Item id={note.id} key={note.id}>
+      <TreeView.Item id={note.id}>
         <TreeView.LeadingVisual>
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
         <NoteItem note={note} />
-        {noteDialogIsOpen && noteDialogType !== 'delete' && (
-          <NoteDialog key={note.id} note={note} />
-        )}
+        {noteDialogIsOpen && noteDialogType !== 'delete' && <NoteDialog />}
 
         {noteDialogIsOpen && noteDialogType === 'delete' && (
           <ConfirmationDialog
@@ -88,7 +82,6 @@ const HomePage: React.FC = () => {
       return (
         <TreeView.Item
           id={noteCollection.id}
-          key={noteCollection.id}
           expanded={expanded.includes(noteCollection.id)}
           onExpandedChange={(isExpanded: boolean) => {
             if (isExpanded) {
@@ -108,12 +101,7 @@ const HomePage: React.FC = () => {
           </TreeView.LeadingVisual>
           <NoteCollectionItem noteCollection={noteCollection} />
           {noteCollectionDialogIsOpen &&
-            noteCollectionDialogType !== 'delete' && (
-              <NoteCollectionDialog
-                key={noteCollection.id}
-                noteCollection={noteCollection}
-              />
-            )}
+            noteCollectionDialogType !== 'delete' && <NoteCollectionDialog />}
 
           {noteCollectionDialogIsOpen &&
             noteCollectionDialogType === 'delete' && (
@@ -131,10 +119,6 @@ const HomePage: React.FC = () => {
         </TreeView.Item>
       );
     });
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout containerWidth="full" padding="none">

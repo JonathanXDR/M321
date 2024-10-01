@@ -1,34 +1,27 @@
 import { Box, FormControl, TextInput, Textarea } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { useState } from 'react';
-import { NoteDialogProps } from '../../types/Note/noteDialogProps.interface';
 import { useNoteContext } from '../../contexts/note.context';
 
-function NoteDialog({ note }: NoteDialogProps) {
-  const [updatedTitle, setUpdatedTitle] = useState(note.title);
-  const [updatedContent, setUpdatedContent] = useState(note.content);
-  const [createdTitle, setCreatedTitle] = useState('');
-  const [createdContent, setCreatedContent] = useState('');
-
+function NoteDialog() {
   const {
-    notesData,
-    setNotesData,
-    newNote,
-    setNewNote,
-    noteDialogIsOpen,
+    selectedNote,
     setNoteDialogIsOpen,
     noteDialogType,
-    setNoteDialogType,
-    openNoteDialog,
     closeNoteDialog,
     handleCreateNote,
     handleUpdateNote,
     handleDeleteNote,
   } = useNoteContext();
 
+  const [updatedTitle, setUpdatedTitle] = useState(selectedNote.title);
+  const [updatedContent, setUpdatedContent] = useState(selectedNote.content);
+  const [createdTitle, setCreatedTitle] = useState('');
+  const [createdContent, setCreatedContent] = useState('');
+
   const handleCancel = () => {
-    setUpdatedTitle(note.title);
-    setUpdatedContent(note.content);
+    setUpdatedTitle(selectedNote.title);
+    setUpdatedContent(selectedNote.content);
     closeNoteDialog();
   };
 
@@ -79,7 +72,7 @@ function NoteDialog({ note }: NoteDialogProps) {
             content: 'Save',
             buttonType: 'primary' as const,
             onClick: () =>
-              handleUpdateNote(note.id, updatedTitle, updatedContent),
+              handleUpdateNote(selectedNote.id, updatedTitle, updatedContent),
           },
         ];
       case 'delete':
@@ -91,7 +84,7 @@ function NoteDialog({ note }: NoteDialogProps) {
           {
             content: 'Delete',
             buttonType: 'danger' as const,
-            onClick: () => handleDeleteNote(note.id),
+            onClick: () => handleDeleteNote(selectedNote.id),
           },
         ];
       default:

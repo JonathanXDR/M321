@@ -3,7 +3,6 @@ import { ActionList, Text, ActionMenu, Avatar, Box, Link } from '@primer/react';
 import { logout } from '../services/auth.service';
 import { users } from '../services/http.service';
 import { User } from '../types/user.interface';
-import LoadingSpinner from './LoadingSpinner';
 import BlankStateSystemError from './BlankState/BlankStateSystemError';
 
 function AccountActionMenu() {
@@ -21,10 +20,6 @@ function AccountActionMenu() {
 
     fetchCurrentUser();
   }, []);
-
-  if (!currentUser) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <ActionMenu>

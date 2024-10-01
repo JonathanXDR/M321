@@ -14,7 +14,6 @@ import {
 } from '@primer/react';
 import { XIcon } from '@primer/octicons-react';
 import { useAuthContext } from '../../contexts/auth.context';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import './LoginPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
@@ -22,7 +21,6 @@ import { useValidationContext } from '../../contexts/validation.context';
 
 const LoginPage: React.FC = () => {
   const [isValid, setIsValid] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const navigate = useNavigate();
 
@@ -44,10 +42,8 @@ const LoginPage: React.FC = () => {
     if (token) {
       handleCheckToken(token).finally(() => {
         navigate('/');
-        setLoading(false);
       });
     }
-    setLoading(false);
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,10 +57,6 @@ const LoginPage: React.FC = () => {
   const showError = (field: string) => {
     return hasError(field);
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout

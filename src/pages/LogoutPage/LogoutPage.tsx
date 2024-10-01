@@ -14,14 +14,12 @@ import {
 } from '@primer/react';
 import { XIcon } from '@primer/octicons-react';
 import { useAuthContext } from '../../contexts/auth.context';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import './LogoutPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 import { logout } from '../../services/auth.service';
 
 const LogoutPage = () => {
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const {
@@ -38,11 +36,8 @@ const LogoutPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      handleCheckToken(token).finally(() => {
-        setLoading(false);
-      });
+      handleCheckToken(token).finally(() => {});
     } else {
-      setLoading(false);
     }
   }, [navigate]);
 
@@ -50,10 +45,6 @@ const LogoutPage = () => {
     e.preventDefault();
     logout();
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout

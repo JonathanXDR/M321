@@ -13,13 +13,11 @@ import {
 } from '@primer/react';
 import { StopIcon } from '@primer/octicons-react';
 import { useAuthContext } from '../../contexts/auth.context';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 import ValidationFlash from '../../components/Flash/ValidationFlash';
 
 const PasswordResetPage = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
@@ -47,10 +45,6 @@ const PasswordResetPage = () => {
     const result = await handleLoginSubmit(username, password, navigate);
     navigate('/login');
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout

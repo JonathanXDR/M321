@@ -1,4 +1,4 @@
-import { Note } from './Note/note.interface';
+import { Note } from './note.interface';
 
 export interface AutoCompleteTokenInputProps {
   initialNotes?: Note[];

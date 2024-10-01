@@ -1,7 +1,6 @@
 import { FormControl, TextInput, Text, Box } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
-import { Note } from '../../types/Note/note.interface';
-import { NoteCollectionDialogProps } from '../../types/NoteCollection/noteCollectionDialogProps.interface';
+import { Note } from '../../types/note.interface';
 import AutoCompleteTokenInput from '../AutoCompleteTokenInput';
 
 import { useState } from 'react';
@@ -12,32 +11,29 @@ interface Token {
   text: string;
 }
 
-function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
-  const [updatedTitle, setUpdatedTitle] = useState(noteCollection.title);
-  const [updatedNotes, setUpdatedNotes] = useState(noteCollection.notes);
-
-  const [createdTitle, setCreatedTitle] = useState('');
-  const [createdNotes, setCreatedNotes] = useState([] as Note[]);
-
+function NoteCollectionDialog() {
   const {
-    noteCollectionsData,
-    setNoteCollectionsData,
-    newNoteCollection,
-    setNewNoteCollection,
-    noteCollectionDialogIsOpen,
-    setNoteCollectionDialogIsOpen,
+    selectedNoteCollection,
     noteCollectionDialogType,
-    setNoteCollectionDialogType,
-    openNoteCollectionDialog,
     closeNoteCollectionDialog,
     handleCreateNoteCollection,
     handleUpdateNoteCollection,
     handleDeleteNoteCollection,
   } = useNoteCollectionContext();
 
+  const [updatedTitle, setUpdatedTitle] = useState(
+    selectedNoteCollection.title
+  );
+  const [updatedNotes, setUpdatedNotes] = useState(
+    selectedNoteCollection.notes
+  );
+
+  const [createdTitle, setCreatedTitle] = useState('');
+  const [createdNotes, setCreatedNotes] = useState([] as Note[]);
+
   const handleCancel = () => {
-    setUpdatedTitle(noteCollection.title);
-    setUpdatedNotes(noteCollection.notes);
+    setUpdatedTitle(selectedNoteCollection.title);
+    setUpdatedNotes(selectedNoteCollection.notes);
     closeNoteCollectionDialog();
   };
 
@@ -86,7 +82,7 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
             buttonType: 'primary' as const,
             onClick: () =>
               handleUpdateNoteCollection(
-                noteCollection.id,
+                selectedNoteCollection.id,
                 updatedTitle,
                 updatedNotes
               ),
@@ -98,7 +94,8 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
           {
             content: 'Delete',
             buttonType: 'danger' as const,
-            onClick: () => handleDeleteNoteCollection(noteCollection.id),
+            onClick: () =>
+              handleDeleteNoteCollection(selectedNoteCollection.id),
           },
         ];
       default:
@@ -130,7 +127,7 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
             <FormControl>
               <FormControl.Label>Title</FormControl.Label>
               <TextInput
-                value={noteCollection.title}
+                value={selectedNoteCollection.title}
                 placeholder="Enter title"
                 onChange={(e) =>
                   noteCollectionDialogType === 'create'
@@ -143,7 +140,7 @@ function NoteCollectionDialog({ noteCollection }: NoteCollectionDialogProps) {
             <FormControl>
               <FormControl.Label>Notes</FormControl.Label>
               <AutoCompleteTokenInput
-                initialNotes={noteCollection.notes}
+                initialNotes={selectedNoteCollection.notes}
                 onNotesChange={(newNotes) => {
                   noteCollectionDialogType === 'create'
                     ? setCreatedNotes(newNotes)

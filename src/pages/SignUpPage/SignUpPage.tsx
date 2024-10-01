@@ -14,7 +14,6 @@ import {
 } from '@primer/react';
 import { StopIcon, XIcon } from '@primer/octicons-react';
 import { useAuthContext } from '../../contexts/auth.context';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
@@ -24,7 +23,6 @@ import ValidationFlash, {
 
 const SignUpPage = () => {
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
@@ -97,10 +95,6 @@ const SignUpPage = () => {
     // );
     navigate('/login');
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout
@@ -191,7 +185,7 @@ const SignUpPage = () => {
               <TextInput
                 ref={usernameRef}
                 type="text"
-                loading={true}
+                // loading={true}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
