@@ -7,7 +7,8 @@ import { useNoteContext } from '../../contexts/note.context';
 import { Note } from '../../types/note.interface';
 
 const NoteItem = ({ note }: any) => {
-  const { openNoteDialog, setSelectedNote } = useNoteContext();
+  const { openNoteDialog, setSelectedNote, confirmDeleteNote } =
+    useNoteContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -52,7 +53,7 @@ const NoteItem = ({ note }: any) => {
             variant="danger"
             onClick={() => {
               setSelectedNote(note);
-              openNoteDialog('delete');
+              confirmDeleteNote();
             }}
           >
             Delete

@@ -7,8 +7,11 @@ import { useNoteCollectionContext } from '../../contexts/noteCollection.context'
 import { Note } from '../../types/note.interface';
 
 const NoteCollectionItem = ({ noteCollection }: any) => {
-  const { openNoteCollectionDialog, setSelectedNoteCollection } =
-    useNoteCollectionContext();
+  const {
+    openNoteCollectionDialog,
+    setSelectedNoteCollection,
+    confirmDeleteNoteCollection,
+  } = useNoteCollectionContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -53,7 +56,7 @@ const NoteCollectionItem = ({ noteCollection }: any) => {
               variant="danger"
               onClick={() => {
                 setSelectedNoteCollection(noteCollection);
-                openNoteCollectionDialog('delete');
+                confirmDeleteNoteCollection();
               }}
             >
               Delete
