@@ -35,31 +35,11 @@ import GeneralFlash from '../../components/Flash/GeneralFlash';
 import ValidationFlash from '../../components/Flash/ValidationFlash';
 
 const SettingsPage = () => {
-  const [error, setError] = useState(false);
-  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-
   const [username, setUsername] = useState('');
 
-  const {
-    fetchAllData,
-    flashVisible,
-    flashIcon,
-    flashVariant,
-    flashMessage,
-    handleFlash,
-  } = useGeneralContext();
-
-  const {
-    handleCheckToken,
-    password,
-    confirmPassword,
-    setPassword,
-    setConfirmPassword,
-    isValid,
-    validations,
-    handleLoginSubmit,
-  } = useAuthContext();
+  const { handleFlash } = useGeneralContext();
+  const { setPassword, setConfirmPassword } = useAuthContext();
 
   const [usernameInfoDialogIsOpen, setUsernameInfoDialogIsOpen] =
     useState(false);
@@ -540,6 +520,7 @@ const SettingsPage = () => {
               }}
             >
               <Button
+                type="submit"
                 disabled={updatePasswordIsDisabled}
                 sx={{
                   marginRight: 2,
@@ -680,6 +661,7 @@ const SettingsPage = () => {
                 <FormControl required>
                   <Button
                     variant="danger"
+                    type="submit"
                     disabled={deleteAccountIsDisabled}
                     block
                     onClick={() => setAccountDialogIsOpen(false)}

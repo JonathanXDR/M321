@@ -3,7 +3,6 @@ import { NoteCollection } from '../types/noteCollection.interface';
 import { Note } from '../types/note.interface';
 import { noteCollections } from '../services/http.service';
 import { useGeneralContext } from './general.context';
-import { CheckIcon } from '@primer/octicons-react';
 import { useConfirm } from '@primer/react';
 
 interface NoteCollectionProviderProps extends React.PropsWithChildren<{}> {}
@@ -15,10 +14,6 @@ interface NoteCollectionContextData {
     React.SetStateAction<NoteCollection>
   >;
   selectedNoteCollection: NoteCollection;
-  noteCollectionsData: NoteCollection[];
-  setNoteCollectionsData: React.Dispatch<
-    React.SetStateAction<NoteCollection[]>
-  >;
   newNoteCollection: string;
   setNewNoteCollection: React.Dispatch<React.SetStateAction<string>>;
   noteCollectionDialogIsOpen: boolean;
@@ -70,16 +65,14 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
 }) => {
   const [selectedNoteCollection, setSelectedNoteCollection] =
     useState<NoteCollection>(defaultNoteCollection);
-  const [noteCollectionsData, setNoteCollectionsData] = useState<
-    NoteCollection[]
-  >([]);
   const [newNoteCollection, setNewNoteCollection] = useState('');
   const [noteCollectionDialogIsOpen, setNoteCollectionDialogIsOpen] =
     useState(false);
   const [noteCollectionDialogType, setNoteCollectionDialogType] =
     useState<NoteCollectionDialogType>(null);
 
-  const { handleFlash } = useGeneralContext();
+  const { handleFlash, noteCollectionsData, setNoteCollectionsData } =
+    useGeneralContext();
   const confirm = useConfirm();
 
   const openNoteCollectionDialog = useCallback(
@@ -119,12 +112,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       createdNoteCollection.data,
     ]);
     setNewNoteCollection('');
-    handleFlash(
-      'success',
-      'NoteCollection created successfully!',
-      true,
-      CheckIcon
-    );
+    handleFlash('success', 'NoteCollection created successfully!', true);
     closeNoteCollectionDialog();
   }, [
     newNoteCollection,
@@ -141,12 +129,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
           noteCollection.id === id ? updatedNoteCollection.data : noteCollection
         )
       );
-      handleFlash(
-        'success',
-        'NoteCollection updated successfully!',
-        true,
-        CheckIcon
-      );
+      handleFlash('success', 'NoteCollection updated successfully!', true);
       closeNoteCollectionDialog();
     },
     [noteCollectionsData, handleFlash, closeNoteCollectionDialog]
@@ -158,12 +141,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       setNoteCollectionsData(
         noteCollectionsData.filter((noteCollection) => noteCollection.id !== id)
       );
-      handleFlash(
-        'success',
-        'NoteCollection deleted successfully!',
-        true,
-        CheckIcon
-      );
+      handleFlash('success', 'NoteCollection deleted successfully!', true);
       closeNoteCollectionDialog();
     },
     [noteCollectionsData, handleFlash, closeNoteCollectionDialog]
@@ -174,8 +152,6 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       value={{
         setSelectedNoteCollection,
         selectedNoteCollection,
-        noteCollectionsData,
-        setNoteCollectionsData,
         newNoteCollection,
         setNewNoteCollection,
         noteCollectionDialogIsOpen,

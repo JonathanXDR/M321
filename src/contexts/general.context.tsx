@@ -1,26 +1,27 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
-import { Icon } from '@primer/octicons-react';
 import { noteCollections, notes } from '../services/http.service';
 
 interface GeneralProviderProps extends React.PropsWithChildren<{}> {}
 interface GeneralContextData {
   notesData: Note[];
+  setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
   noteCollectionsData: NoteCollection[];
+  setNoteCollectionsData: React.Dispatch<
+    React.SetStateAction<NoteCollection[]>
+  >;
   loading: boolean;
-  fetchAllData: () => Promise<void>;
+  fetchAllData: () => Promise<Note[] | NoteCollection[]>;
   flashVisible: boolean;
   setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>;
   flashVariant: 'default' | 'success' | 'warning' | 'danger';
   flashMessage: string;
   flashCloseButton: boolean;
-  flashIcon: Icon | null;
   handleFlash: (
     variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
-    closeButton?: boolean,
-    icon?: Icon
+    closeButton?: boolean
   ) => void;
 }
 
@@ -43,7 +44,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchAllData = async () => {
+  const fetchAllData = async (): Promise<Note[] | NoteCollection[]> => {
     const allNotesResponse = await notes.getAll();
     setNotesData(allNotesResponse.data);
 
@@ -51,6 +52,8 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     setNoteCollectionsData(allNoteCollectionsResponse.data);
 
     setLoading(false);
+
+    return allNotesResponse.data;
   };
 
   const [flashVisible, setFlashVisible] = useState(false);
@@ -59,19 +62,16 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   >('default');
   const [flashMessage, setFlashMessage] = useState('');
   const [flashCloseButton, setFlashCloseButton] = useState(false);
-  const [flashIcon, setFlashIcon] = useState<Icon | null>(null);
 
   const handleFlash = (
     variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
-    closeButton?: boolean,
-    icon?: Icon
+    closeButton?: boolean
   ) => {
     setFlashVisible(true);
     setFlashVariant(variant);
     setFlashMessage(message);
     setFlashCloseButton(closeButton || false);
-    setFlashIcon(icon || null);
 
     setTimeout(() => {
       setFlashVisible(false);
@@ -82,14 +82,15 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     <GeneralContext.Provider
       value={{
         notesData,
+        setNotesData,
         noteCollectionsData,
+        setNoteCollectionsData,
         loading,
         fetchAllData,
         flashVisible,
         setFlashVisible,
         flashVariant,
         flashMessage,
-        flashIcon,
         flashCloseButton,
         handleFlash,
       }}

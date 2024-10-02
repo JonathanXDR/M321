@@ -1,19 +1,32 @@
 import { Box, Flash, IconButton, StyledOcticon } from '@primer/react';
 import { useGeneralContext } from '../../contexts/general.context';
-import { XIcon } from '@primer/octicons-react';
+import { AlertIcon, CheckIcon, XIcon } from '@primer/octicons-react';
 
 const GeneralFlash = () => {
-  const {
-    flashVisible,
-    setFlashVisible,
-    flashIcon,
-    flashVariant,
-    flashMessage,
-  } = useGeneralContext();
+  const { flashVisible, setFlashVisible, flashVariant, flashMessage } =
+    useGeneralContext();
+
+  const renderFlashContent = () => {
+    const iconMap = {
+      default: null,
+      success: CheckIcon,
+      danger: XIcon,
+      warning: AlertIcon,
+    };
+
+    const Icon = iconMap[flashVariant];
+
+    return (
+      <Box>
+        {Icon && <StyledOcticon icon={Icon} />}
+        {flashMessage}
+      </Box>
+    );
+  };
 
   return (
     <>
-      {flashVisible && (
+      {flashVisible ? (
         <Flash
           variant={flashVariant}
           full
@@ -25,14 +38,7 @@ const GeneralFlash = () => {
             paddingX: '16px',
           }}
         >
-          {flashIcon ? (
-            <Box>
-              <StyledOcticon icon={flashIcon} />
-              {flashMessage}
-            </Box>
-          ) : (
-            flashMessage
-          )}
+          {renderFlashContent()}
           <IconButton
             variant="invisible"
             aria-label="Close flash"
@@ -40,7 +46,7 @@ const GeneralFlash = () => {
             onClick={() => setFlashVisible(false)}
           />
         </Flash>
-      )}
+      ) : null}
     </>
   );
 };

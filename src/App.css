@@ -16,6 +16,11 @@ main,
   z-index: unset !important;
 }
 
+button svg {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .octicon-alert,
 div:has(svg.octicon-alert) ~ div > div > span,
 span > div:has(svg.octicon-alert) + span,

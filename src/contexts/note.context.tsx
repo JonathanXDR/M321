@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Note } from '../types/note.interface';
 import { notes } from '../services/http.service';
 import { useGeneralContext } from './general.context';
-import { CheckIcon } from '@primer/octicons-react';
 import { useConfirm } from '@primer/react';
 
 interface NoteProviderProps extends React.PropsWithChildren<{}> {}
@@ -12,8 +11,6 @@ type NoteDialogType = 'create' | 'update' | 'delete' | null;
 interface NoteContextData {
   setSelectedNote: React.Dispatch<React.SetStateAction<Note>>;
   selectedNote: Note;
-  notesData: Note[];
-  setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
   newNote: string;
   setNewNote: React.Dispatch<React.SetStateAction<string>>;
   noteDialogIsOpen: boolean;
@@ -49,12 +46,11 @@ export const useNoteContext = () => {
 
 export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const [selectedNote, setSelectedNote] = useState<Note>(defaultNote);
-  const [notesData, setNotesData] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
   const [noteDialogIsOpen, setNoteDialogIsOpen] = useState(false);
   const [noteDialogType, setNoteDialogType] = useState<NoteDialogType>(null);
 
-  const { handleFlash } = useGeneralContext();
+  const { handleFlash, notesData, setNotesData } = useGeneralContext();
   const confirm = useConfirm();
 
   const openNoteDialog = useCallback((type: NoteDialogType) => {
@@ -86,7 +82,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     });
     setNotesData([...notesData, createdNote.data]);
     setNewNote('');
-    handleFlash('success', 'Note created successfully!', true, CheckIcon);
+    handleFlash('success', 'Note created successfully!', true);
     closeNoteDialog();
   }, [newNote, notesData, handleFlash, closeNoteDialog]);
 
@@ -96,7 +92,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       setNotesData(
         notesData.map((note) => (note.id === id ? updatedNote.data : note))
       );
-      handleFlash('success', 'Note updated successfully!', true, CheckIcon);
+      handleFlash('success', 'Note updated successfully!', true);
       closeNoteDialog();
     },
     [notesData, handleFlash, closeNoteDialog]
@@ -107,7 +103,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       await notes.delete(id);
       setNotesData(notesData.filter((note) => note.id !== id));
       console.log('Note deleted successfully!');
-      handleFlash('success', 'Note deleted successfully!', true, CheckIcon);
+      handleFlash('success', 'Note deleted successfully!', true);
       closeNoteDialog();
     },
     [notesData, handleFlash, closeNoteDialog]
@@ -118,8 +114,6 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       value={{
         setSelectedNote,
         selectedNote,
-        notesData,
-        setNotesData,
         newNote,
         setNewNote,
         noteDialogIsOpen,

@@ -5,15 +5,7 @@ import {
   FileDirectoryIcon,
   NoteIcon,
 } from '@primer/octicons-react';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  PageLayout,
-  TreeView,
-  ConfirmationDialog,
-  useConfirm,
-} from '@primer/react';
+import { Box, Button, ButtonGroup, PageLayout, TreeView } from '@primer/react';
 
 import { Note } from '../../types/note.interface';
 import { NoteCollection } from '../../types/noteCollection.interface';
@@ -50,7 +42,7 @@ const HomePage: React.FC = () => {
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
-      <TreeView.Item id={note.id}>
+      <TreeView.Item id={note.id} key={note.id}>
         <TreeView.LeadingVisual>
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
@@ -67,6 +59,7 @@ const HomePage: React.FC = () => {
       return (
         <TreeView.Item
           id={noteCollection.id}
+          key={noteCollection.id}
           expanded={expanded.includes(noteCollection.id)}
           onExpandedChange={(isExpanded: boolean) => {
             if (isExpanded) {
