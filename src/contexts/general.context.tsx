@@ -14,13 +14,13 @@ interface GeneralContextData {
   setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>;
   flashVariant: 'default' | 'success' | 'warning' | 'danger';
   flashMessage: string;
-  flashIcon: Icon | null;
   flashCloseButton: boolean;
+  flashIcon: Icon | null;
   handleFlash: (
     variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
-    icon?: Icon,
-    closeButton?: boolean
+    closeButton?: boolean,
+    icon?: Icon
   ) => void;
 }
 
@@ -58,20 +58,20 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     'default' | 'success' | 'warning' | 'danger'
   >('default');
   const [flashMessage, setFlashMessage] = useState('');
-  const [flashIcon, setFlashIcon] = useState<Icon | null>(null);
   const [flashCloseButton, setFlashCloseButton] = useState(false);
+  const [flashIcon, setFlashIcon] = useState<Icon | null>(null);
 
   const handleFlash = (
     variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
-    icon?: Icon,
-    closeButton?: boolean
+    closeButton?: boolean,
+    icon?: Icon
   ) => {
     setFlashVisible(true);
     setFlashVariant(variant);
     setFlashMessage(message);
-    setFlashIcon(icon || null);
     setFlashCloseButton(closeButton || false);
+    setFlashIcon(icon || null);
 
     setTimeout(() => {
       setFlashVisible(false);

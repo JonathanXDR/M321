@@ -72,7 +72,7 @@ const SettingsPage = () => {
 
   const handleUpdatePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    handleFlash('default', 'Password changed successfully.', undefined, true);
+    handleFlash('default', 'Password changed successfully.', true);
   };
 
   useEffect(() => {

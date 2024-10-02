@@ -86,7 +86,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     });
     setNotesData([...notesData, createdNote.data]);
     setNewNote('');
-    handleFlash('success', 'Note created successfully!', CheckIcon, true);
+    handleFlash('success', 'Note created successfully!', true, CheckIcon);
     closeNoteDialog();
   }, [newNote, notesData, handleFlash, closeNoteDialog]);
 
@@ -96,7 +96,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       setNotesData(
         notesData.map((note) => (note.id === id ? updatedNote.data : note))
       );
-      handleFlash('success', 'Note updated successfully!', CheckIcon, true);
+      handleFlash('success', 'Note updated successfully!', true, CheckIcon);
       closeNoteDialog();
     },
     [notesData, handleFlash, closeNoteDialog]
@@ -107,7 +107,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       await notes.delete(id);
       setNotesData(notesData.filter((note) => note.id !== id));
       console.log('Note deleted successfully!');
-      // handleFlash('success', 'Note deleted successfully!', CheckIcon, true);
+      handleFlash('success', 'Note deleted successfully!', true, CheckIcon);
       closeNoteDialog();
     },
     [notesData, handleFlash, closeNoteDialog]

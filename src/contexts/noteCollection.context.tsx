@@ -122,8 +122,8 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
     handleFlash(
       'success',
       'NoteCollection created successfully!',
-      CheckIcon,
-      true
+      true,
+      CheckIcon
     );
     closeNoteCollectionDialog();
   }, [
@@ -144,8 +144,8 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       handleFlash(
         'success',
         'NoteCollection updated successfully!',
-        CheckIcon,
-        true
+        true,
+        CheckIcon
       );
       closeNoteCollectionDialog();
     },
@@ -161,8 +161,8 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       handleFlash(
         'success',
         'NoteCollection deleted successfully!',
-        CheckIcon,
-        true
+        true,
+        CheckIcon
       );
       closeNoteCollectionDialog();
     },
