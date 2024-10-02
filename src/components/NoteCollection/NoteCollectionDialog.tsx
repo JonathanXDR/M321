@@ -129,7 +129,7 @@ function NoteCollectionDialog() {
             </FormControl>
             <FormControl>
               <FormControl.Label>Notes</FormControl.Label>
-              <AutoCompleteTokenInput notes={notes} />
+              <AutoCompleteTokenInput notes={selectedNoteCollection.notes} />
 
               {/* Show this validation message, if there are notes, which already have a relation to another noteCollection */}
               <FormControl.Validation
