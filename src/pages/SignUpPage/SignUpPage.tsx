@@ -52,16 +52,16 @@ const SignUpPage = () => {
 
   const errors: ValidationError[] = [
     { key: 'username', title: 'Username', ref: usernameRef },
+    { key: 'first-name', title: 'First name', ref: firstNameRef },
+    { key: 'last-name', title: 'Last name', ref: lastNameRef },
+    { key: 'age', title: 'Age', ref: ageRef },
+    { key: 'gender', title: 'Gender', ref: genderRef },
     { key: 'password', title: 'Password', ref: passwordRef },
     {
       key: 'confirm-password',
       title: 'Confirm password',
       ref: confirmPasswordRef,
     },
-    { key: 'first-name', title: 'First name', ref: firstNameRef },
-    { key: 'last-name', title: 'Last name', ref: lastNameRef },
-    { key: 'age', title: 'Age', ref: ageRef },
-    { key: 'gender', title: 'Gender', ref: genderRef },
   ];
 
   const getValidationStyle = (validation: boolean) => ({
