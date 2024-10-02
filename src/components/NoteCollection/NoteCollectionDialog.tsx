@@ -6,11 +6,6 @@ import AutoCompleteTokenInput from '../AutoCompleteTokenInput';
 import { useState } from 'react';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 
-interface Token {
-  id: string;
-  text: string;
-}
-
 function NoteCollectionDialog() {
   const {
     selectedNoteCollection,
@@ -104,12 +99,6 @@ function NoteCollectionDialog() {
     }
   };
 
-  const notesToTokens = (notes: Note[]): Token[] =>
-    notes.map((note) => ({
-      id: note.id,
-      text: note.title,
-    }));
-
   return (
     <Box onClick={(e) => e.stopPropagation()}>
       <Dialog
@@ -140,14 +129,9 @@ function NoteCollectionDialog() {
             </FormControl>
             <FormControl>
               <FormControl.Label>Notes</FormControl.Label>
-              <AutoCompleteTokenInput
-                initialNotes={selectedNoteCollection.notes}
-                onNotesChange={(newNotes) => {
-                  noteCollectionDialogType === 'create'
-                    ? setCreatedNotes(newNotes)
-                    : setUpdatedNotes(newNotes);
-                }}
-              />
+              <AutoCompleteTokenInput notes={notes} />
+
+              {/* Show this validation message, if there are notes, which already have a relation to another noteCollection */}
               <FormControl.Validation
                 id="warning"
                 variant="warning"
@@ -155,7 +139,6 @@ function NoteCollectionDialog() {
                   marginTop: 2,
                 }}
               >
-                {/* <StyledOcticon icon={AlertIcon} color="attention.fg" /> */}
                 Previous assigned notes will be reassigned to this
                 NoteCollection
               </FormControl.Validation>
