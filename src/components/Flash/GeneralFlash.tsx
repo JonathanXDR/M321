@@ -1,24 +1,14 @@
-import {
-  Box,
-  Flash,
-  IconButton,
-  Link,
-  PageLayout,
-  StyledOcticon,
-} from '@primer/react';
+import { Box, Flash, IconButton, StyledOcticon } from '@primer/react';
 import { useGeneralContext } from '../../contexts/general.context';
 import { XIcon } from '@primer/octicons-react';
 
 const GeneralFlash = () => {
   const {
-    notesData,
-    noteCollectionsData,
-    fetchAllData,
     flashVisible,
+    setFlashVisible,
     flashIcon,
     flashVariant,
     flashMessage,
-    handleFlash,
   } = useGeneralContext();
 
   return (
@@ -47,7 +37,7 @@ const GeneralFlash = () => {
             variant="invisible"
             aria-label="Close flash"
             icon={XIcon}
-            // onClick={() => setError(false)}
+            onClick={() => setFlashVisible(false)}
           />
         </Flash>
       )}

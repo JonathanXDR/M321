@@ -11,13 +11,16 @@ interface GeneralContextData {
   loading: boolean;
   fetchAllData: () => Promise<void>;
   flashVisible: boolean;
+  setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  flashVariant: 'default' | 'success' | 'warning' | 'danger';
   flashMessage: string;
   flashIcon: Icon | null;
-  flashVariant: 'default' | 'success' | 'warning' | 'danger';
+  flashCloseButton: boolean;
   handleFlash: (
+    variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
     icon?: Icon,
-    variant?: 'default' | 'success' | 'warning' | 'danger'
+    closeButton?: boolean
   ) => void;
 }
 
@@ -51,21 +54,24 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   };
 
   const [flashVisible, setFlashVisible] = useState(false);
-  const [flashMessage, setFlashMessage] = useState('');
-  const [flashIcon, setFlashIcon] = useState<Icon | null>(null);
   const [flashVariant, setFlashVariant] = useState<
     'default' | 'success' | 'warning' | 'danger'
   >('default');
+  const [flashMessage, setFlashMessage] = useState('');
+  const [flashIcon, setFlashIcon] = useState<Icon | null>(null);
+  const [flashCloseButton, setFlashCloseButton] = useState(false);
 
   const handleFlash = (
+    variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
     icon?: Icon,
-    variant?: 'default' | 'success' | 'warning' | 'danger'
+    closeButton?: boolean
   ) => {
-    setFlashMessage(message);
-    setFlashVariant(variant || 'default');
-    setFlashIcon(icon || null);
     setFlashVisible(true);
+    setFlashVariant(variant);
+    setFlashMessage(message);
+    setFlashIcon(icon || null);
+    setFlashCloseButton(closeButton || false);
 
     setTimeout(() => {
       setFlashVisible(false);
@@ -80,9 +86,11 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         loading,
         fetchAllData,
         flashVisible,
+        setFlashVisible,
+        flashVariant,
         flashMessage,
         flashIcon,
-        flashVariant,
+        flashCloseButton,
         handleFlash,
       }}
     >

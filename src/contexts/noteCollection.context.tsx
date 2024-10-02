@@ -36,7 +36,9 @@ interface NoteCollectionContextData {
     notes: Note[]
   ) => Promise<void>;
   handleDeleteNoteCollection: (id: string) => Promise<void>;
-  confirmDeleteNoteCollection: () => Promise<void>;
+  confirmDeleteNoteCollection: (
+    noteCollection: NoteCollection
+  ) => Promise<void>;
 }
 
 const defaultNoteCollection = {
@@ -92,7 +94,9 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
     setNoteCollectionDialogIsOpen(false);
   }, []);
 
-  const confirmDeleteNoteCollection = async () => {
+  const confirmDeleteNoteCollection = async (
+    noteCollection: NoteCollection
+  ) => {
     if (
       await confirm({
         title: 'Confirm action?',
@@ -100,7 +104,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
         confirmButtonType: 'danger',
       })
     ) {
-      handleDeleteNoteCollection(selectedNoteCollection.id);
+      handleDeleteNoteCollection(noteCollection.id);
     }
   };
 
@@ -115,7 +119,12 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       createdNoteCollection.data,
     ]);
     setNewNoteCollection('');
-    handleFlash('NoteCollection created successfully!', CheckIcon, 'success');
+    handleFlash(
+      'success',
+      'NoteCollection created successfully!',
+      CheckIcon,
+      true
+    );
     closeNoteCollectionDialog();
   }, [
     newNoteCollection,
@@ -132,7 +141,12 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
           noteCollection.id === id ? updatedNoteCollection.data : noteCollection
         )
       );
-      handleFlash('NoteCollection updated successfully!', CheckIcon, 'success');
+      handleFlash(
+        'success',
+        'NoteCollection updated successfully!',
+        CheckIcon,
+        true
+      );
       closeNoteCollectionDialog();
     },
     [noteCollectionsData, handleFlash, closeNoteCollectionDialog]
@@ -144,7 +158,12 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       setNoteCollectionsData(
         noteCollectionsData.filter((noteCollection) => noteCollection.id !== id)
       );
-      handleFlash('NoteCollection deleted successfully!', CheckIcon, 'success');
+      handleFlash(
+        'success',
+        'NoteCollection deleted successfully!',
+        CheckIcon,
+        true
+      );
       closeNoteCollectionDialog();
     },
     [noteCollectionsData, handleFlash, closeNoteCollectionDialog]

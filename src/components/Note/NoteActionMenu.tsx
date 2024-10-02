@@ -47,7 +47,7 @@ function NoteActionMenu({ note }: any) {
               variant="danger"
               onSelect={() => {
                 setSelectedNote(note);
-                confirmDeleteNote();
+                confirmDeleteNote(note);
               }}
             >
               <ActionList.LeadingVisual>

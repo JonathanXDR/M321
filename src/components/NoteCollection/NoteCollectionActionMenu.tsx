@@ -49,7 +49,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
               variant="danger"
               onSelect={() => {
                 setSelectedNoteCollection(noteCollection);
-                confirmDeleteNoteCollection();
+                confirmDeleteNoteCollection(noteCollection);
               }}
             >
               <ActionList.LeadingVisual>

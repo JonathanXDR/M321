@@ -53,7 +53,7 @@ const NoteItem = ({ note }: any) => {
             variant="danger"
             onClick={() => {
               setSelectedNote(note);
-              confirmDeleteNote();
+              confirmDeleteNote(note);
             }}
           >
             Delete

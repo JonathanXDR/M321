@@ -29,7 +29,7 @@ interface NoteContextData {
     content: string
   ) => Promise<void>;
   handleDeleteNote: (id: string) => Promise<void>;
-  confirmDeleteNote: () => Promise<void>;
+  confirmDeleteNote: (note: Note) => Promise<void>;
 }
 
 const defaultNote = {
@@ -66,7 +66,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     setNoteDialogIsOpen(false);
   }, []);
 
-  const confirmDeleteNote = async () => {
+  const confirmDeleteNote = async (note: Note) => {
     if (
       await confirm({
         title: 'Confirm action?',
@@ -74,7 +74,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
         confirmButtonType: 'danger',
       })
     ) {
-      handleDeleteNote(selectedNote.id);
+      handleDeleteNote(note.id);
     }
   };
 
@@ -86,7 +86,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     });
     setNotesData([...notesData, createdNote.data]);
     setNewNote('');
-    handleFlash('Note created successfully!', CheckIcon, 'success');
+    handleFlash('success', 'Note created successfully!', CheckIcon, true);
     closeNoteDialog();
   }, [newNote, notesData, handleFlash, closeNoteDialog]);
 
@@ -96,7 +96,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       setNotesData(
         notesData.map((note) => (note.id === id ? updatedNote.data : note))
       );
-      handleFlash('Note updated successfully!', CheckIcon, 'success');
+      handleFlash('success', 'Note updated successfully!', CheckIcon, true);
       closeNoteDialog();
     },
     [notesData, handleFlash, closeNoteDialog]
@@ -106,7 +106,8 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     async (id: string) => {
       await notes.delete(id);
       setNotesData(notesData.filter((note) => note.id !== id));
-      handleFlash('Note deleted successfully!', CheckIcon, 'success');
+      console.log('Note deleted successfully!');
+      // handleFlash('success', 'Note deleted successfully!', CheckIcon, true);
       closeNoteDialog();
     },
     [notesData, handleFlash, closeNoteDialog]

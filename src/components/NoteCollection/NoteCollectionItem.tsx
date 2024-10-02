@@ -56,7 +56,7 @@ const NoteCollectionItem = ({ noteCollection }: any) => {
               variant="danger"
               onClick={() => {
                 setSelectedNoteCollection(noteCollection);
-                confirmDeleteNoteCollection();
+                confirmDeleteNoteCollection(noteCollection);
               }}
             >
               Delete
