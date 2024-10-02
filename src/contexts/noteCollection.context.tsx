@@ -14,8 +14,6 @@ interface NoteCollectionContextData {
     React.SetStateAction<NoteCollection>
   >;
   selectedNoteCollection: NoteCollection;
-  newNoteCollection: string;
-  setNewNoteCollection: React.Dispatch<React.SetStateAction<string>>;
   noteCollectionDialogIsOpen: boolean;
   setNoteCollectionDialogIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   noteCollectionDialogType: NoteCollectionDialogType;
@@ -24,7 +22,7 @@ interface NoteCollectionContextData {
   >;
   openNoteCollectionDialog: (type: NoteCollectionDialogType) => void;
   closeNoteCollectionDialog: () => void;
-  handleCreateNoteCollection: () => Promise<void>;
+  handleCreateNoteCollection: (title: string, notes: Note[]) => Promise<void>;
   handleUpdateNoteCollection: (
     id: string,
     title: string,
@@ -65,7 +63,6 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
 }) => {
   const [selectedNoteCollection, setSelectedNoteCollection] =
     useState<NoteCollection>(defaultNoteCollection);
-  const [newNoteCollection, setNewNoteCollection] = useState('');
   const [noteCollectionDialogIsOpen, setNoteCollectionDialogIsOpen] =
     useState(false);
   const [noteCollectionDialogType, setNoteCollectionDialogType] =
@@ -101,25 +98,21 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
     }
   };
 
-  const handleCreateNoteCollection = useCallback(async () => {
-    if (!newNoteCollection) return;
-    const createdNoteCollection = await noteCollections.create({
-      title: newNoteCollection,
-      notes: [],
-    });
-    setNoteCollectionsData([
-      ...noteCollectionsData,
-      createdNoteCollection.data,
-    ]);
-    setNewNoteCollection('');
-    handleFlash('success', 'NoteCollection created successfully!', true);
-    closeNoteCollectionDialog();
-  }, [
-    newNoteCollection,
-    noteCollectionsData,
-    handleFlash,
-    closeNoteCollectionDialog,
-  ]);
+  const handleCreateNoteCollection = useCallback(
+    async (title: string, notes: Note[]) => {
+      const createdNoteCollection = await noteCollections.create({
+        title: title,
+        notes: notes,
+      });
+      setNoteCollectionsData([
+        ...noteCollectionsData,
+        createdNoteCollection.data,
+      ]);
+      handleFlash('success', 'NoteCollection created successfully!', true);
+      closeNoteCollectionDialog();
+    },
+    [noteCollectionsData, handleFlash, closeNoteCollectionDialog]
+  );
 
   const handleUpdateNoteCollection = useCallback(
     async (id: string, title: string, notes: Note[]) => {
@@ -152,8 +145,6 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
       value={{
         setSelectedNoteCollection,
         selectedNoteCollection,
-        newNoteCollection,
-        setNewNoteCollection,
         noteCollectionDialogIsOpen,
         setNoteCollectionDialogIsOpen,
         noteCollectionDialogType,

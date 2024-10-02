@@ -11,15 +11,13 @@ type NoteDialogType = 'create' | 'update' | 'delete' | null;
 interface NoteContextData {
   setSelectedNote: React.Dispatch<React.SetStateAction<Note>>;
   selectedNote: Note;
-  newNote: string;
-  setNewNote: React.Dispatch<React.SetStateAction<string>>;
   noteDialogIsOpen: boolean;
   setNoteDialogIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   noteDialogType: NoteDialogType;
   setNoteDialogType: React.Dispatch<React.SetStateAction<NoteDialogType>>;
   openNoteDialog: (type: NoteDialogType) => void;
   closeNoteDialog: () => void;
-  handleCreateNote: () => Promise<void>;
+  handleCreateNote: (title: string, content: string) => Promise<void>;
   handleUpdateNote: (
     id: string,
     title: string,
@@ -46,7 +44,6 @@ export const useNoteContext = () => {
 
 export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const [selectedNote, setSelectedNote] = useState<Note>(defaultNote);
-  const [newNote, setNewNote] = useState('');
   const [noteDialogIsOpen, setNoteDialogIsOpen] = useState(false);
   const [noteDialogType, setNoteDialogType] = useState<NoteDialogType>(null);
 
@@ -74,17 +71,18 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     }
   };
 
-  const handleCreateNote = useCallback(async () => {
-    if (!newNote) return;
-    const createdNote = await notes.create({
-      title: newNote,
-      content: newNote,
-    });
-    setNotesData([...notesData, createdNote.data]);
-    setNewNote('');
-    handleFlash('success', 'Note created successfully!', true);
-    closeNoteDialog();
-  }, [newNote, notesData, handleFlash, closeNoteDialog]);
+  const handleCreateNote = useCallback(
+    async (title: string, content: string) => {
+      const createdNote = await notes.create({
+        title: title,
+        content: content,
+      });
+      setNotesData([...notesData, createdNote.data]);
+      handleFlash('success', 'Note created successfully!', true);
+      closeNoteDialog();
+    },
+    [notesData, handleFlash, closeNoteDialog]
+  );
 
   const handleUpdateNote = useCallback(
     async (id: string, title: string, content: string) => {
@@ -102,7 +100,6 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     async (id: string) => {
       await notes.delete(id);
       setNotesData(notesData.filter((note) => note.id !== id));
-      console.log('Note deleted successfully!');
       handleFlash('success', 'Note deleted successfully!', true);
       closeNoteDialog();
     },
@@ -114,8 +111,6 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
       value={{
         setSelectedNote,
         selectedNote,
-        newNote,
-        setNewNote,
         noteDialogIsOpen,
         setNoteDialogIsOpen,
         noteDialogType,

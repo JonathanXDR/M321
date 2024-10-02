@@ -62,7 +62,7 @@ function NoteDialog() {
           {
             content: 'Save',
             buttonType: 'primary' as const,
-            onClick: () => handleCreateNote(),
+            onClick: () => handleCreateNote(createdTitle, createdContent),
           },
         ];
       case 'update':

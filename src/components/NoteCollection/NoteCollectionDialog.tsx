@@ -71,7 +71,8 @@ function NoteCollectionDialog() {
           {
             content: 'Save',
             buttonType: 'primary' as const,
-            onClick: () => handleCreateNoteCollection(),
+            onClick: () =>
+              handleCreateNoteCollection(createdTitle, createdNotes),
           },
         ];
       case 'update':
