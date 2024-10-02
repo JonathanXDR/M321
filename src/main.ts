@@ -28,6 +28,15 @@ async function bootstrap() {
     }),
   );
 
+  const config = new DocumentBuilder()
+    .setTitle('Median')
+    .setDescription('The Median API description')
+    .setVersion('0.1')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/swagger', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

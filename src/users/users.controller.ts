@@ -15,7 +15,7 @@ export class UsersController {
     return this.usersService.findMany({});
   }
 
-  @Get(':id')
+  @Get('/:id')
   @ApiOkResponse({ type: UserEntity })
   async getUser(@Param('id') id: string): Promise<User> {
     try {
