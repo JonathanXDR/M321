@@ -1,7 +1,7 @@
 import { FormControl, TextInput, Text, Box } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { Note } from '../../types/note.interface';
-import NotesFormControl from '../NotesFormControl';
+import NotesFormControl from '../Note/NoteFormControl';
 
 import { useState } from 'react';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
@@ -99,6 +99,11 @@ function NoteCollectionDialog() {
     }
   };
 
+  const titleValue =
+    noteCollectionDialogType === 'create' ? createdTitle : updatedTitle;
+  const notesValue =
+    noteCollectionDialogType === 'create' ? createdNotes : updatedNotes;
+
   return (
     <Box onClick={(e) => e.stopPropagation()}>
       <Dialog
@@ -117,7 +122,7 @@ function NoteCollectionDialog() {
             <FormControl>
               <FormControl.Label>Title</FormControl.Label>
               <TextInput
-                value={selectedNoteCollection.title}
+                value={titleValue}
                 placeholder="Enter title"
                 onChange={(e) =>
                   noteCollectionDialogType === 'create'
@@ -129,6 +134,7 @@ function NoteCollectionDialog() {
             </FormControl>
             <NotesFormControl
               notes={selectedNoteCollection.notes}
+              notesValue={notesValue}
               setCreatedNotes={setCreatedNotes}
               setUpdatedNotes={setUpdatedNotes}
             />

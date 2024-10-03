@@ -6,15 +6,21 @@ import {
   Token,
 } from '@primer/react';
 import React, { useEffect, useState } from 'react';
-import { Note } from '../types/note.interface';
-import { AlertIcon } from '@primer/octicons-react';
-import { useNoteContext } from '../contexts/note.context';
-import { useNoteCollectionContext } from '../contexts/noteCollection.context';
-import { InputToken } from '../types/inputToken.interface';
+import { Note } from '../../types/note.interface';
+import { AlertIcon, CheckIcon } from '@primer/octicons-react';
+import { useNoteContext } from '../../contexts/note.context';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
+import { InputToken } from '../../types/inputToken.interface';
 
-function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
+function NoteFormControl({
+  notes,
+  notesValue,
+  setCreatedNotes,
+  setUpdatedNotes,
+}: any) {
   const { fetchNotesData } = useNoteContext();
-  const { noteCollectionDialogType } = useNoteCollectionContext();
+  const { noteCollectionDialogType, selectedNoteCollection } =
+    useNoteCollectionContext();
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
@@ -41,7 +47,11 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       id: note.id,
       text: note.title,
       leadingVisual:
-        note?.noteCollectionId !== null ? AlertIconOcticon : undefined,
+        note?.noteCollectionId === selectedNoteCollection.id
+          ? undefined
+          : note?.noteCollectionId !== null
+          ? AlertIconOcticon
+          : undefined,
       sx: { color: 'inherit' },
     }))
   );
@@ -86,7 +96,11 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
           id,
           text,
           leadingVisual:
-            note?.noteCollectionId !== null ? AlertIconOcticon : undefined,
+            note?.noteCollectionId === selectedNoteCollection.id
+              ? undefined
+              : note?.noteCollectionId !== null
+              ? AlertIconOcticon
+              : undefined,
           sx: { color: 'inherit' },
         };
       })
@@ -98,6 +112,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       <FormControl.Label>Notes</FormControl.Label>
       <Autocomplete>
         <Autocomplete.Input
+          value={notesValue}
           as={TextInputWithTokens}
           tokens={tokens}
           tokenComponent={Token}
@@ -107,7 +122,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
               ? setCreatedNotes(e.target.value)
               : setUpdatedNotes(e.target.value)
           }
-          sx={{ width: '100 %' }}
+          sx={{ width: '100%' }}
         />
         <Autocomplete.Overlay
           sx={{
@@ -120,7 +135,11 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
               id: note.id,
               text: note.title,
               trailingVisual:
-                note?.noteCollectionId !== null ? AlertIconOcticon : undefined,
+                note?.noteCollectionId === selectedNoteCollection.id
+                  ? undefined
+                  : note?.noteCollectionId !== null
+                  ? AlertIconOcticon
+                  : undefined,
               sx: {
                 color: 'inherit',
               },
@@ -147,4 +166,4 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
   );
 }
 
-export default NotesFormControl;
+export default NoteFormControl;
