@@ -13,6 +13,5 @@ jobs:
           password: ${{ secrets.GHCR_PAT }}
       - name: Build and push the frontend Docker image
         run: |
-          cd Frontend
           docker build . --tag ghcr.io/jonathanxdr/note-library-frontend:latest
           docker push ghcr.io/jonathanxdr/note-library-frontend:latest
