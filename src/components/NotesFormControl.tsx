@@ -14,8 +14,7 @@ import { InputToken } from '../types/inputToken.interface';
 
 function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
   const { fetchNotesData } = useNoteContext();
-  const { fetchNoteCollectionsData, noteCollectionDialogType } =
-    useNoteCollectionContext();
+  const { noteCollectionDialogType } = useNoteCollectionContext();
 
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
@@ -27,7 +26,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
     fetchAllNotes();
   }, [fetchNotesData]);
 
-  const AlertIconComponent = () => (
+  const AlertIconOcticon = () => (
     <StyledOcticon
       icon={AlertIcon}
       sx={{
@@ -37,66 +36,58 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
     />
   );
 
-  // Set the initial tokens using the current notes
-  const [tokens, setTokens] = React.useState<InputToken[]>(
+  const [tokens, setTokens] = useState<InputToken[]>(
     notes.map((note: Note) => ({
       id: note.id,
       text: note.title,
       leadingVisual:
-        note?.noteCollectionId !== null ? AlertIconComponent : undefined,
-      sx: {
-        color: 'inherit',
-      },
+        note?.noteCollectionId !== null ? AlertIconOcticon : undefined,
+      sx: { color: 'inherit' },
     }))
   );
 
-  const selectedTokenIds = tokens.map((token) => token.id);
-  const [selectedItemIds, setSelectedItemIds] =
-    React.useState(selectedTokenIds);
-  const onTokenRemove = (tokenId: any) => {
+  const selectedIds = tokens.map((token) => token.id);
+  const [selectedItemIds, setSelectedItemIds] = useState(selectedIds);
+  const removeToken = (tokenId: any) => {
     setTokens(tokens.filter((token) => token.id !== tokenId));
     setSelectedItemIds(selectedItemIds.filter((id) => id !== tokenId));
   };
 
-  const isItemSelected = (itemId: any) => selectedItemIds.includes(itemId);
-  const customSortFn = (itemIdA: any, itemIdB: any) =>
-    isItemSelected(itemIdA) === isItemSelected(itemIdB)
+  const isSelected = (itemId: any) => selectedItemIds.includes(itemId);
+  const sortFn = (itemIdA: any, itemIdB: any) =>
+    isSelected(itemIdA) === isSelected(itemIdB)
       ? 0
-      : isItemSelected(itemIdA)
+      : isSelected(itemIdA)
       ? 1
       : -1;
 
-  const onSelectedChange = (newlySelectedItems: any) => {
-    if (!Array.isArray(newlySelectedItems)) {
+  const handleSelectedChange = (newItems: any) => {
+    if (!Array.isArray(newItems)) {
       return;
     }
 
-    setSelectedItemIds(newlySelectedItems.map((item) => item.id));
+    setSelectedItemIds(newItems.map((item) => item.id));
 
-    if (newlySelectedItems.length < selectedItemIds.length) {
-      const newlySelectedItemIds = newlySelectedItems.map(({ id }) => id);
-      const removedItemIds = selectedTokenIds.filter(
-        (id) => !newlySelectedItemIds.includes(id)
-      );
+    if (newItems.length < selectedItemIds.length) {
+      const newItemIds = newItems.map(({ id }) => id);
+      const removedIds = selectedIds.filter((id) => !newItemIds.includes(id));
 
-      for (const removedItemId of removedItemIds) {
-        onTokenRemove(removedItemId);
+      for (const removedId of removedIds) {
+        removeToken(removedId);
       }
 
       return;
     }
 
     setTokens(
-      newlySelectedItems.map(({ id, text, sx }) => {
+      newItems.map(({ id, text }) => {
         const note = allNotes.find((note) => note.id === id);
         return {
           id,
           text,
           leadingVisual:
-            note?.noteCollectionId !== null ? AlertIconComponent : undefined,
-          sx: {
-            color: 'inherit',
-          },
+            note?.noteCollectionId !== null ? AlertIconOcticon : undefined,
+          sx: { color: 'inherit' },
         };
       })
     );
@@ -110,15 +101,13 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
           as={TextInputWithTokens}
           tokens={tokens}
           tokenComponent={Token}
-          onTokenRemove={onTokenRemove}
+          onTokenRemove={removeToken}
           onChange={(e) =>
             noteCollectionDialogType === 'create'
               ? setCreatedNotes(e.target.value)
               : setUpdatedNotes(e.target.value)
           }
-          sx={{
-            width: '100%',
-          }}
+          sx={{ width: '100 %' }}
         />
         <Autocomplete.Overlay
           sx={{
@@ -131,23 +120,20 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
               id: note.id,
               text: note.title,
               trailingVisual:
-                note?.noteCollectionId !== null
-                  ? AlertIconComponent
-                  : undefined,
+                note?.noteCollectionId !== null ? AlertIconOcticon : undefined,
               sx: {
                 color: 'inherit',
               },
             }))}
             selectedItemIds={selectedItemIds}
-            onSelectedChange={onSelectedChange}
-            sortOnCloseFn={customSortFn}
+            onSelectedChange={handleSelectedChange}
+            sortOnCloseFn={sortFn}
             selectionVariant="multiple"
             aria-labelledby="autocompleteLabel-customRenderedItem"
           />
         </Autocomplete.Overlay>
       </Autocomplete>
 
-      {/* Show this validation message, if there are notes, which already have a relation to another noteCollection */}
       <FormControl.Validation
         id="warning"
         variant="warning"
