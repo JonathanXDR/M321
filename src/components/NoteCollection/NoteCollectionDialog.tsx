@@ -1,7 +1,7 @@
 import { FormControl, TextInput, Text, Box } from '@primer/react';
 import { Dialog, DialogButtonProps } from '@primer/react/drafts';
 import { Note } from '../../types/note.interface';
-import AutoCompleteTokenInput from '../AutoCompleteTokenInput';
+import NotesFormControl from '../NotesFormControl';
 
 import { useState } from 'react';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
@@ -127,22 +127,11 @@ function NoteCollectionDialog() {
                 sx={{ width: '100%', marginBottom: '4' }}
               />
             </FormControl>
-            <FormControl>
-              <FormControl.Label>Notes</FormControl.Label>
-              <AutoCompleteTokenInput notes={selectedNoteCollection.notes} />
-
-              {/* Show this validation message, if there are notes, which already have a relation to another noteCollection */}
-              <FormControl.Validation
-                id="warning"
-                variant="warning"
-                sx={{
-                  marginTop: 2,
-                }}
-              >
-                Previous assigned notes will be reassigned to this
-                NoteCollection
-              </FormControl.Validation>
-            </FormControl>
+            <NotesFormControl
+              notes={selectedNoteCollection.notes}
+              setCreatedNotes={setCreatedNotes}
+              setUpdatedNotes={setUpdatedNotes}
+            />
           </>
         )}
       </Dialog>
