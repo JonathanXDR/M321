@@ -25,14 +25,18 @@ import './HomePage.module.css';
 
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
-  const { notesData, noteCollectionsData, fetchAllData } = useGeneralContext();
-  const { noteDialogIsOpen, openNoteDialog } = useNoteContext();
+  const { notesData, noteCollectionsData } = useGeneralContext();
+  const { fetchNotesData, noteDialogIsOpen, openNoteDialog } = useNoteContext();
 
-  const { noteCollectionDialogIsOpen, openNoteCollectionDialog } =
-    useNoteCollectionContext();
+  const {
+    fetchNoteCollectionsData,
+    noteCollectionDialogIsOpen,
+    openNoteCollectionDialog,
+  } = useNoteCollectionContext();
 
   useEffect(() => {
-    fetchAllData();
+    fetchNotesData();
+    fetchNoteCollectionsData();
   }, []);
 
   const renderFilteredNoteItems = () =>

@@ -12,7 +12,6 @@ interface GeneralContextData {
     React.SetStateAction<NoteCollection[]>
   >;
   loading: boolean;
-  fetchAllData: () => Promise<Note[] | NoteCollection[]>;
   flashVisible: boolean;
   setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>;
   flashVariant: 'default' | 'success' | 'warning' | 'danger';
@@ -44,18 +43,6 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchAllData = async (): Promise<Note[] | NoteCollection[]> => {
-    const allNotesResponse = await notes.getAll();
-    setNotesData(allNotesResponse.data);
-
-    const allNoteCollectionsResponse = await noteCollections.getAll();
-    setNoteCollectionsData(allNoteCollectionsResponse.data);
-
-    setLoading(false);
-
-    return allNotesResponse.data;
-  };
-
   const [flashVisible, setFlashVisible] = useState(false);
   const [flashVariant, setFlashVariant] = useState<
     'default' | 'success' | 'warning' | 'danger'
@@ -86,7 +73,6 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         noteCollectionsData,
         setNoteCollectionsData,
         loading,
-        fetchAllData,
         flashVisible,
         setFlashVisible,
         flashVariant,

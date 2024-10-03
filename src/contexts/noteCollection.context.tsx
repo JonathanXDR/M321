@@ -10,6 +10,7 @@ interface NoteCollectionProviderProps extends React.PropsWithChildren<{}> {}
 type NoteCollectionDialogType = 'create' | 'update' | 'delete' | null;
 
 interface NoteCollectionContextData {
+  fetchNoteCollectionsData: () => Promise<NoteCollection[]>;
   setSelectedNoteCollection: React.Dispatch<
     React.SetStateAction<NoteCollection>
   >;
@@ -71,6 +72,13 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
   const { handleFlash, noteCollectionsData, setNoteCollectionsData } =
     useGeneralContext();
   const confirm = useConfirm();
+
+  const fetchNoteCollectionsData = async (): Promise<NoteCollection[]> => {
+    const allNoteCollectionsResponse = await noteCollections.getAll();
+    setNoteCollectionsData(allNoteCollectionsResponse.data);
+
+    return allNoteCollectionsResponse.data;
+  };
 
   const openNoteCollectionDialog = useCallback(
     (type: NoteCollectionDialogType) => {
@@ -143,6 +151,7 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
   return (
     <NoteCollectionContext.Provider
       value={{
+        fetchNoteCollectionsData,
         setSelectedNoteCollection,
         selectedNoteCollection,
         noteCollectionDialogIsOpen,

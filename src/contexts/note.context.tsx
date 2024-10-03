@@ -9,6 +9,7 @@ interface NoteProviderProps extends React.PropsWithChildren<{}> {}
 type NoteDialogType = 'create' | 'update' | 'delete' | null;
 
 interface NoteContextData {
+  fetchNotesData: () => Promise<Note[]>;
   setSelectedNote: React.Dispatch<React.SetStateAction<Note>>;
   selectedNote: Note;
   noteDialogIsOpen: boolean;
@@ -49,6 +50,13 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
 
   const { handleFlash, notesData, setNotesData } = useGeneralContext();
   const confirm = useConfirm();
+
+  const fetchNotesData = async (): Promise<Note[]> => {
+    const allNotesResponse = await notes.getAll();
+    setNotesData(allNotesResponse.data);
+
+    return allNotesResponse.data;
+  };
 
   const openNoteDialog = useCallback((type: NoteDialogType) => {
     setNoteDialogType(type);
@@ -109,6 +117,7 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   return (
     <NoteContext.Provider
       value={{
+        fetchNotesData,
         setSelectedNote,
         selectedNote,
         noteDialogIsOpen,

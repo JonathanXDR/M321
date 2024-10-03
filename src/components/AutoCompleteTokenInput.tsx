@@ -11,6 +11,8 @@ import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
 import { useGeneralContext } from '../contexts/general.context';
 import { AlertIcon } from '@primer/octicons-react';
+import { useNoteContext } from '../contexts/note.context';
+import { useNoteCollectionContext } from '../contexts/noteCollection.context';
 
 function AutoCompleteTokenInput({ notes }: any) {
   // const initialTokens = notes.map((note: Note) => ({
@@ -19,7 +21,8 @@ function AutoCompleteTokenInput({ notes }: any) {
   //   assigned: note.noteCollectionId !== null,
   // }));
   // const [tokens, setTokens] = React.useState<Token[]>(initialTokens);
-  const { fetchAllData, useImportantColor } = useGeneralContext();
+  const { fetchNotesData } = useNoteContext();
+  const { fetchNoteCollectionsData } = useNoteCollectionContext();
 
   const [tokens, setTokens] = React.useState([
     {
