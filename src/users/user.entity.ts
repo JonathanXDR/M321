@@ -1,5 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { User, NoteCollection } from '@prisma/client';
+
+// model User {
+//   id              String           @id @default(uuid()) @db.VarChar(36)
+//   username        String           @unique @db.VarChar(30)
+//   password        String           @db.VarChar(100)
+//   firstname       String           @db.VarChar(30)
+//   lastname        String           @db.VarChar(30)
+//   age             Int              @db.TinyInt()
+//   gender          String           @db.VarChar(10)
+//   noteCollections NoteCollection[]
+// }
 
 export class UserEntity implements User {
   @ApiProperty()
@@ -22,4 +33,7 @@ export class UserEntity implements User {
 
   @ApiProperty()
   gender: string;
+
+  @ApiProperty()
+  noteCollections: NoteCollection[];
 }

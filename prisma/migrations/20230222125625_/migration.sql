@@ -8,6 +8,7 @@
 -- AlterTable
 ALTER TABLE `User` DROP PRIMARY KEY,
     MODIFY `id` VARCHAR(36) NOT NULL,
+    MODIFY `gender` VARCHAR(30) NOT NULL,
     ADD PRIMARY KEY (`id`);
 
 -- DropTable

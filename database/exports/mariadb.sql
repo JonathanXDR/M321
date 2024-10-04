@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: mariadb
--- Generation Time: 2023-02-17 15:46:19.2280
+-- Generation Time: 2023-02-22 13:55:42.7000
 -- -------------------------------------------------------------
 
 
@@ -18,41 +18,48 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-DROP TABLE IF EXISTS `Book`;
-CREATE TABLE `Book` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(191) NOT NULL,
-  `releaseYear` int(11) NOT NULL,
-  `author` varchar(191) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+DROP TABLE IF EXISTS `Note`;
+CREATE TABLE `Note` (
+  `id` varchar(36) NOT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `content` text NOT NULL,
+  `noteCollectionId` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Note_noteCollectionId_fkey` (`noteCollectionId`),
+  CONSTRAINT `Note_noteCollectionId_fkey` FOREIGN KEY (`noteCollectionId`) REFERENCES `NoteCollection` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `NoteCollection`;
+CREATE TABLE `NoteCollection` (
+  `id` varchar(36) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `userId` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `NoteCollection_userId_fkey` (`userId`),
+  CONSTRAINT `NoteCollection_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(36) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(100) NOT NULL,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
   `age` tinyint(4) NOT NULL,
-  `gender` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `gender` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `User_username_key` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `Book` (`id`, `title`, `releaseYear`, `author`) VALUES
-(1, 'The Great Gatsby', 1925, 'F. Scott Fitzgerald'),
-(2, 'To Kill a Mockingbird', 1960, 'Harper Lee'),
-(3, '1984', 1949, 'George Orwell'),
-(4, 'Pride and Prejudice', 1813, 'Jane Austen'),
-(5, 'The Catcher in the Rye', 1951, 'J.D. Salinger'),
-(6, 'The Hobbit', 1937, 'J.R.R. Tolkien'),
-(7, 'The Lord of the Rings', 1954, 'J.R.R. Tolkien'),
-(8, 'The Hunger Games', 2008, 'Suzanne Collins'),
-(9, 'The Da Vinci Code', 2003, 'Dan Brown'),
-(10, 'The Girl with the Dragon Tattoo', 2005, 'Stieg Larsson');
+INSERT INTO `Note` (`id`, `title`, `content`, `noteCollectionId`) VALUES
+('03870b8d-3b3a-5f3e-a299-6b0509902d30', 'Note 1', 'Content 1', 'b9c13633-8e11-59e2-bb62-97f47f774b8e');
+
+INSERT INTO `NoteCollection` (`id`, `title`, `userId`) VALUES
+('b9c13633-8e11-59e2-bb62-97f47f774b8e', 'NoteCollection 1', 'f15e9d13-2766-570a-8d3e-3d766cbcf547');
 
 INSERT INTO `User` (`id`, `username`, `password`, `firstname`, `lastname`, `age`, `gender`) VALUES
-(1, 'jonathan_russ', '1234', 'Jonathan', 'Russ', 17, 'Male');
+('f15e9d13-2766-570a-8d3e-3d766cbcf547', 'jonathan_russ', '$2a$10$pI9k47Ugd/u1PJ0Y1smtz.NNl/0ooSbEmM21GVzQeSUiUHpWvJKre', 'Jonathan', 'Russ', 17, 'Male');
 
 
 

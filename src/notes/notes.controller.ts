@@ -28,7 +28,7 @@ export class NotesController {
     return this.notesService.findMany({});
   }
 
-  @Get(':id')
+  @Get('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async getNote(@Request() req, @Param('id') id: string): Promise<Note> {
     try {
@@ -47,7 +47,7 @@ export class NotesController {
     return this.notesService.createNote(request);
   }
 
-  @Put(':id')
+  @Put('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async updateNote(
     @Request() req,
@@ -64,7 +64,7 @@ export class NotesController {
     }
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async deleteNote(@Param('id') id: string): Promise<Note> {
     return this.notesService.deleteNote({ id });

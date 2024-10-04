@@ -30,7 +30,7 @@ export class NoteCollectionsController {
     return this.noteCollectionsService.findMany({});
   }
 
-  @Get(':id')
+  @Get('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async getNoteCollection(
     @Request() req,
@@ -52,7 +52,7 @@ export class NoteCollectionsController {
     return this.noteCollectionsService.createNoteCollection(request);
   }
 
-  @Put(':id')
+  @Put('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async updateNoteCollection(
     @Request() req,
@@ -69,7 +69,7 @@ export class NoteCollectionsController {
     }
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async deleteNoteCollection(@Param('id') id: string): Promise<NoteCollection> {
     return this.noteCollectionsService.deleteNoteCollection({ id });
