@@ -1,26 +1,17 @@
--- CreateTable
-CREATE TABLE `Book` (
-    `id` VARCHAR(36) NOT NULL,
-    `title` VARCHAR(100) NOT NULL,
-    `releaseYear` YEAR NOT NULL,
-    `author` VARCHAR(30) NOT NULL,
+/*
+  Warnings:
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  - The primary key for the `User` table will be changed. If it partially fails, the table could be left without primary key constraint.
+  - You are about to drop the `Book` table. If the table is not empty, all the data it contains will be lost.
 
--- CreateTable
-CREATE TABLE `User` (
-    `id` VARCHAR(36) NOT NULL,
-    `username` VARCHAR(30) NOT NULL,
-    `password` VARCHAR(100) NOT NULL,
-    `firstname` VARCHAR(30) NOT NULL,
-    `lastname` VARCHAR(30) NOT NULL,
-    `age` TINYINT NOT NULL,
-    `gender` VARCHAR(10) NOT NULL,
+*/
+-- AlterTable
+ALTER TABLE `User` DROP PRIMARY KEY,
+    MODIFY `id` VARCHAR(36) NOT NULL,
+    ADD PRIMARY KEY (`id`);
 
-    UNIQUE INDEX `User_username_key`(`username`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- DropTable
+DROP TABLE `Book`;
 
 -- CreateTable
 CREATE TABLE `Note` (
