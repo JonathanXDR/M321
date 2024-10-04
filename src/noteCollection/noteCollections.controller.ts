@@ -17,7 +17,7 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { NoteCollectionEntity } from './noteCollection.entity';
 
 @UseGuards(JwtAuthGuard)
-@Controller('noteCollections')
+@Controller('note-collections')
 @ApiTags('noteCollections')
 export class NoteCollectionsController {
   constructor(
