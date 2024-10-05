@@ -39,9 +39,7 @@ export class NoteCollectionsController {
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.findOne({
-        where: { id, userId: req.user.id },
-      });
+      return this.noteCollectionsService.findOne(id);
     } catch (error) {
       throw new NotFoundException();
     }

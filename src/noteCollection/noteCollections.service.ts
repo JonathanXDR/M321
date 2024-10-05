@@ -9,6 +9,7 @@ export class NoteCollectionsService {
   async findOne(id) {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
+      include: { notes: true },
     });
     if (!noteCollection) {
       throw new NotFoundException('NoteCollection not found');
@@ -22,6 +23,7 @@ export class NoteCollectionsService {
     cursor?: Prisma.NoteCollectionWhereUniqueInput;
     where?: Prisma.NoteCollectionWhereInput;
     orderBy?: Prisma.NoteCollectionOrderByWithRelationInput;
+    include?: Prisma.NoteCollectionInclude;
   }): Promise<NoteCollection[]> {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.noteCollection.findMany({
@@ -30,6 +32,7 @@ export class NoteCollectionsService {
       cursor,
       where,
       orderBy,
+      include: { notes: true },
     });
   }
 

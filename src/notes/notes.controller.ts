@@ -25,7 +25,9 @@ export class NotesController {
   @Get()
   @ApiOkResponse({ type: [NoteEntity] })
   async getAllNotes(@Request() req): Promise<Note[]> {
-    return this.notesService.findMany({});
+    return this.notesService.findMany({
+      where: { NoteCollection: { userId: req.user.id } },
+    });
   }
 
   @Get('/:id')
