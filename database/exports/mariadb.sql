@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: mariadb
--- Generation Time: 2023-02-27 14:04:44.6880
+-- Generation Time: 2023-02-28 09:09:58.3300
 -- -------------------------------------------------------------
 
 
@@ -63,10 +63,11 @@ INSERT INTO `NoteCollection` (`id`, `title`, `userId`) VALUES
 ('25d10876-8f26-5369-a8fb-b73c34dd9c80', 'Exploring the World', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
 ('414cd979-8237-51c9-a362-fc6f20ce2657', 'A Journey Through the Mind', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
 ('4de794f8-e9b2-5025-ab64-f9b38bc193a1', 'Life Lessons Learned', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
-('b9c13633-8e11-59e2-bb62-97f47f774b8e', 'Musings and Reflections', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
-('e3e59734-2d21-5a09-a126-d4851f0a97dc', 'From Ideas to Action', 'f15e9d13-2766-570a-8d3e-3d766cbcf547');
+('b9c13633-8e11-59e2-bb62-97f47f774b8e', 'Musings and Reflections', 'e61d63b0-7824-5d39-8837-a4018b1ca868'),
+('e3e59734-2d21-5a09-a126-d4851f0a97dc', 'From Ideas to Action', 'e61d63b0-7824-5d39-8837-a4018b1ca868');
 
 INSERT INTO `User` (`id`, `username`, `password`, `firstname`, `lastname`, `age`, `gender`) VALUES
+('e61d63b0-7824-5d39-8837-a4018b1ca868', 'username', '$2a$10$GuvQCEzYPC4rsht7OriHPuohNy4wlNopatcizt6Yqf8PWkg58MpGq', 'username', 'password', 99, 'Credentials'),
 ('f15e9d13-2766-570a-8d3e-3d766cbcf547', 'jonathan_russ', '$2a$10$pI9k47Ugd/u1PJ0Y1smtz.NNl/0ooSbEmM21GVzQeSUiUHpWvJKre', 'Jonathan', 'Russ', 17, 'Male');
 
 

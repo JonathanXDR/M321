@@ -13,7 +13,7 @@ model User {
   password        String           @db.VarChar(100)
   firstname       String           @db.VarChar(30)
   lastname        String           @db.VarChar(30)
-  age             Int              @db.TinyInt()
+  age             Int              @db.TinyInt
   gender          String           @db.VarChar(30)
   noteCollections NoteCollection[]
 }
@@ -21,7 +21,7 @@ model User {
 model Note {
   id               String          @id @default(uuid()) @db.VarChar(36)
   title            String?         @db.VarChar(100)
-  content          String          @db.Text()
+  content          String          @db.Text
   NoteCollection   NoteCollection? @relation(fields: [noteCollectionId], references: [id])
   noteCollectionId String?         @db.VarChar(36)
 }
