@@ -27,7 +27,9 @@ export class NoteCollectionsController {
   @Get()
   @ApiOkResponse({ type: [NoteCollectionEntity] })
   async getAllNoteCollections(@Request() req): Promise<NoteCollection[]> {
-    return this.noteCollectionsService.findMany({});
+    return this.noteCollectionsService.findMany({
+      where: { userId: req.user.id },
+    });
   }
 
   @Get('/:id')
@@ -37,7 +39,9 @@ export class NoteCollectionsController {
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.findOne(id);
+      return this.noteCollectionsService.findOne({
+        where: { id, userId: req.user.id },
+      });
     } catch (error) {
       throw new NotFoundException();
     }

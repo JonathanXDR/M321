@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: mariadb
--- Generation Time: 2023-02-22 13:55:42.7000
+-- Generation Time: 2023-02-27 14:04:44.6880
 -- -------------------------------------------------------------
 
 
@@ -53,10 +53,18 @@ CREATE TABLE `User` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `Note` (`id`, `title`, `content`, `noteCollectionId`) VALUES
-('03870b8d-3b3a-5f3e-a299-6b0509902d30', 'Note 1', 'Content 1', 'b9c13633-8e11-59e2-bb62-97f47f774b8e');
+('03870b8d-3b3a-5f3e-a299-6b0509902d30', 'Grocery List', 'Eggs\nMilk\nBread\nBananas\nChicken breasts\nBroccoli\nCarrots\nPotatoes\nCheese', 'b9c13633-8e11-59e2-bb62-97f47f774b8e'),
+('1d0cd0bc-78c4-5175-b6ba-8581f6de599a', 'Brainstorming Session', 'Generated ideas for new product features\nDiscussed customer feedback and pain points\nPrioritized features based on impact and feasibility\nAssigned tasks to team members for next steps\nScheduled follow-up meeting', 'b9c13633-8e11-59e2-bb62-97f47f774b8e'),
+('57cac3d2-190e-5402-8c0a-c3013e526a1e', 'Meeting Notes', 'Discussed progress on current project\nIdentified roadblocks and potential solutions\nAgreed on timeline for next steps\nAssigned tasks to team members\nScheduled next meeting', 'b9c13633-8e11-59e2-bb62-97f47f774b8e'),
+('b291ceb3-0c11-5171-90fc-9209b3df9dbe', 'Recipe', 'Ingredients:\n1 lb ground beef\n1 onion, chopped\n2 cloves garlic, minced\n1 can diced tomatoes\n1 can kidney beans\n1 tbsp chili powder\nSalt and pepper to taste\nDirections:\nBrown the ground beef in a large pot over medium-high heat.\nAdd the onion and garlic and cook until softened.\nAdd the diced tomatoes, kidney beans, chili powder, salt, and pepper.\nSimmer for 20 minutes, stirring occasionally.', 'e3e59734-2d21-5a09-a126-d4851f0a97dc'),
+('ef4fc691-c1f1-5cf3-9ff4-f656c061b988', 'Travel Itinerary', 'Flight to Tokyo on May 5th\n3 nights in Tokyo\nTrain to Kyoto on May 8th\n4 nights in Kyoto\nTrain to Hiroshima on May 12th\n2 nights in Hiroshima\nFlight back on May 14th', '414cd979-8237-51c9-a362-fc6f20ce2657');
 
 INSERT INTO `NoteCollection` (`id`, `title`, `userId`) VALUES
-('b9c13633-8e11-59e2-bb62-97f47f774b8e', 'NoteCollection 1', 'f15e9d13-2766-570a-8d3e-3d766cbcf547');
+('25d10876-8f26-5369-a8fb-b73c34dd9c80', 'Exploring the World', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
+('414cd979-8237-51c9-a362-fc6f20ce2657', 'A Journey Through the Mind', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
+('4de794f8-e9b2-5025-ab64-f9b38bc193a1', 'Life Lessons Learned', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
+('b9c13633-8e11-59e2-bb62-97f47f774b8e', 'Musings and Reflections', 'f15e9d13-2766-570a-8d3e-3d766cbcf547'),
+('e3e59734-2d21-5a09-a126-d4851f0a97dc', 'From Ideas to Action', 'f15e9d13-2766-570a-8d3e-3d766cbcf547');
 
 INSERT INTO `User` (`id`, `username`, `password`, `firstname`, `lastname`, `age`, `gender`) VALUES
 ('f15e9d13-2766-570a-8d3e-3d766cbcf547', 'jonathan_russ', '$2a$10$pI9k47Ugd/u1PJ0Y1smtz.NNl/0ooSbEmM21GVzQeSUiUHpWvJKre', 'Jonathan', 'Russ', 17, 'Male');

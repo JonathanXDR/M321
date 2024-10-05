@@ -1,21 +1,5 @@
-import { NoteCollection } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDefined,
-  IsOptional,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsObject,
-} from 'class-validator';
-
-// model Note {
-//   id               String          @id @default(uuid()) @db.VarChar(36)
-//   title            String?         @db.VarChar(100)
-//   content          String          @db.Text()
-//   NoteCollection   NoteCollection? @relation(fields: [noteCollectionId], references: [id])
-//   noteCollectionId String?         @db.VarChar(36)
-// }
+import { IsDefined, IsOptional, IsNotEmpty, IsString } from 'class-validator';
 
 export class NoteRequest {
   @ApiProperty()
@@ -27,17 +11,11 @@ export class NoteRequest {
   @ApiProperty()
   @IsDefined()
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   content: string;
 
   @ApiProperty()
-  @IsDefined()
-  @IsNotEmpty()
-  @IsObject()
-  noteCollection: NoteCollection;
-
-  @ApiProperty()
-  @IsDefined()
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   noteCollectionId: string;
