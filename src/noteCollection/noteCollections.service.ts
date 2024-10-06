@@ -6,10 +6,14 @@ import { NoteCollection, Prisma } from '@prisma/client';
 export class NoteCollectionsService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id) {
+  async findOne(params: {
+    where: Prisma.NoteCollectionWhereUniqueInput;
+    include?: Prisma.NoteCollectionInclude;
+  }): Promise<NoteCollection> {
+    const { where, include } = params;
     const noteCollection = await this.prisma.noteCollection.findUnique({
-      where: { id },
-      include: { notes: true },
+      where,
+      include,
     });
     if (!noteCollection) {
       throw new NotFoundException('NoteCollection not found');
@@ -25,14 +29,14 @@ export class NoteCollectionsService {
     orderBy?: Prisma.NoteCollectionOrderByWithRelationInput;
     include?: Prisma.NoteCollectionInclude;
   }): Promise<NoteCollection[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where, orderBy, include } = params;
     return this.prisma.noteCollection.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
-      include: { notes: true },
+      include,
     });
   }
 
@@ -48,10 +52,10 @@ export class NoteCollectionsService {
     where: Prisma.NoteCollectionWhereUniqueInput;
     data: Prisma.NoteCollectionUpdateInput;
   }): Promise<NoteCollection> {
-    const { data, where } = params;
+    const { where, data } = params;
     return this.prisma.noteCollection.update({
-      data,
       where,
+      data,
     });
   }
 

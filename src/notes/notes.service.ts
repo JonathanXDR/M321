@@ -6,9 +6,14 @@ import { Note, Prisma } from '@prisma/client';
 export class NotesService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id) {
+  async findOne(params: {
+    where: Prisma.NoteWhereUniqueInput;
+    include?: Prisma.NoteInclude;
+  }): Promise<Note> {
+    const { where, include } = params;
     const note = await this.prisma.note.findUnique({
-      where: { id },
+      where,
+      include,
     });
     if (!note) {
       throw new NotFoundException('Note not found');
@@ -43,10 +48,10 @@ export class NotesService {
     where: Prisma.NoteWhereUniqueInput;
     data: Prisma.NoteUpdateInput;
   }): Promise<Note> {
-    const { data, where } = params;
+    const { where, data } = params;
     return this.prisma.note.update({
-      data,
       where,
+      data,
     });
   }
 

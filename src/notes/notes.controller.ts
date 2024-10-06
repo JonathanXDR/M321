@@ -34,7 +34,9 @@ export class NotesController {
   @ApiOkResponse({ type: NoteEntity })
   async getNote(@Request() req, @Param('id') id: string): Promise<Note> {
     try {
-      return this.notesService.findOne(id);
+      return this.notesService.findOne({
+        where: { id },
+      });
     } catch (error) {
       throw new NotFoundException();
     }
