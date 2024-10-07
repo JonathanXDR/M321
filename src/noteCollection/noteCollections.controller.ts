@@ -54,9 +54,9 @@ export class NoteCollectionsController {
   @ApiCreatedResponse({ type: NoteCollectionEntity })
   async createNoteCollection(
     @Request() req,
-    @Body() request: NoteCollectionRequest,
+    @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
-    return this.noteCollectionsService.createNoteCollection(request);
+    return this.noteCollectionsService.createNoteCollection(body);
   }
 
   @Put('/:id')
@@ -64,12 +64,12 @@ export class NoteCollectionsController {
   async updateNoteCollection(
     @Request() req,
     @Param('id') id: string,
-    @Body() request: NoteCollectionRequest,
+    @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     try {
       return this.noteCollectionsService.updateNoteCollection({
         where: { id },
-        data: request,
+        data: body,
       });
     } catch (error) {
       throw new NotFoundException();

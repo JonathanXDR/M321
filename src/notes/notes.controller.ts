@@ -59,11 +59,8 @@ export class NotesController {
 
   @Post()
   @ApiCreatedResponse({ type: NoteEntity })
-  async createNote(
-    @Request() req,
-    @Body() request: NoteRequest,
-  ): Promise<Note> {
-    return this.notesService.createNote(request);
+  async createNote(@Request() req, @Body() body: NoteRequest): Promise<Note> {
+    return this.notesService.createNote(body);
   }
 
   @Put('/:id')
@@ -71,12 +68,12 @@ export class NotesController {
   async updateNote(
     @Request() req,
     @Param('id') id: string,
-    @Body() request: NoteRequest,
+    @Body() body: NoteRequest,
   ): Promise<Note> {
     try {
       return this.notesService.updateNote({
         where: { id },
-        data: request,
+        data: body,
       });
     } catch (error) {
       throw new NotFoundException();
