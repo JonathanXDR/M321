@@ -41,7 +41,9 @@ export class NoteCollectionsController {
   ): Promise<NoteCollection> {
     try {
       return this.noteCollectionsService.findOne({
+        req,
         where: { id },
+        include: { notes: true },
       });
     } catch (error) {
       throw new NotFoundException();

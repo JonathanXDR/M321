@@ -7,15 +7,16 @@ export class NotesService {
   constructor(private prisma: PrismaService) {}
 
   async findOne(params: {
+    req: any;
     where: Prisma.NoteWhereUniqueInput;
     include?: Prisma.NoteInclude;
   }): Promise<Note> {
-    const { where, include } = params;
+    const { req, where, include } = params;
     const note = await this.prisma.note.findUnique({
       where,
       include,
     });
-    if (!note) {
+    if (!note || note.NoteCollection.userId !== req.user.id) {
       throw new NotFoundException('Note not found');
     }
     return note;
@@ -27,14 +28,16 @@ export class NotesService {
     cursor?: Prisma.NoteWhereUniqueInput;
     where?: Prisma.NoteWhereInput;
     orderBy?: Prisma.NoteOrderByWithRelationInput;
+    include?: Prisma.NoteInclude;
   }): Promise<Note[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where, orderBy, include } = params;
     return this.prisma.note.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
+      include,
     });
   }
 

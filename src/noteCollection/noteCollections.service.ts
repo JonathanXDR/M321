@@ -7,15 +7,16 @@ export class NoteCollectionsService {
   constructor(private prisma: PrismaService) {}
 
   async findOne(params: {
+    req: any;
     where: Prisma.NoteCollectionWhereUniqueInput;
     include?: Prisma.NoteCollectionInclude;
   }): Promise<NoteCollection> {
-    const { where, include } = params;
+    const { req, where, include } = params;
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where,
       include,
     });
-    if (!noteCollection) {
+    if (!noteCollection || noteCollection.userId !== req.user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return noteCollection;

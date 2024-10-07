@@ -27,6 +27,13 @@ export class NotesController {
   async getAllNotes(@Request() req): Promise<Note[]> {
     return this.notesService.findMany({
       where: { NoteCollection: { userId: req.user.id } },
+      include: {
+        NoteCollection: {
+          select: {
+            userId: true,
+          },
+        },
+      },
     });
   }
 
@@ -35,7 +42,15 @@ export class NotesController {
   async getNote(@Request() req, @Param('id') id: string): Promise<Note> {
     try {
       return this.notesService.findOne({
+        req,
         where: { id },
+        include: {
+          NoteCollection: {
+            select: {
+              userId: true,
+            },
+          },
+        },
       });
     } catch (error) {
       throw new NotFoundException();
