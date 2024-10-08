@@ -12,18 +12,14 @@ export class UsersController {
   @Get()
   @ApiOkResponse({ type: [UserEntity] })
   async getAllUsers(): Promise<User[]> {
-    return this.usersService.findMany({
-      where: {},
-    });
+    return this.usersService.findMany({});
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: UserEntity })
   async getUser(@Param('id') id: string): Promise<User> {
     try {
-      return this.usersService.findOneById({
-        where: { id },
-      });
+      return this.usersService.findOneById(id);
     } catch (error) {
       throw new NotFoundException();
     }

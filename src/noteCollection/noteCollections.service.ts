@@ -6,26 +6,17 @@ import { NoteCollection, Prisma } from '@prisma/client';
 export class NoteCollectionsService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    where: Prisma.NoteCollectionWhereInput;
-    include: Prisma.NoteCollectionInclude;
-  }): Promise<NoteCollection[]> {
-    const { where, include } = params;
+  async findMany(req: any): Promise<NoteCollection[]> {
     return this.prisma.noteCollection.findMany({
-      where,
-      include,
+      where: { userId: req.user.id },
+      include: { notes: true },
     });
   }
 
-  async findOne(params: {
-    req: any;
-    where: Prisma.NoteCollectionWhereUniqueInput;
-    include: Prisma.NoteCollectionInclude;
-  }): Promise<NoteCollection> {
-    const { req, where, include } = params;
+  async findOne(req: any, id: string): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
-      where,
-      include,
+      where: { id },
+      include: { notes: true },
     });
     if (!noteCollection || noteCollection.userId !== req.user.id) {
       throw new NotFoundException('NoteCollection not found');
@@ -33,46 +24,40 @@ export class NoteCollectionsService {
     return noteCollection;
   }
 
-  async createNoteCollection(params: {
-    data: Prisma.NoteCollectionCreateInput;
-  }): Promise<NoteCollection> {
-    const { data } = params;
+  async createNoteCollection(
+    data: Prisma.NoteCollectionCreateInput,
+  ): Promise<NoteCollection> {
     return this.prisma.noteCollection.create({
       data,
     });
   }
 
-  async updateNoteCollection(params: {
-    req: any;
-    where: Prisma.NoteCollectionWhereUniqueInput;
-    data: Prisma.NoteCollectionUpdateInput;
-  }): Promise<NoteCollection> {
-    const { req, where, data } = params;
+  async updateNoteCollection(
+    req: any,
+    id: string,
+    body,
+  ): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
-      where,
+      where: { id },
     });
     if (!noteCollection || noteCollection.userId !== req.user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return this.prisma.noteCollection.update({
-      data,
-      where,
+      where: { id },
+      data: { title: body.title },
     });
   }
 
-  async deleteNoteCollection(params: {
-    req: any;
-    where: Prisma.NoteCollectionWhereUniqueInput;
-  }): Promise<NoteCollection> {
-    const { req, where } = params;
+  async deleteNoteCollection(req: any, id: string): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
-      where,
+      where: { id },
     });
     if (!noteCollection || noteCollection.userId !== req.user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return this.prisma.noteCollection.delete({
-      where,
+      where: { id },
     });
   }
 }

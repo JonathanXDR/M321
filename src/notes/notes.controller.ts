@@ -25,33 +25,14 @@ export class NotesController {
   @Get()
   @ApiOkResponse({ type: [NoteEntity] })
   async getAllNotes(@Request() req): Promise<Note[]> {
-    return this.notesService.findMany({
-      where: { NoteCollection: { userId: req.user.id } },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
-    });
+    return this.notesService.findMany(req);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async getNote(@Request() req, @Param('id') id: string): Promise<Note> {
     try {
-      return this.notesService.findOne({
-        req,
-        where: { id },
-        include: {
-          NoteCollection: {
-            select: {
-              userId: true,
-            },
-          },
-        },
-      });
+      return this.notesService.findOne(req, id);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -60,19 +41,7 @@ export class NotesController {
   @Post()
   @ApiCreatedResponse({ type: NoteEntity })
   async createNote(@Request() req, @Body() body: NoteRequest): Promise<Note> {
-    return this.notesService.createNote({
-      req,
-      where: { id: body.noteCollectionId },
-      data: {
-        title: body.title,
-        content: body.content,
-        NoteCollection: {
-          connect: {
-            id: body.noteCollectionId,
-          },
-        },
-      },
-    });
+    return this.notesService.createNote(req, body);
   }
 
   @Put('/:id')
@@ -82,36 +51,12 @@ export class NotesController {
     @Param('id') id: string,
     @Body() body: { title: string; content: string },
   ): Promise<Note> {
-    return this.notesService.updateNote({
-      req,
-      where: { id },
-      data: {
-        title: body.title,
-        content: body.content,
-      },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
-    });
+    return this.notesService.updateNote(req, id, body);
   }
 
   @Delete('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async deleteNote(@Request() req, @Param('id') id: string): Promise<Note> {
-    return this.notesService.deleteNote({
-      req,
-      where: { id },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
-    });
+    return this.notesService.deleteNote(req, id);
   }
 }

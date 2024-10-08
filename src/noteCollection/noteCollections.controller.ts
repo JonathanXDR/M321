@@ -27,10 +27,7 @@ export class NoteCollectionsController {
   @Get()
   @ApiOkResponse({ type: [NoteCollectionEntity] })
   async getAllNoteCollections(@Request() req): Promise<NoteCollection[]> {
-    return this.noteCollectionsService.findMany({
-      where: { userId: req.user.id },
-      include: { notes: true },
-    });
+    return this.noteCollectionsService.findMany({});
   }
 
   @Get('/:id')
@@ -40,11 +37,7 @@ export class NoteCollectionsController {
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.findOne({
-        req,
-        where: { id },
-        include: { notes: true },
-      });
+      return this.noteCollectionsService.findOne(req, id);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -56,9 +49,7 @@ export class NoteCollectionsController {
     @Request() req,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
-    return this.noteCollectionsService.createNoteCollection({
-      data: { title: body.title },
-    });
+    return this.noteCollectionsService.createNoteCollection(body);
   }
 
   @Put('/:id')
@@ -69,11 +60,7 @@ export class NoteCollectionsController {
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.updateNoteCollection({
-        req,
-        where: { id },
-        data: { title: body.title },
-      });
+      return this.noteCollectionsService.updateNoteCollection(req, id, body);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -86,10 +73,7 @@ export class NoteCollectionsController {
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.deleteNoteCollection({
-        req,
-        where: { id },
-      });
+      return this.noteCollectionsService.deleteNoteCollection(req, id);
     } catch (error) {
       throw new NotFoundException();
     }

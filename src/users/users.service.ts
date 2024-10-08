@@ -6,19 +6,15 @@ import { User, Prisma } from '@prisma/client';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: { where: Prisma.UserWhereInput }): Promise<User[]> {
-    const { where } = params;
+  async findMany(id): Promise<User[]> {
     return this.prisma.user.findMany({
-      where,
+      where: { id },
     });
   }
 
-  async findOneById(params: {
-    where: Prisma.UserWhereUniqueInput;
-  }): Promise<User> {
-    const { where } = params;
+  async findOneById(id: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
-      where,
+      where: { id },
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -26,12 +22,9 @@ export class UsersService {
     return user;
   }
 
-  async findOneByUsername(params: {
-    where: Prisma.UserWhereUniqueInput;
-  }): Promise<User> {
-    const { where } = params;
+  async findOneByUsername(id: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
-      where,
+      where: { id },
     });
     if (!user) {
       throw new NotFoundException('User not found');
