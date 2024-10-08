@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Note, Prisma } from '@prisma/client';
+import { Note } from '@prisma/client';
 import { NoteRequest } from './dto/note.request';
 
 @Injectable()
@@ -64,10 +64,6 @@ export class NotesService {
   ): Promise<Note> {
     const note = await this.prisma.note.findUnique({
       where: { id },
-      data: {
-        title: body.title,
-        content: body.content,
-      },
       include: {
         NoteCollection: {
           select: {
