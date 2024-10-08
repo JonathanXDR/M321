@@ -60,7 +60,19 @@ export class NotesController {
   @Post()
   @ApiCreatedResponse({ type: NoteEntity })
   async createNote(@Request() req, @Body() body: NoteRequest): Promise<Note> {
-    return this.notesService.createNote(body);
+    return this.notesService.createNote({
+      req,
+      where: { id: body.noteCollectionId },
+      data: {
+        title: body.title,
+        content: body.content,
+        NoteCollection: {
+          connect: {
+            id: body.noteCollectionId,
+          },
+        },
+      },
+    });
   }
 
   @Put('/:id')
@@ -68,21 +80,38 @@ export class NotesController {
   async updateNote(
     @Request() req,
     @Param('id') id: string,
-    @Body() body: NoteRequest,
+    @Body() body: { title: string; content: string },
   ): Promise<Note> {
-    try {
-      return this.notesService.updateNote({
-        where: { id },
-        data: body,
-      });
-    } catch (error) {
-      throw new NotFoundException();
-    }
+    return this.notesService.updateNote({
+      req,
+      where: { id },
+      data: {
+        title: body.title,
+        content: body.content,
+      },
+      include: {
+        NoteCollection: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
   }
 
   @Delete('/:id')
   @ApiOkResponse({ type: NoteEntity })
-  async deleteNote(@Param('id') id: string): Promise<Note> {
-    return this.notesService.deleteNote({ id });
+  async deleteNote(@Request() req, @Param('id') id: string): Promise<Note> {
+    return this.notesService.deleteNote({
+      req,
+      where: { id },
+      include: {
+        NoteCollection: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
   }
 }

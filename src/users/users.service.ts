@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { User, Prisma } from '@prisma/client';
 
@@ -6,42 +6,36 @@ import { User, Prisma } from '@prisma/client';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
+  async findMany(params: { where: Prisma.UserWhereInput }): Promise<User[]> {
+    const { where } = params;
+    return this.prisma.user.findMany({
+      where,
+    });
+  }
+
   async findOneById(params: {
     where: Prisma.UserWhereUniqueInput;
-    include?: Prisma.UserInclude;
   }): Promise<User> {
-    const { where, include } = params;
-    return await this.prisma.user.findUnique({
+    const { where } = params;
+    const user = await this.prisma.user.findUnique({
       where,
-      include,
     });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async findOneByUsername(params: {
     where: Prisma.UserWhereUniqueInput;
-    include?: Prisma.UserInclude;
   }): Promise<User> {
-    const { where, include } = params;
-    return await this.prisma.user.findUnique({
+    const { where } = params;
+    const user = await this.prisma.user.findUnique({
       where,
-      include,
     });
-  }
-
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 }

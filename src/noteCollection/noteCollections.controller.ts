@@ -56,7 +56,9 @@ export class NoteCollectionsController {
     @Request() req,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
-    return this.noteCollectionsService.createNoteCollection(body);
+    return this.noteCollectionsService.createNoteCollection({
+      data: { title: body.title },
+    });
   }
 
   @Put('/:id')
@@ -68,8 +70,9 @@ export class NoteCollectionsController {
   ): Promise<NoteCollection> {
     try {
       return this.noteCollectionsService.updateNoteCollection({
+        req,
         where: { id },
-        data: body,
+        data: { title: body.title },
       });
     } catch (error) {
       throw new NotFoundException();
@@ -78,7 +81,17 @@ export class NoteCollectionsController {
 
   @Delete('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
-  async deleteNoteCollection(@Param('id') id: string): Promise<NoteCollection> {
-    return this.noteCollectionsService.deleteNoteCollection({ id });
+  async deleteNoteCollection(
+    @Request() req,
+    @Param('id') id: string,
+  ): Promise<NoteCollection> {
+    try {
+      return this.noteCollectionsService.deleteNoteCollection({
+        req,
+        where: { id },
+      });
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 }

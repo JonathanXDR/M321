@@ -9,8 +9,5 @@ export class NoteCollectionRequest {
   title: string;
 
   @ApiProperty()
-  @IsDefined()
-  @IsNotEmpty()
-  @IsString()
   userId: string;
 }
