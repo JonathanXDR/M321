@@ -16,12 +16,15 @@ model User {
   age             Int              @db.TinyInt
   gender          String           @db.VarChar(30)
   noteCollections NoteCollection[]
+  notes           Note[]
 }
 
 model Note {
   id               String          @id @default(uuid()) @db.VarChar(36)
   title            String?         @db.VarChar(100)
   content          String          @db.Text
+  User             User?           @relation(fields: [userId], references: [id])
+  userId           String?         @db.VarChar(36)
   NoteCollection   NoteCollection? @relation(fields: [noteCollectionId], references: [id])
   noteCollectionId String?         @db.VarChar(36)
 }

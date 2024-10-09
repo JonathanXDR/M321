@@ -12,5 +12,8 @@ export class NoteEntity implements Note {
   content: string;
 
   @ApiProperty()
+  userId: string;
+
+  @ApiProperty()
   noteCollectionId: string;
 }

@@ -15,7 +15,10 @@ export class NoteRequest {
   content: string;
 
   @ApiProperty()
-  @IsDefined()
+  userId: string;
+
+  @ApiProperty()
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   noteCollectionId: string;
