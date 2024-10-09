@@ -26,14 +26,14 @@ export class NoteCollectionsController {
 
   @Get()
   @ApiOkResponse({ type: [NoteCollectionEntity] })
-  async getAllNoteCollections(@Request() req): Promise<NoteCollection[]> {
-    return this.noteCollectionsService.findMany({});
+  async getAllNoteCollections(@Request() req: any): Promise<NoteCollection[]> {
+    return this.noteCollectionsService.findMany(req);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async getNoteCollection(
-    @Request() req,
+    @Request() req: any,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
@@ -46,7 +46,7 @@ export class NoteCollectionsController {
   @Post()
   @ApiCreatedResponse({ type: NoteCollectionEntity })
   async createNoteCollection(
-    @Request() req,
+    @Request() req: any,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     return this.noteCollectionsService.createNoteCollection(body);
@@ -55,7 +55,7 @@ export class NoteCollectionsController {
   @Put('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async updateNoteCollection(
-    @Request() req,
+    @Request() req: any,
     @Param('id') id: string,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
@@ -69,7 +69,7 @@ export class NoteCollectionsController {
   @Delete('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async deleteNoteCollection(
-    @Request() req,
+    @Request() req: any,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {

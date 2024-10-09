@@ -12,7 +12,7 @@ export class UsersController {
   @Get()
   @ApiOkResponse({ type: [UserEntity] })
   async getAllUsers(): Promise<User[]> {
-    return this.usersService.findMany({});
+    return this.usersService.findMany();
   }
 
   @Get('/:id')
