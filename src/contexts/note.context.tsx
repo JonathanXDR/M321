@@ -51,12 +51,12 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const { handleFlash, notesData, setNotesData } = useGeneralContext();
   const confirm = useConfirm();
 
-  const fetchNotesData = async (): Promise<Note[]> => {
+  const fetchNotesData = useCallback(async (): Promise<Note[]> => {
     const allNotesResponse = await notes.getAll();
     setNotesData(allNotesResponse.data);
 
     return allNotesResponse.data;
-  };
+  }, [notes, setNotesData]);
 
   const openNoteDialog = useCallback((type: NoteDialogType) => {
     setNoteDialogType(type);

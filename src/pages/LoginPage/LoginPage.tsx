@@ -21,7 +21,6 @@ import { useValidationContext } from '../../contexts/validation.context';
 
 const LoginPage: React.FC = () => {
   const [isValid, setIsValid] = useState(true);
-  const [submitAttempted, setSubmitAttempted] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
@@ -213,8 +212,15 @@ const LoginPage: React.FC = () => {
 
               <FormControl>
                 <FormControl.Label visuallyHidden>Sign in</FormControl.Label>
-                <Button type="submit" variant="primary" block>
-                  Sign in
+                {/* Show "Signing in... while loading */}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={loading}
+                  block
+                >
+                  {loading ? 'Signing in' : 'Sign in'}
+                  {loading && <Text className="AnimatedEllipsis"></Text>}
                 </Button>
               </FormControl>
 
