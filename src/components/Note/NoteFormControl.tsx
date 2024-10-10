@@ -12,12 +12,7 @@ import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { InputToken } from '../../types/inputToken.interface';
 
-function NoteFormControl({
-  notes,
-  notesValue,
-  setCreatedNotes,
-  setUpdatedNotes,
-}: any) {
+function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
   const { fetchNotesData } = useNoteContext();
   const { noteCollectionDialogType, selectedNoteCollection } =
     useNoteCollectionContext();
@@ -112,7 +107,6 @@ function NoteFormControl({
       <FormControl.Label>Notes</FormControl.Label>
       <Autocomplete>
         <Autocomplete.Input
-          value={notesValue}
           as={TextInputWithTokens}
           tokens={tokens}
           tokenComponent={Token}
@@ -166,4 +160,4 @@ function NoteFormControl({
   );
 }
 
-export default NoteFormControl;
+export default NotesFormControl;
