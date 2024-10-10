@@ -1,4 +1,5 @@
-import { UseGuards, Request } from '@nestjs/common';
+import { CurrentUser } from './../decorators/current-user.decorator';
+import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { NoteCollectionRequest } from './dto/noteCollection.request';
 import {
@@ -26,18 +27,19 @@ export class NoteCollectionsController {
 
   @Get()
   @ApiOkResponse({ type: [NoteCollectionEntity] })
-  async getAllNoteCollections(@Request() req: any): Promise<NoteCollection[]> {
-    return this.noteCollectionsService.findMany(req);
+  async getAllNoteCollections(@CurrentUser() user): Promise<NoteCollection[]> {
+    console.log(user);
+    return this.noteCollectionsService.findMany(user);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async getNoteCollection(
-    @Request() req: any,
+    @CurrentUser() user,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.findOne(req, id);
+      return this.noteCollectionsService.findOne(user, id);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -46,7 +48,7 @@ export class NoteCollectionsController {
   @Post()
   @ApiCreatedResponse({ type: NoteCollectionEntity })
   async createNoteCollection(
-    @Request() req: any,
+    @CurrentUser() user,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     return this.noteCollectionsService.createNoteCollection(body);
@@ -55,12 +57,12 @@ export class NoteCollectionsController {
   @Put('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async updateNoteCollection(
-    @Request() req: any,
+    @CurrentUser() user,
     @Param('id') id: string,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.updateNoteCollection(req, id, body);
+      return this.noteCollectionsService.updateNoteCollection(user, id, body);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -69,11 +71,11 @@ export class NoteCollectionsController {
   @Delete('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async deleteNoteCollection(
-    @Request() req: any,
+    @CurrentUser() user,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
-      return this.noteCollectionsService.deleteNoteCollection(req, id);
+      return this.noteCollectionsService.deleteNoteCollection(user, id);
     } catch (error) {
       throw new NotFoundException();
     }

@@ -7,7 +7,4 @@ export class NoteCollectionRequest {
   @IsNotEmpty()
   @IsString()
   title: string;
-
-  @ApiProperty()
-  userId: string;
 }

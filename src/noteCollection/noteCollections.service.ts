@@ -1,24 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { NoteCollection, Prisma } from '@prisma/client';
+import { NoteCollection, Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class NoteCollectionsService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(req: any): Promise<NoteCollection[]> {
+  async findMany(user: User): Promise<NoteCollection[]> {
     return this.prisma.noteCollection.findMany({
-      where: { userId: req.user.id },
+      where: { userId: user.id },
       include: { notes: true },
     });
   }
 
-  async findOne(req: any, id: string): Promise<NoteCollection> {
+  async findOne(user: User, id: string): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
       include: { notes: true },
     });
-    if (!noteCollection || noteCollection.userId !== req.user.id) {
+    if (!noteCollection || noteCollection.userId !== user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return noteCollection;
@@ -33,14 +33,14 @@ export class NoteCollectionsService {
   }
 
   async updateNoteCollection(
-    req: any,
+    user: User,
     id: string,
     body,
   ): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
     });
-    if (!noteCollection || noteCollection.userId !== req.user.id) {
+    if (!noteCollection || noteCollection.userId !== user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return this.prisma.noteCollection.update({
@@ -49,11 +49,11 @@ export class NoteCollectionsService {
     });
   }
 
-  async deleteNoteCollection(req: any, id: string): Promise<NoteCollection> {
+  async deleteNoteCollection(user: User, id: string): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
     });
-    if (!noteCollection || noteCollection.userId !== req.user.id) {
+    if (!noteCollection || noteCollection.userId !== user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return this.prisma.noteCollection.delete({

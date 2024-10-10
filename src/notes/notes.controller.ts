@@ -15,6 +15,7 @@ import { NotesService } from './notes.service';
 import { Note } from '@prisma/client';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { NoteEntity } from './note.entity';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('notes')
@@ -24,15 +25,15 @@ export class NotesController {
 
   @Get()
   @ApiOkResponse({ type: [NoteEntity] })
-  async getAllNotes(@Request() req: any): Promise<Note[]> {
-    return this.notesService.findMany(req);
+  async getAllNotes(@CurrentUser() user): Promise<Note[]> {
+    return this.notesService.findMany(user);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: NoteEntity })
-  async getNote(@Request() req: any, @Param('id') id: string): Promise<Note> {
+  async getNote(@CurrentUser() user, @Param('id') id: string): Promise<Note> {
     try {
-      return this.notesService.findOne(req, id);
+      return this.notesService.findOne(user, id);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -41,28 +42,28 @@ export class NotesController {
   @Post()
   @ApiCreatedResponse({ type: NoteEntity })
   async createNote(
-    @Request() req: any,
+    @CurrentUser() user,
     @Body() body: NoteRequest,
   ): Promise<Note> {
-    return this.notesService.createNote(req, body);
+    return this.notesService.createNote(user, body);
   }
 
   @Put('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async updateNote(
-    @Request() req: any,
+    @CurrentUser() user,
     @Param('id') id: string,
     @Body() body: { title: string; content: string },
   ): Promise<Note> {
-    return this.notesService.updateNote(req, id, body);
+    return this.notesService.updateNote(user, id, body);
   }
 
   @Delete('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async deleteNote(
-    @Request() req: any,
+    @CurrentUser() user,
     @Param('id') id: string,
   ): Promise<Note> {
-    return this.notesService.deleteNote(req, id);
+    return this.notesService.deleteNote(user, id);
   }
 }

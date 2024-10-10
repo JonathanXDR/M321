@@ -1,47 +1,33 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Note } from '@prisma/client';
+import { Note, User } from '@prisma/client';
 import { NoteRequest } from './dto/note.request';
 
 @Injectable()
 export class NotesService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(req): Promise<Note[]> {
+  async findMany(user: User): Promise<Note[]> {
     return this.prisma.note.findMany({
-      where: { NoteCollection: { userId: req.user.id } },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
+      where: { userId: user.id },
     });
   }
 
-  async findOne(req: any, id: string): Promise<Note> {
+  async findOne(user: User, id: string): Promise<Note> {
     const note = await this.prisma.note.findUnique({
       where: { id },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
     });
-    if (!note || note.NoteCollection.userId !== req.user.id) {
+    if (!note || note.userId !== user.id) {
       throw new NotFoundException('Note not found');
     }
     return note;
   }
 
-  async createNote(req: any, body: NoteRequest): Promise<Note> {
+  async createNote(user: User, body: NoteRequest): Promise<Note> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id: body.noteCollectionId },
     });
-    if (!noteCollection || noteCollection.userId !== req.user.id) {
+    if (!noteCollection || noteCollection.userId !== user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
     return this.prisma.note.create({
@@ -58,21 +44,14 @@ export class NotesService {
   }
 
   async updateNote(
-    req: any,
+    user: User,
     id: string,
     body: { title: string; content: string },
   ): Promise<Note> {
     const note = await this.prisma.note.findUnique({
       where: { id },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
     });
-    if (!note || note.NoteCollection.userId !== req.user.id) {
+    if (!note || note.userId !== user.id) {
       throw new NotFoundException('Note not found');
     }
     return this.prisma.note.update({
@@ -84,18 +63,11 @@ export class NotesService {
     });
   }
 
-  async deleteNote(req: any, id: string): Promise<Note> {
+  async deleteNote(user: User, id: string): Promise<Note> {
     const note = await this.prisma.note.findUnique({
       where: { id },
-      include: {
-        NoteCollection: {
-          select: {
-            userId: true,
-          },
-        },
-      },
     });
-    if (!note || note.NoteCollection.userId !== req.user.id) {
+    if (!note || note.userId !== user.id) {
       throw new NotFoundException('Note not found');
     }
     return this.prisma.note.delete({
