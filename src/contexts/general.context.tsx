@@ -12,6 +12,7 @@ interface GeneralContextData {
     React.SetStateAction<NoteCollection[]>
   >;
   loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   flashVisible: boolean;
   setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>;
   flashVariant: 'default' | 'success' | 'warning' | 'danger';
@@ -73,6 +74,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         noteCollectionsData,
         setNoteCollectionsData,
         loading,
+        setLoading,
         flashVisible,
         setFlashVisible,
         flashVariant,

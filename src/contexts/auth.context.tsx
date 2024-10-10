@@ -3,7 +3,7 @@ import { login, checkToken } from '../services/auth.service';
 
 interface AuthProviderProps extends React.PropsWithChildren<{}> {}
 interface AuthContextData {
-  handleCheckToken: (token: string) => Promise<void>;
+  handleCheckToken: (token: string, navigate: any) => Promise<void>;
   password: string;
   confirmPassword: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
@@ -65,9 +65,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     password === confirmPassword &&
     (validations.minLength || validations.minLengthWithRequirements);
 
-  const handleCheckToken = async (token: string) => {
+  const handleCheckToken = async (token: string, navigate: any) => {
     try {
       await checkToken(token);
+      navigate('/');
     } catch {
       localStorage.removeItem('access_token');
     }

@@ -18,8 +18,11 @@ import './LoginPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 import { useValidationContext } from '../../contexts/validation.context';
+import { useGeneralContext } from '../../contexts/general.context';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const LoginPage: React.FC = () => {
+  const { loading, setLoading } = useGeneralContext();
   const [isValid, setIsValid] = useState(true);
   const navigate = useNavigate();
 
@@ -39,12 +42,13 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      handleCheckToken(token).finally(() => {
-        navigate('/');
+      handleCheckToken(token, navigate).finally(() => {
+        setLoading(false);
       });
+    } else {
+      setLoading(false);
     }
   }, [navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleFormSubmit(async () => {
@@ -56,6 +60,10 @@ const LoginPage: React.FC = () => {
   const showError = (field: string) => {
     return hasError(field);
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <PageLayout

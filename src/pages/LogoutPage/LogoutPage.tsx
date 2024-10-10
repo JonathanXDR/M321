@@ -36,7 +36,7 @@ const LogoutPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      handleCheckToken(token).finally(() => {});
+      handleCheckToken(token, navigate).finally(() => {});
     } else {
     }
   }, [navigate]);
