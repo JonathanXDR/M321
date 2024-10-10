@@ -22,8 +22,10 @@ import NoteCollectionDialog from '../../components/NoteCollection/NoteCollection
 import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
 
 import './HomePage.module.css';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const HomePage: React.FC = () => {
+  const { loading, setLoading } = useGeneralContext();
   const [expanded, setExpanded] = React.useState<string[]>([]);
   const { notesData, noteCollectionsData } = useGeneralContext();
   const { fetchNotesData, noteDialogIsOpen, openNoteDialog } = useNoteContext();
@@ -35,8 +37,13 @@ const HomePage: React.FC = () => {
   } = useNoteCollectionContext();
 
   useEffect(() => {
-    fetchNotesData();
-    fetchNoteCollectionsData();
+    const fetchData = async () => {
+      await fetchNotesData();
+      await fetchNoteCollectionsData();
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   const renderFilteredNoteItems = () =>
@@ -89,6 +96,10 @@ const HomePage: React.FC = () => {
       );
     });
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
       {noteDialogIsOpen && <NoteDialog />}
@@ -99,7 +110,7 @@ const HomePage: React.FC = () => {
           <GeneralFlash />
         </PageLayout.Header>
         <PageLayout.Content padding="normal" width="xlarge">
-          {!notesData.length && !noteCollectionsData.length ? (
+          {!notesData.length && !noteCollectionsData.length && !loading ? (
             <BlankStateEmpty />
           ) : (
             <>
