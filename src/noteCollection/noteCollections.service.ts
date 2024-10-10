@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { NoteCollection, Prisma, User } from '@prisma/client';
+import { NoteCollectionRequest } from './dto/noteCollection.request';
 
 @Injectable()
 export class NoteCollectionsService {
@@ -25,17 +26,18 @@ export class NoteCollectionsService {
   }
 
   async createNoteCollection(
-    data: Prisma.NoteCollectionCreateInput,
+    user: User,
+    body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     return this.prisma.noteCollection.create({
-      data,
+      data: { ...body, userId: user.id } as NoteCollection,
     });
   }
 
   async updateNoteCollection(
     user: User,
     id: string,
-    body,
+    body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
@@ -45,7 +47,7 @@ export class NoteCollectionsService {
     }
     return this.prisma.noteCollection.update({
       where: { id },
-      data: { title: body.title },
+      data: { ...body, userId: user.id } as NoteCollection,
     });
   }
 

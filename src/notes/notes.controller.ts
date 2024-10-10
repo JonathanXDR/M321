@@ -1,4 +1,4 @@
-import { UseGuards, Request } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { NoteRequest } from './dto/note.request';
 import {
@@ -12,7 +12,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
-import { Note } from '@prisma/client';
+import { Note, User } from '@prisma/client';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { NoteEntity } from './note.entity';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
@@ -25,13 +25,16 @@ export class NotesController {
 
   @Get()
   @ApiOkResponse({ type: [NoteEntity] })
-  async getAllNotes(@CurrentUser() user): Promise<Note[]> {
+  async getAllNotes(@CurrentUser() user: User): Promise<Note[]> {
     return this.notesService.findMany(user);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: NoteEntity })
-  async getNote(@CurrentUser() user, @Param('id') id: string): Promise<Note> {
+  async getNote(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+  ): Promise<Note> {
     try {
       return this.notesService.findOne(user, id);
     } catch (error) {
@@ -42,7 +45,7 @@ export class NotesController {
   @Post()
   @ApiCreatedResponse({ type: NoteEntity })
   async createNote(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Body() body: NoteRequest,
   ): Promise<Note> {
     return this.notesService.createNote(user, body);
@@ -51,9 +54,9 @@ export class NotesController {
   @Put('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async updateNote(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Param('id') id: string,
-    @Body() body: { title: string; content: string },
+    @Body() body: NoteRequest,
   ): Promise<Note> {
     return this.notesService.updateNote(user, id, body);
   }
@@ -61,7 +64,7 @@ export class NotesController {
   @Delete('/:id')
   @ApiOkResponse({ type: NoteEntity })
   async deleteNote(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<Note> {
     return this.notesService.deleteNote(user, id);

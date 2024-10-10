@@ -13,7 +13,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { NoteCollectionsService } from './noteCollections.service';
-import { NoteCollection } from '@prisma/client';
+import { NoteCollection, User } from '@prisma/client';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { NoteCollectionEntity } from './noteCollection.entity';
 
@@ -27,7 +27,9 @@ export class NoteCollectionsController {
 
   @Get()
   @ApiOkResponse({ type: [NoteCollectionEntity] })
-  async getAllNoteCollections(@CurrentUser() user): Promise<NoteCollection[]> {
+  async getAllNoteCollections(
+    @CurrentUser() user: User,
+  ): Promise<NoteCollection[]> {
     console.log(user);
     return this.noteCollectionsService.findMany(user);
   }
@@ -35,7 +37,7 @@ export class NoteCollectionsController {
   @Get('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async getNoteCollection(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {
@@ -48,16 +50,16 @@ export class NoteCollectionsController {
   @Post()
   @ApiCreatedResponse({ type: NoteCollectionEntity })
   async createNoteCollection(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
-    return this.noteCollectionsService.createNoteCollection(body);
+    return this.noteCollectionsService.createNoteCollection(user, body);
   }
 
   @Put('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async updateNoteCollection(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Param('id') id: string,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
@@ -71,7 +73,7 @@ export class NoteCollectionsController {
   @Delete('/:id')
   @ApiOkResponse({ type: NoteCollectionEntity })
   async deleteNoteCollection(
-    @CurrentUser() user,
+    @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
     try {

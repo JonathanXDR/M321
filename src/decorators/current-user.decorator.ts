@@ -6,6 +6,7 @@ import {
 
 export const CurrentUser = createParamDecorator((ctx: ExecutionContext) => {
   const user = ctx.switchToHttp().getRequest().user;
+  console.log(user);
   if (!user) {
     throw new UnauthorizedException();
   }
