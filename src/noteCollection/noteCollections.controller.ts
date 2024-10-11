@@ -30,7 +30,6 @@ export class NoteCollectionsController {
   async getAllNoteCollections(
     @CurrentUser() user: User,
   ): Promise<NoteCollection[]> {
-    console.log(user);
     return this.noteCollectionsService.findMany(user);
   }
 
