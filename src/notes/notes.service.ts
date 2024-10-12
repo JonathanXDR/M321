@@ -24,6 +24,14 @@ export class NotesService {
   }
 
   async createNote(user: User, body: NoteRequest): Promise<Note> {
+    if (body.noteCollectionId) {
+      const noteCollection = await this.prisma.noteCollection.findUnique({
+        where: { id: body.noteCollectionId },
+      });
+      if (!noteCollection || noteCollection.userId !== user.id) {
+        throw new NotFoundException('NoteCollection not found');
+      }
+    }
     return this.prisma.note.create({
       data: { ...body, userId: user.id } as Note,
     });
@@ -35,6 +43,14 @@ export class NotesService {
     });
     if (!note || note.userId !== user.id) {
       throw new NotFoundException('Note not found');
+    }
+    if (body.noteCollectionId) {
+      const noteCollection = await this.prisma.noteCollection.findUnique({
+        where: { id: body.noteCollectionId },
+      });
+      if (!noteCollection || noteCollection.userId !== user.id) {
+        throw new NotFoundException('NoteCollection not found');
+      }
     }
     return this.prisma.note.update({
       where: { id },
