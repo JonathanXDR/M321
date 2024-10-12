@@ -39,11 +39,7 @@ export class NoteCollectionsController {
     @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
-    try {
-      return this.noteCollectionsService.findOne(user, id);
-    } catch (error) {
-      throw new NotFoundException();
-    }
+    return this.noteCollectionsService.findOne(user, id);
   }
 
   @Post()
@@ -62,11 +58,7 @@ export class NoteCollectionsController {
     @Param('id') id: string,
     @Body() body: NoteCollectionRequest,
   ): Promise<NoteCollection> {
-    try {
-      return this.noteCollectionsService.updateNoteCollection(user, id, body);
-    } catch (error) {
-      throw new NotFoundException();
-    }
+    return this.noteCollectionsService.updateNoteCollection(user, id, body);
   }
 
   @Delete('/:id')
@@ -75,10 +67,6 @@ export class NoteCollectionsController {
     @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<NoteCollection> {
-    try {
-      return this.noteCollectionsService.deleteNoteCollection(user, id);
-    } catch (error) {
-      throw new NotFoundException();
-    }
+    return this.noteCollectionsService.deleteNoteCollection(user, id);
   }
 }

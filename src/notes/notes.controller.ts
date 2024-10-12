@@ -35,11 +35,7 @@ export class NotesController {
     @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<Note> {
-    try {
-      return this.notesService.findOne(user, id);
-    } catch (error) {
-      throw new NotFoundException();
-    }
+    return this.notesService.findOne(user, id);
   }
 
   @Post()
