@@ -9,7 +9,6 @@ import {
   Body,
   Put,
   Delete,
-  NotFoundException,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note, User } from '@prisma/client';
@@ -25,22 +24,19 @@ export class NotesController {
 
   @Get()
   @ApiOkResponse({ type: [NoteEntity] })
-  async getAllNotes(@CurrentUser() user: User): Promise<Note[]> {
+  getAllNotes(@CurrentUser() user: User): Promise<Note[]> {
     return this.notesService.findMany(user);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: NoteEntity })
-  async getNote(
-    @CurrentUser() user: User,
-    @Param('id') id: string,
-  ): Promise<Note> {
+  getNote(@CurrentUser() user: User, @Param('id') id: string): Promise<Note> {
     return this.notesService.findOne(user, id);
   }
 
   @Post()
   @ApiCreatedResponse({ type: NoteEntity })
-  async createNote(
+  createNote(
     @CurrentUser() user: User,
     @Body() body: NoteRequest,
   ): Promise<Note> {
@@ -49,7 +45,7 @@ export class NotesController {
 
   @Put('/:id')
   @ApiOkResponse({ type: NoteEntity })
-  async updateNote(
+  updateNote(
     @CurrentUser() user: User,
     @Param('id') id: string,
     @Body() body: NoteRequest,
@@ -59,7 +55,7 @@ export class NotesController {
 
   @Delete('/:id')
   @ApiOkResponse({ type: NoteEntity })
-  async deleteNote(
+  deleteNote(
     @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<Note> {

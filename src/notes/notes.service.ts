@@ -1,3 +1,4 @@
+// notes.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Note, User } from '@prisma/client';
@@ -14,23 +15,12 @@ export class NotesService {
   }
 
   async findOne(user: User, id: string): Promise<Note> {
-    const note = await this.prisma.note.findUnique({
-      where: { id },
-    });
-    if (!note || note.userId !== user.id) {
-      throw new NotFoundException('Note not found');
-    }
-    return note;
+    return this.getNote(user, id);
   }
 
   async createNote(user: User, body: NoteRequest): Promise<Note> {
     if (body.noteCollectionId) {
-      const noteCollection = await this.prisma.noteCollection.findUnique({
-        where: { id: body.noteCollectionId },
-      });
-      if (!noteCollection || noteCollection.userId !== user.id) {
-        throw new NotFoundException('NoteCollection not found');
-      }
+      await this.validateNoteCollection(user, body.noteCollectionId);
     }
     return this.prisma.note.create({
       data: { ...body, userId: user.id } as Note,
@@ -38,19 +28,10 @@ export class NotesService {
   }
 
   async updateNote(user: User, id: string, body: NoteRequest): Promise<Note> {
-    const note = await this.prisma.note.findUnique({
-      where: { id },
-    });
-    if (!note || note.userId !== user.id) {
-      throw new NotFoundException('Note not found');
-    }
+    const note = await this.getNote(user, id);
+
     if (body.noteCollectionId) {
-      const noteCollection = await this.prisma.noteCollection.findUnique({
-        where: { id: body.noteCollectionId },
-      });
-      if (!noteCollection || noteCollection.userId !== user.id) {
-        throw new NotFoundException('NoteCollection not found');
-      }
+      await this.validateNoteCollection(user, body.noteCollectionId);
     }
     return this.prisma.note.update({
       where: { id },
@@ -59,14 +40,30 @@ export class NotesService {
   }
 
   async deleteNote(user: User, id: string): Promise<Note> {
-    const note = await this.prisma.note.findUnique({
-      where: { id },
-    });
-    if (!note || note.userId !== user.id) {
-      throw new NotFoundException('Note not found');
-    }
+    const note = await this.getNote(user, id);
     return this.prisma.note.delete({
       where: { id },
     });
+  }
+
+  private async getNote(user: User, id: string): Promise<Note> {
+    const note = await this.prisma.note.findUnique({
+      where: { id },
+    });
+
+    if (!note || note.userId !== user.id) {
+      throw new NotFoundException('Note not found');
+    }
+    return note;
+  }
+
+  private async validateNoteCollection(user: User, id: string): Promise<void> {
+    const noteCollection = await this.prisma.noteCollection.findUnique({
+      where: { id },
+    });
+
+    if (!noteCollection || noteCollection.userId !== user.id) {
+      throw new NotFoundException('NoteCollection not found');
+    }
   }
 }
