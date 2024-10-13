@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
+import { Note } from '@prisma/client';
+import {
+  IsArray,
+  IsDefined,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class NoteCollectionRequest {
   @ApiProperty()
@@ -7,4 +14,10 @@ export class NoteCollectionRequest {
   @IsNotEmpty()
   @IsString()
   title: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNotEmpty()
+  @IsArray()
+  notes: Note[];
 }
