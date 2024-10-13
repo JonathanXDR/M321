@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { NoteCollection, Prisma, User } from '@prisma/client';
+import { Note, NoteCollection, Prisma, User } from '@prisma/client';
 import { NoteCollectionRequest } from './dto/noteCollection.request';
 
 @Injectable()
@@ -51,15 +51,26 @@ export class NoteCollectionsService {
     });
   }
 
-  async deleteNoteCollection(user: User, id: string): Promise<NoteCollection> {
+  async deleteNoteCollection(
+    user: User,
+    id: string,
+  ): Promise<NoteCollection & { notes: Note[] }> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
+      include: { notes: true },
     });
     if (!noteCollection || noteCollection.userId !== user.id) {
       throw new NotFoundException('NoteCollection not found');
     }
-    return this.prisma.noteCollection.delete({
+
+    await this.prisma.note.deleteMany({
+      where: { noteCollectionId: id },
+    });
+
+    await this.prisma.noteCollection.delete({
       where: { id },
     });
+
+    return noteCollection;
   }
 }
