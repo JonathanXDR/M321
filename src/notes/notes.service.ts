@@ -1,4 +1,3 @@
-// notes.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Note, User } from '@prisma/client';
