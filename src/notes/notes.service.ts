@@ -27,8 +27,6 @@ export class NotesService {
   }
 
   async updateNote(user: User, id: string, body: NoteRequest): Promise<Note> {
-    const note = await this.getNote(user, id);
-
     if (body.noteCollectionId) {
       await this.validateNoteCollection(user, body.noteCollectionId);
     }
@@ -39,7 +37,6 @@ export class NotesService {
   }
 
   async deleteNote(user: User, id: string): Promise<Note> {
-    const note = await this.getNote(user, id);
     return this.prisma.note.delete({
       where: { id },
     });
