@@ -58,10 +58,6 @@ const LoginPage: React.FC = () => {
     });
   };
 
-  const showError = (field: string) => {
-    return hasError(field);
-  };
-
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -177,7 +173,7 @@ const LoginPage: React.FC = () => {
                   paddingY: '5px',
                 }}
               />
-              {showError(username) && (
+              {hasError(username) && (
                 <FormControl.Validation variant="error">
                   Is required
                 </FormControl.Validation>
@@ -212,7 +208,7 @@ const LoginPage: React.FC = () => {
                     paddingY: '5px',
                   }}
                 />
-                {showError(password) && (
+                {hasError(password) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>

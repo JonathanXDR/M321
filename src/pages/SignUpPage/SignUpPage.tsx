@@ -18,11 +18,19 @@ import ValidationFlash, {
   ValidationError,
 } from '../../components/Flash/ValidationFlash';
 import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
+import { useValidationContext } from '../../contexts/validation.context';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
+  const password = useState('');
+  const confirmPassword = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+
   const { setPassword, setConfirmPassword, isValid } = useAuthContext();
 
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -46,6 +54,16 @@ const SignUpPage = () => {
       ref: confirmPasswordRef,
     },
   ];
+
+  const { hasError } = useValidationContext().useInputValidation([
+    usernameRef,
+    passwordRef,
+    confirmPasswordRef,
+    firstNameRef,
+    lastNameRef,
+    ageRef,
+    genderRef,
+  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,8 +170,7 @@ const SignUpPage = () => {
                   paddingY: '5px',
                 }}
               />
-              {/* Show if validation of this field failed */}
-              {!isValid && (
+              {hasError(username) && (
                 <FormControl.Validation variant="error">
                   Is required
                 </FormControl.Validation>
@@ -197,8 +214,7 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {hasError(firstName) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -233,8 +249,7 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {hasError(lastName) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -276,8 +291,7 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {hasError(age) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -309,8 +323,7 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {hasError(gender) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -352,8 +365,8 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const password: [string, React.Dispatch<React.SetStateAction<string>>] */}
+                {hasError(password) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -386,8 +399,8 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Show if validation of this field failed */}
-                {!isValid && (
+                {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const confirmPassword: [string, React.Dispatch<React.SetStateAction<string>>] */}
+                {hasError(confirmPassword) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
