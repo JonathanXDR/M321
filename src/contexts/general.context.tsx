@@ -42,7 +42,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   const [noteCollectionsData, setNoteCollectionsData] = useState<
     NoteCollection[]
   >([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [flashVisible, setFlashVisible] = useState(false);
   const [flashVariant, setFlashVariant] = useState<

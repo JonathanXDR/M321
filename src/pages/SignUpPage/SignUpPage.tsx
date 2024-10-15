@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -19,13 +19,18 @@ import ValidationFlash, {
 } from '../../components/Flash/ValidationFlash';
 import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
 import { useValidationContext } from '../../contexts/validation.context';
+import { useGeneralContext } from '../../contexts/general.context';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const SignUpPage = () => {
+  const { loading, setLoading } = useGeneralContext();
+  const setIsValid = useState(true);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
-  const password = useState('');
-  const confirmPassword = useState('');
+  const [passwordLocal, setPasswordLocal] = useState('');
+  const [confirmPasswordLocal, setConfirmPasswordLocal] = useState('');
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
@@ -55,20 +60,32 @@ const SignUpPage = () => {
     },
   ];
 
-  const { hasError } = useValidationContext().useInputValidation([
-    usernameRef,
-    passwordRef,
-    confirmPasswordRef,
-    firstNameRef,
-    lastNameRef,
-    ageRef,
-    genderRef,
-  ]);
+  const { handleFormSubmit, hasError } =
+    useValidationContext().useInputValidation([
+      usernameRef,
+      passwordRef,
+      confirmPasswordRef,
+      firstNameRef,
+      lastNameRef,
+      ageRef,
+      genderRef,
+    ]);
+
+  useEffect(() => {
+    setPassword(passwordLocal);
+    setConfirmPassword(confirmPasswordLocal);
+  }, [passwordLocal, confirmPasswordLocal]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/login');
+    await handleFormSubmit(async () => {
+      navigate('/login');
+    });
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <PageLayout
@@ -141,7 +158,6 @@ const SignUpPage = () => {
             }}
           >
             <FormControl
-              required
               sx={{
                 width: '100%',
                 marginBottom: 4,
@@ -184,7 +200,6 @@ const SignUpPage = () => {
               }}
             >
               <FormControl
-                required
                 sx={{
                   width: '100%',
                   marginBottom: 4,
@@ -205,7 +220,7 @@ const SignUpPage = () => {
                   ref={firstNameRef}
                   type="text"
                   onChange={(e) => {
-                    setPassword(e.target.value);
+                    setFirstName(e.target.value);
                   }}
                   placeholder="Enter firstname"
                   sx={{
@@ -221,7 +236,6 @@ const SignUpPage = () => {
                 )}
               </FormControl>
               <FormControl
-                required
                 sx={{
                   width: '100%',
                   marginBottom: 4,
@@ -240,7 +254,7 @@ const SignUpPage = () => {
                   ref={lastNameRef}
                   type="text"
                   onChange={(e) => {
-                    setConfirmPassword(e.target.value);
+                    setLastName(e.target.value);
                   }}
                   placeholder="Enter lastname"
                   sx={{
@@ -283,7 +297,9 @@ const SignUpPage = () => {
                 <TextInput
                   ref={ageRef}
                   type="text"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setAge(e.target.value);
+                  }}
                   placeholder="Enter age"
                   sx={{
                     marginTop: 1,
@@ -315,7 +331,9 @@ const SignUpPage = () => {
                 <TextInput
                   ref={genderRef}
                   type="text"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                  }}
                   placeholder="Enter gender"
                   sx={{
                     marginTop: 1,
@@ -338,7 +356,6 @@ const SignUpPage = () => {
               }}
             >
               <FormControl
-                required
                 sx={{
                   width: '100%',
                   marginBottom: 4,
@@ -366,14 +383,13 @@ const SignUpPage = () => {
                   }}
                 />
                 {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const password: [string, React.Dispatch<React.SetStateAction<string>>] */}
-                {hasError(password) && (
+                {hasError(passwordLocal) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
                 )}
               </FormControl>
               <FormControl
-                required
                 sx={{
                   width: '100%',
                   marginBottom: 4,
@@ -400,7 +416,7 @@ const SignUpPage = () => {
                   }}
                 />
                 {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const confirmPassword: [string, React.Dispatch<React.SetStateAction<string>>] */}
-                {hasError(confirmPassword) && (
+                {hasError(confirmPasswordLocal) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -408,12 +424,14 @@ const SignUpPage = () => {
               </FormControl>
             </Box>
             <PasswordRequirementsText />
-            <FormControl required>
+            <FormControl>
               <FormControl.Label visuallyHidden>
-                Create Account
-              </FormControl.Label>
-              <Button type="submit" variant="primary" block disabled={!isValid}>
                 Create account
+              </FormControl.Label>
+
+              <Button type="submit" variant="primary" disabled={loading} block>
+                {loading ? 'Creating account' : 'Create account'}
+                {loading && <Text className="AnimatedEllipsis"></Text>}
               </Button>
             </FormControl>
           </Box>
