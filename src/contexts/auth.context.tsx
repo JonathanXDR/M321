@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { login, checkToken } from '../services/auth.service';
 
 interface AuthProviderProps extends React.PropsWithChildren<{}> {}
+
 interface AuthContextData {
   handleCheckToken: (token: string, navigate: any) => Promise<void>;
   password: string;
@@ -10,8 +11,10 @@ interface AuthContextData {
   setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
   isValid: boolean;
   validations: {
-    minLength: boolean;
-    minLengthWithRequirements: boolean;
+    passwordRegexOne: boolean;
+    passwordRegexTwo: boolean;
+    has15chars: boolean;
+    has8chars: boolean;
     hasNumber: boolean;
     hasLowercase: boolean;
   };
@@ -36,24 +39,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validations, setValidations] = useState({
-    minLength: false,
-    minLengthWithRequirements: false,
+    passwordRegexOne: false,
+    passwordRegexTwo: false,
+    has15chars: false,
+    has8chars: false,
     hasNumber: false,
     hasLowercase: false,
   });
 
   useEffect(() => {
-    const minLength = 15;
-    const minLengthWithRequirements = 8;
+    const has8chars = password.length >= 8;
+    const has15chars = password.length >= 15;
     const hasNumber = /\d/.test(password);
     const hasLowercase = /[a-z]/.test(password);
 
+    const passwordRegexOne = has8chars && hasNumber && hasLowercase;
+    const passwordRegexTwo = has15chars;
+
     setValidations({
-      minLength: password.length >= minLength,
-      minLengthWithRequirements:
-        password.length >= minLengthWithRequirements &&
-        hasNumber &&
-        hasLowercase,
+      passwordRegexOne,
+      passwordRegexTwo,
+      has15chars,
+      has8chars,
       hasNumber,
       hasLowercase,
     });
@@ -63,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     !!password.trim() &&
     !!confirmPassword.trim() &&
     password === confirmPassword &&
-    (validations.minLength || validations.minLengthWithRequirements);
+    (validations.passwordRegexOne || validations.passwordRegexTwo);
 
   const handleCheckToken = async (token: string, navigate: any) => {
     try {

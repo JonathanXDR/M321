@@ -295,6 +295,28 @@ const SettingsPage = () => {
               />
             </FormControl>
           </Box>
+          <Text
+            sx={{
+              color: 'fg.muted',
+              fontSize: '12px',
+            }}
+          >
+            <Text as="p">
+              All of the fields on this page are optional and can be deleted at
+              any time, and by filling them out, you're giving us consent to
+              share this data wherever your user profile appears. Please see our{' '}
+              <Link href="https://github.com/site/privacy">
+                privacy statement
+              </Link>{' '}
+              to learn more about how we use this information.
+            </Text>
+          </Text>
+          <Button
+            variant="primary"
+            onClick={() => setUsernameInfoDialogIsOpen(true)}
+          >
+            Update profile
+          </Button>
         </Box>
         <Box>
           <Pagehead
@@ -306,6 +328,7 @@ const SettingsPage = () => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              marginTop: '40px',
               marginBottom: 3,
               paddingBottom: 2,
             }}

@@ -233,8 +233,8 @@ const PasswordResetPage = () => {
                   Make sure it's{' '}
                   <Text
                     sx={{
-                      ...getValidationStyle(validations.minLength),
-                      ...getMutedStyle(validations.minLengthWithRequirements),
+                      ...getValidationStyle(validations.passwordRegexTwo),
+                      ...getMutedStyle(validations.passwordRegexOne),
                     }}
                   >
                     at least 15 characters
@@ -242,10 +242,8 @@ const PasswordResetPage = () => {
                   OR{' '}
                   <Text
                     sx={{
-                      ...getValidationStyle(
-                        validations.minLengthWithRequirements
-                      ),
-                      ...getMutedStyle(validations.minLength),
+                      ...getValidationStyle(validations.passwordRegexOne),
+                      ...getMutedStyle(validations.passwordRegexTwo),
                     }}
                   >
                     at least 8 characters
@@ -253,7 +251,7 @@ const PasswordResetPage = () => {
                   <Text
                     sx={{
                       ...getValidationStyle(validations.hasNumber),
-                      ...getMutedStyle(validations.minLength),
+                      ...getMutedStyle(validations.passwordRegexTwo),
                     }}
                   >
                     including a number
@@ -261,7 +259,7 @@ const PasswordResetPage = () => {
                   <Text
                     sx={{
                       ...getValidationStyle(validations.hasLowercase),
-                      ...getMutedStyle(validations.minLength),
+                      ...getMutedStyle(validations.passwordRegexTwo),
                     }}
                   >
                     and a lowercase letter

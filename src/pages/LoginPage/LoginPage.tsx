@@ -49,6 +49,7 @@ const LoginPage: React.FC = () => {
       setLoading(false);
     }
   }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleFormSubmit(async () => {
