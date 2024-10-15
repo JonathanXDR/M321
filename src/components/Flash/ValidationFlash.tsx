@@ -2,17 +2,17 @@ import { StopIcon } from '@primer/octicons-react';
 import { Box, Flash, Link, Text } from '@primer/react';
 import React from 'react';
 
-export interface ValidationError {
+export interface ValidationField {
   key: string;
   title: string;
   ref: React.RefObject<HTMLInputElement>;
 }
 
 interface ValidationFlashProps {
-  errors: ValidationError[];
+  fields: ValidationField[];
 }
 
-const ValidationFlash: React.FC<ValidationFlashProps> = ({ errors }) => {
+const ValidationFlash: React.FC<ValidationFlashProps> = ({ fields }) => {
   const handleClick = (inputRef: React.RefObject<HTMLInputElement>) => {
     inputRef.current?.focus();
   };
@@ -49,19 +49,19 @@ const ValidationFlash: React.FC<ValidationFlashProps> = ({ errors }) => {
             The following inputs have errors:
           </Text>
           <Box>
-            {errors.map((error, index) => (
-              <React.Fragment key={error.key}>
+            {fields.map((field, index) => (
+              <React.Fragment key={field.key}>
                 <Link
-                  onClick={() => handleClick(error.ref)}
+                  onClick={() => handleClick(field.ref)}
                   sx={{
                     cursor: 'pointer',
                     color: 'fg.default',
                     textDecoration: 'underline',
                   }}
                 >
-                  {error.title}
+                  {field.title}
                 </Link>
-                {index < errors.length - 1 && ', '}
+                {index < fields.length - 1 && ', '}
               </React.Fragment>
             ))}
           </Box>

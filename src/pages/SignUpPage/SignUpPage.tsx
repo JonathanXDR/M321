@@ -15,7 +15,7 @@ import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 import ValidationFlash, {
-  ValidationError,
+  ValidationField,
 } from '../../components/Flash/ValidationFlash';
 import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
 import { useValidationContext } from '../../contexts/validation.context';
@@ -46,7 +46,7 @@ const SignUpPage = () => {
   const ageRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLInputElement>(null);
 
-  const errors: ValidationError[] = [
+  const fields: ValidationField[] = [
     { key: 'username', title: 'Username', ref: usernameRef },
     { key: 'first-name', title: 'First name', ref: firstNameRef },
     { key: 'last-name', title: 'Last name', ref: lastNameRef },
@@ -142,7 +142,7 @@ const SignUpPage = () => {
             </Heading>
           </Box>
 
-          <ValidationFlash errors={errors} />
+          <ValidationFlash fields={fields} />
 
           <Box
             as={'form'}
