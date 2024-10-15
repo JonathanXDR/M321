@@ -1,18 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  Flash,
   FormControl,
   Heading,
-  IconButton,
   Link,
   PageLayout,
   Text,
   TextInput,
 } from '@primer/react';
-import { StopIcon, XIcon } from '@primer/octicons-react';
 import { useAuthContext } from '../../contexts/auth.context';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
@@ -20,27 +17,13 @@ import LoginFooter from '../../components/Footer/LoginFooter';
 import ValidationFlash, {
   ValidationError,
 } from '../../components/Flash/ValidationFlash';
+import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
 
 const SignUpPage = () => {
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
-  const {
-    handleCheckToken,
-    password,
-    confirmPassword,
-    setPassword,
-    setConfirmPassword,
-    isValid,
-    validations,
-    handleLoginSubmit,
-  } = useAuthContext();
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState(0);
-  const [gender, setGender] = useState('');
+  const { setPassword, setConfirmPassword, isValid } = useAuthContext();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -64,35 +47,8 @@ const SignUpPage = () => {
     },
   ];
 
-  const getValidationStyle = (validation: boolean) => ({
-    color: validation ? 'success.fg' : 'danger.fg',
-    fontWeight: validation ? '' : 'bold',
-  });
-
-  const getMutedStyle = (condition: boolean) =>
-    condition ? { color: 'fg.muted', fontWeight: '' } : {};
-
-  // useEffect(() => {
-  //   setIsValid(
-  //     !!username.trim() &&
-  //       !!firstName.trim() &&
-  //       !!lastName.trim() &&
-  //       !!password.trim() &&
-  //       !!confirmPassword.trim() &&
-  //       password === confirmPassword
-  //   );
-  // }, [username, firstName, lastName, password, confirmPassword]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // const result = await handleCreateAccountSubmit(
-    //   username,
-    //   password,
-    //   firstName,
-    //   lastName,
-    //   age,
-    //   gender
-    // );
     navigate('/login');
   };
 
@@ -438,54 +394,7 @@ const SignUpPage = () => {
                 )}
               </FormControl>
             </Box>
-            <Text
-              sx={{
-                color: 'fg.muted',
-                fontSize: '12px',
-              }}
-            >
-              <Text as="p">
-                Make sure it's{' '}
-                <Text
-                  sx={{
-                    ...getValidationStyle(validations.passwordRegexTwo),
-                    ...getMutedStyle(validations.passwordRegexOne),
-                  }}
-                >
-                  at least 15 characters
-                </Text>{' '}
-                OR{' '}
-                <Text
-                  sx={{
-                    ...getValidationStyle(validations.passwordRegexOne),
-                    ...getMutedStyle(validations.passwordRegexTwo),
-                  }}
-                >
-                  at least 8 characters
-                </Text>{' '}
-                <Text
-                  sx={{
-                    ...getValidationStyle(validations.hasNumber),
-                    ...getMutedStyle(validations.passwordRegexTwo),
-                  }}
-                >
-                  including a number
-                </Text>{' '}
-                <Text
-                  sx={{
-                    ...getValidationStyle(validations.hasLowercase),
-                    ...getMutedStyle(validations.passwordRegexTwo),
-                  }}
-                >
-                  and a lowercase letter
-                </Text>
-                .{' '}
-                <Link href="https://docs.github.com/articles/creating-a-strong-password">
-                  Learn more
-                </Link>
-                .
-              </Text>
-            </Text>
+            <PasswordRequirementsText />
             <FormControl required>
               <FormControl.Label visuallyHidden>
                 Create Account

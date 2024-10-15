@@ -1,34 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  Flash,
   FormControl,
   Heading,
-  Text,
-  Link,
   PageLayout,
   TextInput,
 } from '@primer/react';
-import { StopIcon } from '@primer/octicons-react';
 import { useAuthContext } from '../../contexts/auth.context';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
-import ValidationFlash from '../../components/Flash/ValidationFlash';
+import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
 
 const PasswordResetPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
   const {
-    handleCheckToken,
     password,
-    confirmPassword,
     setPassword,
     setConfirmPassword,
     isValid,
-    validations,
     handleLoginSubmit,
   } = useAuthContext();
 
@@ -222,55 +215,7 @@ const PasswordResetPage = () => {
                   </FormControl.Validation>
                 )}
               </FormControl>
-              <Text
-                sx={{
-                  color: 'fg.muted',
-                  fontSize: '12px',
-                }}
-              >
-                {/* Password description */}
-                <Text as="p">
-                  Make sure it's{' '}
-                  <Text
-                    sx={{
-                      ...getValidationStyle(validations.passwordRegexTwo),
-                      ...getMutedStyle(validations.passwordRegexOne),
-                    }}
-                  >
-                    at least 15 characters
-                  </Text>{' '}
-                  OR{' '}
-                  <Text
-                    sx={{
-                      ...getValidationStyle(validations.passwordRegexOne),
-                      ...getMutedStyle(validations.passwordRegexTwo),
-                    }}
-                  >
-                    at least 8 characters
-                  </Text>{' '}
-                  <Text
-                    sx={{
-                      ...getValidationStyle(validations.hasNumber),
-                      ...getMutedStyle(validations.passwordRegexTwo),
-                    }}
-                  >
-                    including a number
-                  </Text>{' '}
-                  <Text
-                    sx={{
-                      ...getValidationStyle(validations.hasLowercase),
-                      ...getMutedStyle(validations.passwordRegexTwo),
-                    }}
-                  >
-                    and a lowercase letter
-                  </Text>
-                  .{' '}
-                  <Link href="https://docs.github.com/articles/creating-a-strong-password">
-                    Learn more
-                  </Link>
-                  .
-                </Text>
-              </Text>
+              <PasswordRequirementsText />
               <FormControl required>
                 <Button
                   type="submit"
