@@ -1,0 +1,20 @@
+version: '3'
+services:
+  backend:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: mysql://root:1234@db:3306/mariadb
+      JWT_SECRET: IQFAYlggMGFsy0bSSYZrpUao182MxIfv
+    depends_on:
+      - database
+  database:
+    image: mariadb:latest
+    ports:
+      - '53306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: mariadb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234

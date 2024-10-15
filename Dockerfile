@@ -13,6 +13,9 @@ RUN npm ci
 # Copy the app files to the working directory
 COPY . .
 
+# Run prisma migrations
+RUN npx prisma migrate deploy
+
 # Build the Nest.js application
 RUN npm run build
 
