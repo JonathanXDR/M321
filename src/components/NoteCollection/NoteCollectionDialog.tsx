@@ -133,7 +133,6 @@ function NoteCollectionDialog() {
               />
             </FormControl>
             <NotesFormControl
-              notes={selectedNoteCollection.notes}
               notesValue={notesValue}
               setCreatedNotes={setCreatedNotes}
               setUpdatedNotes={setUpdatedNotes}

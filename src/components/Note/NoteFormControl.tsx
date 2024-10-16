@@ -12,7 +12,11 @@ import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { InputToken } from '../../types/inputToken.interface';
 
-function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
+function NotesFormControl({
+  notesValue,
+  setCreatedNotes,
+  setUpdatedNotes,
+}: any) {
   const { fetchNotesData } = useNoteContext();
   const { noteCollectionDialogType, selectedNoteCollection } =
     useNoteCollectionContext();
@@ -37,7 +41,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
     />
   );
 
-  const [tokens, setTokens] = useState<InputToken[]>(
+  const notesToTokens = (notes: Note[]) =>
     notes.map((note: Note) => ({
       id: note.id,
       text: note.title,
@@ -48,8 +52,9 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
           ? AlertIconOcticon
           : undefined,
       sx: { color: 'inherit' },
-    }))
-  );
+    }));
+
+  const [tokens, setTokens] = useState<InputToken[]>(notesToTokens(notesValue));
 
   const selectedIds = tokens.map((token) => token.id);
   const [selectedItemIds, setSelectedItemIds] = useState(selectedIds);
@@ -65,6 +70,9 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       : isSelected(itemIdA)
       ? 1
       : -1;
+
+  const [hasPreviouslyAssignedNotes, setHasPreviouslyAssignedNotes] =
+    useState(false);
 
   const handleSelectedChange = (newItems: any) => {
     if (!Array.isArray(newItems)) {
@@ -84,23 +92,45 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       return;
     }
 
-    setTokens(
-      newItems.map(({ id, text }) => {
-        const note = allNotes.find((note) => note.id === id);
-        return {
-          id,
-          text,
-          leadingVisual:
-            note?.noteCollectionId === selectedNoteCollection.id
-              ? undefined
-              : note?.noteCollectionId !== null
-              ? AlertIconOcticon
-              : undefined,
-          sx: { color: 'inherit' },
-        };
-      })
-    );
+    const newTokens = newItems.map(({ id, text }) => {
+      const note = allNotes.find((note) => note.id === id);
+      return {
+        id,
+        text,
+        leadingVisual:
+          note?.noteCollectionId === selectedNoteCollection.id
+            ? undefined
+            : note?.noteCollectionId !== null
+            ? AlertIconOcticon
+            : undefined,
+        sx: { color: 'inherit' },
+      };
+    });
+
+    const hasAssignedNotes = newTokens.some((token) => {
+      const note = allNotes.find((note) => note.id === token.id);
+      return (
+        note?.noteCollectionId !== null &&
+        note?.noteCollectionId !== selectedNoteCollection.id
+      );
+    });
+
+    setHasPreviouslyAssignedNotes(hasAssignedNotes);
+
+    setTokens(newTokens);
   };
+
+  useEffect(() => {
+    const hasAssignedNotes = tokens.some((token) => {
+      const note = allNotes.find((note) => note.id === token.id);
+      return (
+        note?.noteCollectionId !== null &&
+        note?.noteCollectionId !== selectedNoteCollection.id
+      );
+    });
+
+    setHasPreviouslyAssignedNotes(hasAssignedNotes);
+  }, [tokens, allNotes, selectedNoteCollection.id]);
 
   return (
     <FormControl>
@@ -147,15 +177,17 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
         </Autocomplete.Overlay>
       </Autocomplete>
 
-      <FormControl.Validation
-        id="warning"
-        variant="warning"
-        sx={{
-          marginTop: 2,
-        }}
-      >
-        Previous assigned notes will be reassigned to this NoteCollection
-      </FormControl.Validation>
+      {hasPreviouslyAssignedNotes && (
+        <FormControl.Validation
+          id="warning"
+          variant="warning"
+          sx={{
+            marginTop: 2,
+          }}
+        >
+          Previous assigned notes will be reassigned to this NoteCollection
+        </FormControl.Validation>
+      )}
     </FormControl>
   );
 }
