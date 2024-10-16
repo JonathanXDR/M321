@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -28,15 +28,10 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
-  const [passwordLocal, setPasswordLocal] = useState('');
-  const [confirmPasswordLocal, setConfirmPasswordLocal] = useState('');
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
-
-  const { setPassword, setConfirmPassword, isValid } = useAuthContext();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -45,6 +40,20 @@ const SignUpPage = () => {
   const lastNameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLInputElement>(null);
+
+  const { password, setPassword, confirmPassword, setConfirmPassword } =
+    useAuthContext();
+
+  const { handleFormSubmit, hasError, errorCount } =
+    useValidationContext().useInputValidation([
+      usernameRef,
+      passwordRef,
+      confirmPasswordRef,
+      firstNameRef,
+      lastNameRef,
+      ageRef,
+      genderRef,
+    ]);
 
   const fields: ValidationField[] = [
     { key: 'username', title: 'Username', ref: usernameRef },
@@ -59,22 +68,6 @@ const SignUpPage = () => {
       ref: confirmPasswordRef,
     },
   ];
-
-  const { handleFormSubmit, hasError } =
-    useValidationContext().useInputValidation([
-      usernameRef,
-      passwordRef,
-      confirmPasswordRef,
-      firstNameRef,
-      lastNameRef,
-      ageRef,
-      genderRef,
-    ]);
-
-  useEffect(() => {
-    setPassword(passwordLocal);
-    setConfirmPassword(confirmPasswordLocal);
-  }, [passwordLocal, confirmPasswordLocal]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,7 +135,7 @@ const SignUpPage = () => {
             </Heading>
           </Box>
 
-          <ValidationFlash fields={fields} />
+          {errorCount >= 3 && <ValidationFlash fields={fields} />}
 
           <Box
             as={'form'}
@@ -383,7 +376,7 @@ const SignUpPage = () => {
                   }}
                 />
                 {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const password: [string, React.Dispatch<React.SetStateAction<string>>] */}
-                {hasError(passwordLocal) && (
+                {hasError(password as unknown as string) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>
@@ -416,7 +409,7 @@ const SignUpPage = () => {
                   }}
                 />
                 {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const confirmPassword: [string, React.Dispatch<React.SetStateAction<string>>] */}
-                {hasError(confirmPasswordLocal) && (
+                {hasError(confirmPassword as unknown as string) && (
                   <FormControl.Validation variant="error">
                     Is required
                   </FormControl.Validation>

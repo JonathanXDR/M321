@@ -6,6 +6,7 @@ interface ValidationContextData {
     handleFormSubmit: (submitCallback: () => Promise<void>) => Promise<void>;
     errors: { [key: string]: boolean };
     hasError: (fieldName: string) => boolean;
+    errorCount: number;
   };
 }
 
@@ -23,11 +24,13 @@ export const useValidationContext = () => {
 
 const useInputValidation = (inputRefs: React.RefObject<HTMLInputElement>[]) => {
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+  const [errorCount, setErrorCount] = useState(0);
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const handleFormSubmit = async (submitCallback: () => Promise<void>) => {
     setSubmitAttempted(true);
     let hasError = false;
+    let count = 0;
 
     inputRefs.forEach((inputRef) => {
       const input = inputRef.current as HTMLInputElement;
@@ -40,6 +43,7 @@ const useInputValidation = (inputRefs: React.RefObject<HTMLInputElement>[]) => {
           hasError = true;
           input.focus();
         }
+        count++;
       } else {
         setErrors((prevErrors) => ({
           ...prevErrors,
@@ -47,6 +51,8 @@ const useInputValidation = (inputRefs: React.RefObject<HTMLInputElement>[]) => {
         }));
       }
     });
+
+    setErrorCount(count);
 
     if (!hasError) {
       await submitCallback();
@@ -57,7 +63,7 @@ const useInputValidation = (inputRefs: React.RefObject<HTMLInputElement>[]) => {
     return submitAttempted && errors[fieldName];
   };
 
-  return { handleFormSubmit, errors, hasError };
+  return { handleFormSubmit, errors, hasError, errorCount };
 };
 
 export const ValidationProvider: React.FC<ValidationProviderProps> = ({
