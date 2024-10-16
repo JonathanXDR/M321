@@ -21,8 +21,8 @@ const NoteItem = ({ note }: any) => {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBlock: 8,
-    paddingInline: 12,
+    paddingY: '8px',
+    paddingX: '12px',
   };
 
   return (

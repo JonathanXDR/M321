@@ -49,16 +49,31 @@ const HomePage: React.FC = () => {
   const renderFilteredNoteItems = () =>
     notesData
       .filter((note: Note) => !note.noteCollectionId)
-      .map((note: Note) => <NoteItem note={note} />);
+      .map((note: Note) => (
+        <TreeView.Item id={note.id} key={note.id}>
+          <TreeView.LeadingVisual>
+            <NoteIcon size={16} />
+          </TreeView.LeadingVisual>
+          <NoteItem note={note} />
+        </TreeView.Item>
+      ));
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
-      <TreeView.Item id={note.id} key={note.id}>
-        <TreeView.LeadingVisual>
-          <NoteIcon size={16} />
-        </TreeView.LeadingVisual>
-        <NoteItem note={note} />
-      </TreeView.Item>
+      <Box
+        key={note.id}
+        sx={{
+          paddingLeft: 3,
+          paddingRight: -3,
+        }}
+      >
+        <TreeView.Item id={note.id}>
+          <TreeView.LeadingVisual>
+            <NoteIcon size={16} />
+          </TreeView.LeadingVisual>
+          <NoteItem note={note} />
+        </TreeView.Item>
+      </Box>
     ));
 
   const renderNoteCollections = () =>
