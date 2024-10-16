@@ -189,7 +189,7 @@ const SignUpPage = () => {
               sx={{
                 width: '100%',
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start;',
               }}
             >
               <FormControl
@@ -267,7 +267,7 @@ const SignUpPage = () => {
               sx={{
                 width: '100%',
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start;',
               }}
             >
               <FormControl
@@ -345,7 +345,7 @@ const SignUpPage = () => {
               sx={{
                 width: '100%',
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start;',
               }}
             >
               <FormControl
@@ -375,7 +375,6 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const password: [string, React.Dispatch<React.SetStateAction<string>>] */}
                 {hasError(password as unknown as string) && (
                   <FormControl.Validation variant="error">
                     Is required
@@ -408,7 +407,6 @@ const SignUpPage = () => {
                     paddingY: '5px',
                   }}
                 />
-                {/* Das Argument vom Typ "[string, Dispatch<SetStateAction<string>>]" kann dem Parameter vom Typ "string" nicht zugewiesen werden.ts(2345) const confirmPassword: [string, React.Dispatch<React.SetStateAction<string>>] */}
                 {hasError(confirmPassword as unknown as string) && (
                   <FormControl.Validation variant="error">
                     Is required
