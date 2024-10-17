@@ -11,6 +11,7 @@ import { AlertIcon, CheckIcon } from '@primer/octicons-react';
 import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { InputToken } from '../../types/inputToken.interface';
+import BlankStateSystemError from '../BlankState/BlankStateSystemError';
 
 function NotesFormControl({
   notesValue,
@@ -24,11 +25,15 @@ function NotesFormControl({
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
   useEffect(() => {
-    const fetchAllNotes = async () => {
-      const notesData = await fetchNotesData();
-      setAllNotes(notesData);
-    };
-    fetchAllNotes();
+    try {
+      const fetchAllNotes = async () => {
+        const notesData = await fetchNotesData();
+        setAllNotes(notesData);
+      };
+      fetchAllNotes();
+    } catch (error) {
+      <BlankStateSystemError httpError={error} />;
+    }
   }, [fetchNotesData]);
 
   const AlertIconOcticon = () => (
@@ -41,19 +46,22 @@ function NotesFormControl({
     />
   );
 
-  const notesToTokens = (notes: Note[]) =>
-    notes.map((note: Note) => ({
-      id: note.id,
-      text: note.title,
-      leadingVisual:
-        note?.noteCollectionId === selectedNoteCollection.id
-          ? undefined
-          : note?.noteCollectionId !== null
-          ? AlertIconOcticon
-          : undefined,
-      sx: { color: 'inherit' },
-    }));
+  const notesToTokens = (notes: Note[] | string) =>
+    typeof notes === 'string'
+      ? []
+      : notes.map((note: Note) => ({
+          id: note.id,
+          text: note.title,
+          leadingVisual:
+            note?.noteCollectionId === selectedNoteCollection.id
+              ? undefined
+              : note?.noteCollectionId !== null
+              ? AlertIconOcticon
+              : undefined,
+          sx: { color: 'inherit' },
+        }));
 
+  console.log('notesValue', notesValue);
   const [tokens, setTokens] = useState<InputToken[]>(notesToTokens(notesValue));
 
   const selectedIds = tokens.map((token) => token.id);
@@ -127,15 +135,19 @@ function NotesFormControl({
   };
 
   useEffect(() => {
-    const hasAssignedNotes = tokens.some((token) => {
-      const note = allNotes.find((note) => note.id === token.id);
-      return (
-        note?.noteCollectionId !== null &&
-        note?.noteCollectionId !== selectedNoteCollection.id
-      );
-    });
+    try {
+      const hasAssignedNotes = tokens.some((token) => {
+        const note = allNotes.find((note) => note.id === token.id);
+        return (
+          note?.noteCollectionId !== null &&
+          note?.noteCollectionId !== selectedNoteCollection.id
+        );
+      });
 
-    setHasPreviouslyAssignedNotes(hasAssignedNotes);
+      setHasPreviouslyAssignedNotes(hasAssignedNotes);
+    } catch (error) {
+      <BlankStateSystemError httpError={error} />;
+    }
   }, [tokens, allNotes, selectedNoteCollection.id]);
 
   return (

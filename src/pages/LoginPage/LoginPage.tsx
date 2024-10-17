@@ -20,6 +20,7 @@ import LoginFooter from '../../components/Footer/LoginFooter';
 import { useValidationContext } from '../../contexts/validation.context';
 import { useGeneralContext } from '../../contexts/general.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 
 const LoginPage: React.FC = () => {
   const { loading, setLoading } = useGeneralContext();
@@ -40,13 +41,17 @@ const LoginPage: React.FC = () => {
     ]);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      handleCheckToken(token, navigate).finally(() => {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        handleCheckToken(token, navigate).finally(() => {
+          setLoading(false);
+        });
+      } else {
         setLoading(false);
-      });
-    } else {
-      setLoading(false);
+      }
+    } catch (error) {
+      <BlankStateSystemError httpError={error} />;
     }
   }, [navigate]);
 

@@ -56,16 +56,20 @@ const SettingsPage = () => {
   };
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await users.getCurrent();
-        setCurrentUser(response.data);
-      } catch (error) {
-        <BlankStateSystemError httpError={error} />;
-      }
-    };
+    try {
+      const fetchCurrentUser = async () => {
+        try {
+          const response = await users.getCurrent();
+          setCurrentUser(response.data);
+        } catch (error) {
+          <BlankStateSystemError httpError={error} />;
+        }
+      };
 
-    fetchCurrentUser();
+      fetchCurrentUser();
+    } catch (error) {
+      <BlankStateSystemError httpError={error} />;
+    }
   }, []);
 
   return (

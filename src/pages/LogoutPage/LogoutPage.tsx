@@ -18,6 +18,7 @@ import './LogoutPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 import { logout } from '../../services/auth.service';
+import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 
 const LogoutPage = () => {
   const navigate = useNavigate();
@@ -34,10 +35,14 @@ const LogoutPage = () => {
   } = useAuthContext();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      handleCheckToken(token, navigate).finally(() => {});
-    } else {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        handleCheckToken(token, navigate).finally(() => {});
+      } else {
+      }
+    } catch (error) {
+      <BlankStateSystemError httpError={error} />;
     }
   }, [navigate]);
 

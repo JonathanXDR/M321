@@ -9,16 +9,15 @@ function AccountActionMenu() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
+    try {
+      const fetchCurrentUser = async () => {
         const response = await users.getCurrent();
         setCurrentUser(response.data);
-      } catch (error) {
-        <BlankStateSystemError httpError={error} />;
-      }
-    };
-
-    fetchCurrentUser();
+      };
+      fetchCurrentUser();
+    } catch (error) {
+      <BlankStateSystemError httpError={error} />;
+    }
   }, []);
 
   return (

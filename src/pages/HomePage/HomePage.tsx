@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -23,12 +23,14 @@ import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
 
 import './HomePage.module.css';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 
 const HomePage: React.FC = () => {
   const { loading, setLoading } = useGeneralContext();
   const [expanded, setExpanded] = React.useState<string[]>([]);
   const { notesData, noteCollectionsData } = useGeneralContext();
   const { fetchNotesData, noteDialogIsOpen, openNoteDialog } = useNoteContext();
+  const [httpError, setHttpError] = useState(null);
 
   const {
     fetchNoteCollectionsData,
@@ -38,9 +40,13 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchNotesData();
-      await fetchNoteCollectionsData();
-      setLoading(false);
+      try {
+        await fetchNotesData();
+        await fetchNoteCollectionsData();
+        setLoading(false);
+      } catch (error) {
+        <BlankStateSystemError httpError={error} />;
+      }
     };
 
     fetchData();
