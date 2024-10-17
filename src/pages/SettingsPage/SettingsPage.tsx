@@ -197,10 +197,10 @@ const SettingsPage = () => {
                 type="text"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter firstname"
+                block
                 sx={{
                   marginTop: 1,
                   marginBottom: 4,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -224,10 +224,10 @@ const SettingsPage = () => {
                 type="text"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter lastname"
+                block
                 sx={{
                   marginTop: 1,
                   marginBottom: 4,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -260,10 +260,10 @@ const SettingsPage = () => {
                 type="text"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter age"
+                block
                 sx={{
                   marginTop: 1,
                   marginBottom: 4,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -286,10 +286,10 @@ const SettingsPage = () => {
                 type="text"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter gender"
+                block
                 sx={{
                   marginTop: 1,
                   marginBottom: 4,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -459,10 +459,9 @@ const SettingsPage = () => {
               <TextInput
                 type="text"
                 // loading={true}
-
                 onChange={(e) => setUsername(e.target.value)}
+                block
                 sx={{
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -483,8 +482,8 @@ const SettingsPage = () => {
               <TextInput
                 type="text"
                 onChange={(e) => setPassword(e.target.value)}
+                block
                 sx={{
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -505,8 +504,8 @@ const SettingsPage = () => {
               <TextInput
                 type="password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                block
                 sx={{
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -629,10 +628,9 @@ const SettingsPage = () => {
                   <TextInput
                     type="text"
                     // loading={true}
-
                     onChange={(e) => setUsername(e.target.value)}
+                    block
                     sx={{
-                      width: '100%',
                       paddingY: '5px',
                     }}
                   />
@@ -658,8 +656,8 @@ const SettingsPage = () => {
                   <TextInput
                     type="text"
                     onChange={(e) => setPassword(e.target.value)}
+                    block
                     sx={{
-                      width: '100%',
                       paddingY: '5px',
                     }}
                   />
@@ -674,8 +672,8 @@ const SettingsPage = () => {
                   <TextInput
                     type="password"
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    block
                     sx={{
-                      width: '100%',
                       paddingY: '5px',
                     }}
                   />

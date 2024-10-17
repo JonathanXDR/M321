@@ -139,14 +139,15 @@ function NotesFormControl({
         <Autocomplete.Input
           as={TextInputWithTokens}
           tokens={tokens}
+          visibleTokenCount={5}
           tokenComponent={Token}
           onTokenRemove={removeToken}
-          onChange={(e) =>
+          block
+          onChange={(e) => {
             noteCollectionDialogType === 'create'
               ? setCreatedNotes(e.target.value)
-              : setUpdatedNotes(e.target.value)
-          }
-          sx={{ width: '100%' }}
+              : setUpdatedNotes(e.target.value);
+          }}
         />
         <Autocomplete.Overlay
           sx={{

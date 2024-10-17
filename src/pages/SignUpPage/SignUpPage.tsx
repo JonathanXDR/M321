@@ -173,9 +173,9 @@ const SignUpPage = () => {
                   setUsername(e.target.value);
                 }}
                 placeholder="Enter username"
+                block
                 sx={{
                   marginTop: 1,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -216,9 +216,9 @@ const SignUpPage = () => {
                     setFirstName(e.target.value);
                   }}
                   placeholder="Enter firstname"
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />
@@ -250,9 +250,9 @@ const SignUpPage = () => {
                     setLastName(e.target.value);
                   }}
                   placeholder="Enter lastname"
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />
@@ -294,9 +294,9 @@ const SignUpPage = () => {
                     setAge(e.target.value);
                   }}
                   placeholder="Enter age"
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />
@@ -328,9 +328,9 @@ const SignUpPage = () => {
                     setGender(e.target.value);
                   }}
                   placeholder="Enter gender"
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />
@@ -369,9 +369,9 @@ const SignUpPage = () => {
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />

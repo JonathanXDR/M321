@@ -129,9 +129,9 @@ const PasswordResetPage = () => {
                 loading={true}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter username"
+                block
                 sx={{
                   marginTop: 1,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -163,9 +163,9 @@ const PasswordResetPage = () => {
                   setPassword(e.target.value);
                 }}
                 placeholder="Enter password"
+                block
                 sx={{
                   marginTop: 1,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -202,9 +202,9 @@ const PasswordResetPage = () => {
                     setConfirmPassword(e.target.value);
                   }}
                   placeholder="Confirm password"
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />

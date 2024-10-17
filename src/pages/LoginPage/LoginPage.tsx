@@ -167,9 +167,9 @@ const LoginPage: React.FC = () => {
                 ref={usernameInputRef}
                 type="text"
                 onChange={(e) => setUsername(e.target.value)}
+                block
                 sx={{
                   marginTop: 1,
-                  width: '100%',
                   paddingY: '5px',
                 }}
               />
@@ -202,9 +202,9 @@ const LoginPage: React.FC = () => {
                   ref={passwordInputRef}
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
+                  block
                   sx={{
                     marginTop: 1,
-                    width: '100%',
                     paddingY: '5px',
                   }}
                 />

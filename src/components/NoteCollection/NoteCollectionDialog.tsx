@@ -129,7 +129,8 @@ function NoteCollectionDialog() {
                     ? setCreatedTitle(e.target.value)
                     : setUpdatedTitle(e.target.value)
                 }
-                sx={{ width: '100%', marginBottom: '4' }}
+                block
+                sx={{ marginBottom: '4' }}
               />
             </FormControl>
             <NotesFormControl
