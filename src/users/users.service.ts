@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { User } from '@prisma/client';
 
@@ -28,5 +32,30 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  async createUser(body: User): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { username: body.username },
+    });
+    if (user) {
+      throw new ConflictException('Username already taken');
+    }
+    return this.prisma.user.create({
+      data: body,
+    });
+  }
+
+  async updateUser(id: string, body: User): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: body,
+    });
+  }
+
+  async deleteUser(id: string): Promise<User> {
+    return this.prisma.user.delete({
+      where: { id },
+    });
   }
 }

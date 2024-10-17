@@ -4,6 +4,9 @@ import {
   Param,
   NotFoundException,
   UseGuards,
+  Post,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
@@ -38,5 +41,26 @@ export class UsersController {
     } catch (error) {
       throw new NotFoundException();
     }
+  }
+
+  @Post()
+  @ApiOkResponse({ type: UserEntity })
+  async createUser(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.createUser(user);
+  }
+
+  @Put('/:id')
+  @ApiOkResponse({ type: UserEntity })
+  async updateUser(
+    @Param('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.usersService.updateUser(id, user);
+  }
+
+  @Delete('/:id')
+  @ApiOkResponse({ type: UserEntity })
+  async deleteUser(@Param('id') id: string): Promise<User> {
+    return this.usersService.deleteUser(id);
   }
 }
