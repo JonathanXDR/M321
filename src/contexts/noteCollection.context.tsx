@@ -124,7 +124,10 @@ export const NoteCollectionProvider: React.FC<NoteCollectionProviderProps> = ({
 
   const handleUpdateNoteCollection = useCallback(
     async (id: string, title: string, notes: Note[]) => {
-      const updatedNoteCollection = await noteCollections.update(id, { title });
+      const updatedNoteCollection = await noteCollections.update(id, {
+        title: title,
+        notes: notes,
+      });
       setNoteCollectionsData(
         noteCollectionsData.map((noteCollection) =>
           noteCollection.id === id ? updatedNoteCollection.data : noteCollection

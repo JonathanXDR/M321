@@ -81,6 +81,12 @@ function NotesFormControl({
 
     setSelectedItemIds(newItems.map((item) => item.id));
 
+    if (noteCollectionDialogType === 'create') {
+      setCreatedNotes(newItems);
+    } else {
+      setUpdatedNotes(newItems);
+    }
+
     if (newItems.length < selectedItemIds.length) {
       const newItemIds = newItems.map(({ id }) => id);
       const removedIds = selectedIds.filter((id) => !newItemIds.includes(id));
