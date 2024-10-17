@@ -114,7 +114,8 @@ function NoteDialog() {
                 ? setCreatedTitle(e.target.value)
                 : setUpdatedTitle(e.target.value)
             }
-            sx={{ width: '100%', marginBottom: '4' }}
+            block
+            sx={{ marginBottom: '4' }}
             readOnly={noteDialogType === 'delete'}
           />
         </FormControl>
@@ -129,7 +130,7 @@ function NoteDialog() {
                 ? setCreatedContent(e.target.value)
                 : setUpdatedContent(e.target.value)
             }
-            sx={{ width: '100%' }}
+            block
             readOnly={noteDialogType === 'delete'}
           />
         </FormControl>
