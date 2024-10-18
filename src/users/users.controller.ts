@@ -7,14 +7,17 @@ import {
   Post,
   Put,
   Delete,
+  Body,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { User } from '@prisma/client';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
+import { UserRequest } from './dto/user.request';
 
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 @ApiTags('users')
 export class UsersController {
@@ -22,45 +25,51 @@ export class UsersController {
 
   @Get()
   @ApiOkResponse({ type: [UserEntity] })
-  async getAllUsers(): Promise<User[]> {
-    return this.usersService.findMany();
+  getAllUsers(@CurrentUser() user: User): Promise<User[]> {
+    return this.usersService.findMany(user);
   }
 
   @Get('/me')
-  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: UserEntity })
-  async getCurrentUser(@CurrentUser() user: User): Promise<User> {
-    return this.usersService.findOneById(user.id);
+  getCurrentUser(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.findOneById(user, user.id);
   }
 
   @Get('/:id')
   @ApiOkResponse({ type: UserEntity })
-  async getUser(@Param('id') id: string): Promise<User> {
+  getUser(@CurrentUser() user: User, @Param('id') id: string): Promise<User> {
     try {
-      return this.usersService.findOneById(id);
+      return this.usersService.findOneById(user, id);
     } catch (error) {
       throw new NotFoundException();
     }
   }
 
   @Post()
-  @ApiOkResponse({ type: UserEntity })
-  async createUser(@CurrentUser() user: User): Promise<User> {
-    return this.usersService.createUser(user);
+  @ApiCreatedResponse({ type: UserEntity })
+  createUser(
+    @CurrentUser() user: User,
+    @Body() body: UserRequest,
+  ): Promise<User> {
+    return this.usersService.createUser(user, body);
   }
 
   @Put('/:id')
   @ApiOkResponse({ type: UserEntity })
-  async updateUser(
-    @Param('id') id: string,
+  updateUser(
     @CurrentUser() user: User,
+    @Param('id') id: string,
+    @Body() body: UserRequest,
   ): Promise<User> {
-    return this.usersService.updateUser(id, user);
+    return this.usersService.updateUser(user, id, body);
   }
 
   @Delete('/:id')
   @ApiOkResponse({ type: UserEntity })
-  async deleteUser(@Param('id') id: string): Promise<User> {
-    return this.usersService.deleteUser(id);
+  deleteUser(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+  ): Promise<User> {
+    return this.usersService.deleteUser(user, id);
   }
 }

@@ -5,55 +5,58 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { User } from '@prisma/client';
+import { UserRequest } from './dto/user.request';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(): Promise<User[]> {
-    return this.prisma.user.findMany();
+  async findMany(user: User): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: { id: user.id },
+    });
   }
 
-  async findOneById(id: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({
+  async findOneById(user: User, id: string): Promise<User> {
+    const foundUser = await this.prisma.user.findUnique({
       where: { id },
     });
-    if (!user) {
+    if (!foundUser || foundUser.id !== user.id) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return foundUser;
   }
 
-  async findOneByUsername(username: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({
+  async findOneByUsername(user: User, username: string): Promise<User> {
+    const foundUser = await this.prisma.user.findUnique({
       where: { username },
     });
-    if (!user) {
+    if (!foundUser || foundUser.id !== user.id) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return foundUser;
   }
 
-  async createUser(body: User): Promise<User> {
-    const user = await this.prisma.user.findUnique({
+  async createUser(user: User, body: UserRequest): Promise<User> {
+    const existingUser = await this.prisma.user.findUnique({
       where: { username: body.username },
     });
-    if (user) {
+    if (existingUser) {
       throw new ConflictException('Username already taken');
     }
     return this.prisma.user.create({
-      data: body,
+      data: { ...body, id: user.id } as User,
     });
   }
 
-  async updateUser(id: string, body: User): Promise<User> {
+  async updateUser(user: User, id: string, body: UserRequest): Promise<User> {
     return this.prisma.user.update({
       where: { id },
-      data: body,
+      data: { ...body, id: user.id } as User,
     });
   }
 
-  async deleteUser(id: string): Promise<User> {
+  async deleteUser(user: User, id: string): Promise<User> {
     return this.prisma.user.delete({
       where: { id },
     });
