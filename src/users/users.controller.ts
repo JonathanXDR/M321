@@ -9,37 +9,44 @@ import {
   Delete,
   Body,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { User } from '@prisma/client';
 import { ApiOkResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
 import { UserRequest } from './dto/user.request';
+import { RoleGuard } from 'src/auth/guards/role.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RoleGuard)
 @Controller('users')
 @ApiTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles('admin')
   @Get()
   @ApiOkResponse({ type: [UserEntity] })
   getAllUsers(@CurrentUser() user: User): Promise<User[]> {
     return this.usersService.findMany(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/me')
   @ApiOkResponse({ type: UserEntity })
   getCurrentUser(@CurrentUser() user: User): Promise<User> {
-    return this.usersService.findOneById(user, user.id);
+    return this.usersService.findOneById(user.id);
   }
 
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles('admin')
   @Get('/:id')
   @ApiOkResponse({ type: UserEntity })
-  getUser(@CurrentUser() user: User, @Param('id') id: string): Promise<User> {
+  getUser(@Param('id') id: string): Promise<User> {
     try {
-      return this.usersService.findOneById(user, id);
+      return this.usersService.findOneById(id);
     } catch (error) {
       throw new NotFoundException();
     }
@@ -47,13 +54,12 @@ export class UsersController {
 
   @Post()
   @ApiCreatedResponse({ type: UserEntity })
-  createUser(
-    @CurrentUser() user: User,
-    @Body() body: UserRequest,
-  ): Promise<User> {
-    return this.usersService.createUser(user, body);
+  createUser(@Body() body: UserRequest): Promise<User> {
+    return this.usersService.createUser(body);
   }
 
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles('admin')
   @Put('/:id')
   @ApiOkResponse({ type: UserEntity })
   updateUser(
@@ -64,6 +70,8 @@ export class UsersController {
     return this.usersService.updateUser(user, id, body);
   }
 
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles('admin')
   @Delete('/:id')
   @ApiOkResponse({ type: UserEntity })
   deleteUser(

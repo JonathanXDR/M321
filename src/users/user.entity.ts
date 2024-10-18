@@ -22,4 +22,7 @@ export class UserEntity implements User {
 
   @ApiProperty()
   gender: string;
+
+  @ApiProperty()
+  role: string;
 }

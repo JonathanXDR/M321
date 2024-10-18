@@ -12,16 +12,17 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async findMany(user: User): Promise<User[]> {
-    return this.prisma.user.findMany({
-      where: { id: user.id },
-    });
+    if (user.role !== 'admin') {
+      throw new NotFoundException('Forbidden');
+    }
+    return this.prisma.user.findMany();
   }
 
-  async findOneById(user: User, id: string): Promise<User> {
+  async findOneById(id: string): Promise<User> {
     const foundUser = await this.prisma.user.findUnique({
       where: { id },
     });
-    if (!foundUser || foundUser.id !== user.id) {
+    if (!foundUser) {
       throw new NotFoundException('User not found');
     }
     return foundUser;
@@ -37,7 +38,7 @@ export class UsersService {
     return foundUser;
   }
 
-  async createUser(user: User, body: UserRequest): Promise<User> {
+  async createUser(body: UserRequest): Promise<User> {
     const existingUser = await this.prisma.user.findUnique({
       where: { username: body.username },
     });
@@ -45,18 +46,34 @@ export class UsersService {
       throw new ConflictException('Username already taken');
     }
     return this.prisma.user.create({
-      data: { ...body, id: user.id } as User,
+      data: { ...body } as User,
     });
   }
 
   async updateUser(user: User, id: string, body: UserRequest): Promise<User> {
+    if (user.role !== 'admin') {
+      throw new NotFoundException('Forbidden');
+    }
+    const foundUser = await this.findOneById(id);
+    if (user.id !== foundUser.id) {
+      throw new NotFoundException('User not found');
+    }
+
     return this.prisma.user.update({
       where: { id },
-      data: { ...body, id: user.id } as User,
+      data: { ...body } as User,
     });
   }
 
   async deleteUser(user: User, id: string): Promise<User> {
+    if (user.role !== 'admin') {
+      throw new NotFoundException('Forbidden');
+    }
+    const foundUser = await this.findOneById(id);
+    if (user.id !== foundUser.id) {
+      throw new NotFoundException('User not found');
+    }
+
     return this.prisma.user.delete({
       where: { id },
     });

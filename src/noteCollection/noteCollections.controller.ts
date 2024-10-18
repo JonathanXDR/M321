@@ -1,6 +1,6 @@
 import { CurrentUser } from './../decorators/current-user.decorator';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { NoteCollectionRequest } from './dto/noteCollection.request';
 import {
   Controller,

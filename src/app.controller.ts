@@ -1,6 +1,6 @@
 import { ApiTags } from '@nestjs/swagger';
 import { Controller, Post, UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from './auth/local-auth.guard';
+import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 
