@@ -27,11 +27,11 @@ export class UsersService {
     return foundUser;
   }
 
-  async findOneByUsername(user: User, username: string): Promise<User> {
+  async findOneByUsername(username: string): Promise<User> {
     const foundUser = await this.prisma.user.findUnique({
       where: { username },
     });
-    if (!foundUser || foundUser.id !== user.id) {
+    if (!foundUser) {
       throw new NotFoundException('User not found');
     }
     return foundUser;
