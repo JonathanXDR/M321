@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { User } from '@prisma/client';
@@ -13,7 +14,7 @@ export class UsersService {
 
   async findMany(user: User): Promise<User[]> {
     if (user.role !== 'admin') {
-      throw new NotFoundException('Forbidden');
+      throw new ForbiddenException('Forbidden');
     }
     return this.prisma.user.findMany();
   }
@@ -46,16 +47,16 @@ export class UsersService {
       throw new ConflictException('Username already taken');
     }
     return this.prisma.user.create({
-      data: { ...body } as User,
+      data: { ...body, role: 'user' } as User,
     });
   }
 
   async updateUser(user: User, id: string, body: UserRequest): Promise<User> {
-    if (user.role !== 'admin') {
-      throw new NotFoundException('Forbidden');
+    if (user.id !== id && user.role !== 'admin') {
+      throw new ForbiddenException('Forbidden');
     }
     const foundUser = await this.findOneById(id);
-    if (user.id !== foundUser.id) {
+    if (!foundUser) {
       throw new NotFoundException('User not found');
     }
 
@@ -66,11 +67,11 @@ export class UsersService {
   }
 
   async deleteUser(user: User, id: string): Promise<User> {
-    if (user.role !== 'admin') {
-      throw new NotFoundException('Forbidden');
+    if (user.id !== id && user.role !== 'admin') {
+      throw new ForbiddenException('Forbidden');
     }
     const foundUser = await this.findOneById(id);
-    if (user.id !== foundUser.id) {
+    if (!foundUser) {
       throw new NotFoundException('User not found');
     }
 

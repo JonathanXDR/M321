@@ -19,7 +19,6 @@ import { UserRequest } from './dto/user.request';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard, RoleGuard)
 @Controller('users')
 @ApiTags('users')
 export class UsersController {
@@ -58,11 +57,21 @@ export class UsersController {
     return this.usersService.createUser(body);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Put('/me')
+  @ApiOkResponse({ type: UserEntity })
+  updateUser(
+    @CurrentUser() user: User,
+    @Body() body: UserRequest,
+  ): Promise<User> {
+    return this.usersService.updateUser(user, user.id, body);
+  }
+
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
   @Put('/:id')
   @ApiOkResponse({ type: UserEntity })
-  updateUser(
+  updateOtherUser(
     @CurrentUser() user: User,
     @Param('id') id: string,
     @Body() body: UserRequest,
@@ -70,11 +79,18 @@ export class UsersController {
     return this.usersService.updateUser(user, id, body);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Delete('/me')
+  @ApiOkResponse({ type: UserEntity })
+  deleteUser(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.deleteUser(user, user.id);
+  }
+
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
   @Delete('/:id')
   @ApiOkResponse({ type: UserEntity })
-  deleteUser(
+  deleteOtherUser(
     @CurrentUser() user: User,
     @Param('id') id: string,
   ): Promise<User> {
