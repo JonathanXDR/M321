@@ -13,8 +13,8 @@ model User {
   password        String           @db.VarChar(100)
   firstname       String           @db.VarChar(30)
   lastname        String           @db.VarChar(30)
-  age             Int              @db.TinyInt
-  gender          String           @db.VarChar(30)
+  age             Int?             @db.TinyInt
+  gender          String?          @db.VarChar(30)
   role            String           @db.VarChar(30)
   noteCollections NoteCollection[]
   notes           Note[]

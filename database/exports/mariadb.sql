@@ -1,10 +1,10 @@
 -- -------------------------------------------------------------
--- TablePlus 5.3.2(490)
+-- TablePlus 5.3.6(496)
 --
 -- https://tableplus.com/
 --
 -- Database: mariadb
--- Generation Time: 2023-03-06 07:50:57.4970
+-- Generation Time: 2023-04-26 13:09:58.2130
 -- -------------------------------------------------------------
 
 
@@ -51,6 +51,7 @@ CREATE TABLE `User` (
   `lastname` varchar(30) NOT NULL,
   `age` tinyint(4) NOT NULL,
   `gender` varchar(30) NOT NULL,
+  `role` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `User_username_key` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -74,9 +75,9 @@ INSERT INTO `NoteCollection` (`id`, `title`, `userId`) VALUES
 ('859f60d8-7c02-5c0d-9b9a-dc764d1f39cc', 'Grocery List', 'e61d63b0-7824-5d39-8837-a4018b1ca868'),
 ('a53d93f8-084c-5b90-9262-cd14d8a1df95', 'Books to Read', 'e61d63b0-7824-5d39-8837-a4018b1ca868');
 
-INSERT INTO `User` (`id`, `username`, `password`, `firstname`, `lastname`, `age`, `gender`) VALUES
-('e61d63b0-7824-5d39-8837-a4018b1ca868', 'username', '$2a$10$GuvQCEzYPC4rsht7OriHPuohNy4wlNopatcizt6Yqf8PWkg58MpGq', 'username', 'password', 99, 'Credentials'),
-('f15e9d13-2766-570a-8d3e-3d766cbcf547', 'jonathan_russ', '$2a$10$pI9k47Ugd/u1PJ0Y1smtz.NNl/0ooSbEmM21GVzQeSUiUHpWvJKre', 'Jonathan', 'Russ', 17, 'Male');
+INSERT INTO `User` (`id`, `username`, `password`, `firstname`, `lastname`, `age`, `gender`, `role`) VALUES
+('e61d63b0-7824-5d39-8837-a4018b1ca868', 'username', '$2a$10$GuvQCEzYPC4rsht7OriHPuohNy4wlNopatcizt6Yqf8PWkg58MpGq', 'username', 'password', 99, 'Credentials', 'user'),
+('f15e9d13-2766-570a-8d3e-3d766cbcf547', 'jonathan_russ', '$2a$10$pI9k47Ugd/u1PJ0Y1smtz.NNl/0ooSbEmM21GVzQeSUiUHpWvJKre', 'Jonathan', 'Russ', 17, 'Male', 'user');
 
 
 
