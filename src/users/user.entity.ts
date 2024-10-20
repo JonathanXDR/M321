@@ -12,10 +12,10 @@ export class UserEntity implements User {
   password: string;
 
   @ApiProperty()
-  lastname: string;
+  lastName: string;
 
   @ApiProperty()
-  firstname: string;
+  firstName: string;
 
   @ApiProperty()
   age: number;

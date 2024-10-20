@@ -18,13 +18,13 @@ export class UserRequest {
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  lastname: string;
+  lastName: string;
 
   @ApiProperty()
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  firstname: string;
+  firstName: string;
 
   @ApiProperty()
   @IsOptional()

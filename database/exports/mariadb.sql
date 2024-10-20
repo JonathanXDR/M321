@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: mariadb
--- Generation Time: 2023-04-26 13:09:58.2130
+-- Generation Time: 2023-04-29 23:17:57.6490
 -- -------------------------------------------------------------
 
 
@@ -47,8 +47,8 @@ CREATE TABLE `User` (
   `id` varchar(36) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `firstname` varchar(30) NOT NULL,
-  `lastname` varchar(30) NOT NULL,
+  `firstName` varchar(30) NOT NULL,
+  `lastName` varchar(30) NOT NULL,
   `age` tinyint(4) NOT NULL,
   `gender` varchar(30) NOT NULL,
   `role` varchar(30) NOT NULL,
@@ -75,7 +75,7 @@ INSERT INTO `NoteCollection` (`id`, `title`, `userId`) VALUES
 ('859f60d8-7c02-5c0d-9b9a-dc764d1f39cc', 'Grocery List', 'e61d63b0-7824-5d39-8837-a4018b1ca868'),
 ('a53d93f8-084c-5b90-9262-cd14d8a1df95', 'Books to Read', 'e61d63b0-7824-5d39-8837-a4018b1ca868');
 
-INSERT INTO `User` (`id`, `username`, `password`, `firstname`, `lastname`, `age`, `gender`, `role`) VALUES
+INSERT INTO `User` (`id`, `username`, `password`, `firstName`, `lastName`, `age`, `gender`, `role`) VALUES
 ('e61d63b0-7824-5d39-8837-a4018b1ca868', 'username', '$2a$10$GuvQCEzYPC4rsht7OriHPuohNy4wlNopatcizt6Yqf8PWkg58MpGq', 'username', 'password', 99, 'Credentials', 'user'),
 ('f15e9d13-2766-570a-8d3e-3d766cbcf547', 'jonathan_russ', '$2a$10$pI9k47Ugd/u1PJ0Y1smtz.NNl/0ooSbEmM21GVzQeSUiUHpWvJKre', 'Jonathan', 'Russ', 17, 'Male', 'user');
 
