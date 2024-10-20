@@ -1,24 +1,40 @@
 version: '3'
+volumes:
+  maindb__data:
+  maindb__config:
 services:
   backend:
+    container_name: note-library-backend
     build:
-      context: .
       args:
         - DATABASE_URL=mysql://root:1234@database:3306/mariadb
     ports:
       - '3000:3000'
-    environment:
-      DATABASE_URL: mysql://root:1234@database:3306/mariadb
-      JWT_SECRET: IQFAYlggMGFsy0bSSYZrpUao182MxIfv
-      WAIT_HOSTS: database:3306
-    depends_on:
-      - database
+    restart: always
   database:
-    image: mariadb:latest
+    container_name: note-library-database
+    image: mariadb:10.9
     ports:
       - '53306:3306'
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: mariadb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 1234
+      MARIADB_ROOT_USER: root
+      MARIADB_ROOT_PASSWORD: 1234
+      MARIADB_DATABASE: mariadb
+    volumes:
+      - type: bind
+        source: ./database/init.sql
+        target: /init.sql
+      # - type: bind
+      #   source: ./sh/init.sh
+      #   target: /docker-entrypoint-initdb.d/init.sh
+      - type: volume
+        source: maindb__data
+        target: /etc
+        volume:
+          nocopy: false
+      - type: volume
+        source: maindb__config
+        target: /var/lib/mysql
+        volume:
+          nocopy: false
