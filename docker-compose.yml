@@ -4,12 +4,13 @@ services:
     build:
       context: .
       args:
-        DATABASE_URL: mysql://root:1234@database:3306/mariadb
+        - DATABASE_URL=mysql://root:1234@database:3306/mariadb
     ports:
       - '3000:3000'
     environment:
       DATABASE_URL: mysql://root:1234@database:3306/mariadb
       JWT_SECRET: IQFAYlggMGFsy0bSSYZrpUao182MxIfv
+      WAIT_HOSTS: database:3306
     depends_on:
       - database
   database:
