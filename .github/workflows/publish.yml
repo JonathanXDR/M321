@@ -13,6 +13,5 @@ jobs:
           password: ${{ secrets.GHCR_PAT }}
       - name: Build and push the backend Docker image
         run: |
-          cd Backend
           docker build . --tag ghcr.io/jonathanxdr/note-library-backend:latest
           docker push ghcr.io/jonathanxdr/note-library-backend:latest
