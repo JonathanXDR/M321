@@ -1,6 +1,9 @@
 # Use an official Node runtime as the base image
 FROM node:18.16.0
 
+# Assign the Image to a repository
+LABEL org.opencontainers.image.source https://github.com/JonathanXDR/Note-Library-Backend
+
 # Set the arguments
 ARG DATABASE_URL
 
