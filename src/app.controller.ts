@@ -1,9 +1,9 @@
-import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from './auth/guards/local-auth.guard';
-import { AuthService } from './auth/auth.service';
-import { CurrentUser } from './decorators/current-user.decorator';
+import { ApiTags } from '@nestjs/swagger';
 import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
+import { LocalAuthGuard } from './auth/guards/local-auth.guard';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller()
 export class AppController {

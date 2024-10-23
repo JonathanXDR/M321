@@ -1,23 +1,23 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
-  Param,
   NotFoundException,
-  UseGuards,
+  Param,
   Post,
   Put,
-  Delete,
-  Body,
+  UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { UsersService } from './users.service';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
-import { ApiOkResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { UserEntity } from './user.entity';
-import { UserRequest } from './dto/user.request';
 import { RoleGuard } from 'src/auth/guards/role.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UserRequest } from './dto/user.request';
+import { UserEntity } from './user.entity';
+import { UsersService } from './users.service';
 
 @Controller('users')
 @ApiTags('users')

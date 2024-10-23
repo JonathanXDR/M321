@@ -1,20 +1,20 @@
-import { CurrentUser } from './../decorators/current-user.decorator';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { NoteCollectionRequest } from './dto/noteCollection.request';
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
-  Body,
   Put,
-  Delete,
+  UseGuards,
 } from '@nestjs/common';
-import { NoteCollectionsService } from './noteCollections.service';
-import { NoteCollection, User } from '@prisma/client';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { NoteCollection, User } from '@prisma/client';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from './../decorators/current-user.decorator';
+import { NoteCollectionRequest } from './dto/noteCollection.request';
 import { NoteCollectionEntity } from './noteCollection.entity';
+import { NoteCollectionsService } from './noteCollections.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('note-collections')

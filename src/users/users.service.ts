@@ -1,11 +1,11 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  ForbiddenException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
 import { User } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 import { UserRequest } from './dto/user.request';
 
 @Injectable()

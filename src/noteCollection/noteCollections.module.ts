@@ -1,9 +1,9 @@
-import { UsersService } from './../users/users.service';
-import { AuthModule } from '../auth/auth.module';
 import { Module } from '@nestjs/common';
-import { NoteCollectionsService } from './noteCollections.service';
-import { NoteCollectionsController } from './noteCollections.controller';
 import { PrismaService } from 'src/prisma.service';
+import { AuthModule } from '../auth/auth.module';
+import { UsersService } from './../users/users.service';
+import { NoteCollectionsController } from './noteCollections.controller';
+import { NoteCollectionsService } from './noteCollections.service';
 
 @Module({
   imports: [AuthModule],
