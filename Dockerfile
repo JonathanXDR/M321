@@ -1,26 +1,26 @@
-# Use an official Node runtime as the base image
-FROM node:18.16.0
+# Use the official Node.js image as the base image
+FROM node:20.18.0
 
 # Assign the Image to a repository
-LABEL org.opencontainers.image.source https://github.com/JonathanXDR/Note-Library-Frontend
-
-# Set the environment variables
-ENV NODE_ENV production
+LABEL org.opencontainers.image.source https://github.com/JonathanXDR/M321
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the app files to the working directory
-COPY . .
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-# Install any needed packages
+# Install dependencies
 RUN npm ci
 
-# Build the React application
+# Copy the application source code
+COPY . .
+
+# Build the application for production
 RUN npm run build
 
-# Start the application
-CMD ["npm", "run", "start"]
-
-# Expose the port on which the app will run
+# Expose the application port
 EXPOSE 3001
+
+# Start the application
+CMD ["npm", "start"]
