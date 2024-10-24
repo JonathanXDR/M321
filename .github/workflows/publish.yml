@@ -1,0 +1,36 @@
+name: publish
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  publish-frontend-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: Build and push the frontend Docker image
+        run: |
+          cd Frontend
+          docker build . --tag ghcr.io/jonathanxdr/notes-frontend:latest
+          docker push ghcr.io/jonathanxdr/notes-frontend:latest
+
+  publish-backend-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: Build and push the backend Docker image
+        run: |
+          cd Backend
+          docker build . --tag ghcr.io/jonathanxdr/notes-backend:latest
+          docker push ghcr.io/jonathanxdr/notes-backend:latest
