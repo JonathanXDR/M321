@@ -11,14 +11,14 @@ import {
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { NoteCollection, User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CurrentUser } from './../decorators/current-user.decorator';
-import { NoteCollectionRequest } from './dto/noteCollection.request';
-import { NoteCollectionEntity } from './noteCollection.entity';
-import { NoteCollectionsService } from './noteCollections.service';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { NoteCollectionRequest } from './dto/note-collection.request';
+import { NoteCollectionEntity } from './note-collection.entity';
+import { NoteCollectionsService } from './note-collections.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('note-collections')
-@ApiTags('noteCollections')
+@ApiTags('note-collections')
 export class NoteCollectionsController {
   constructor(
     private readonly noteCollectionsService: NoteCollectionsService,

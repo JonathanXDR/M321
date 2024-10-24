@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Note, NoteCollection, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { NoteCollectionRequest } from './dto/noteCollection.request';
+import { NoteCollectionRequest } from './dto/note-collection.request';
 
 @Injectable()
 export class NoteCollectionsService {
