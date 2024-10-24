@@ -1,0 +1,40 @@
+version: '3'
+name: todo
+services:
+  database:
+    container_name: database
+    image: mariadb:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MARIADB_ROOT_USER: root
+      MARIADB_ROOT_PASSWORD: toor
+      MARIADB_DATABASE: ToDo
+    ports:
+      - '3306:3306'
+    volumes:
+      - './Database/init.sql:/docker-entrypoint-initdb.d/1.sql'
+
+  backend:
+    build: ./Backend
+    container_name: backend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+    environment:
+      DB_HOST: database
+      DB_USER: root
+      DB_PASSWORD: toor
+      DB_NAME: ToDo
+      WAIT_HOSTS: database:3306
+
+  frontend:
+    build: ./Frontend
+    container_name: frontend
+    ports:
+      - '8080:8080'
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
