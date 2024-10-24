@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -6,24 +5,22 @@ import {
   NoteIcon,
 } from '@primer/octicons-react';
 import { Box, Button, ButtonGroup, PageLayout, TreeView } from '@primer/react';
-
-import { Note } from '../../types/note.interface';
-import { NoteCollection } from '../../types/noteCollection.interface';
+import React, { useEffect, useState } from 'react';
+import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
+import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
+import GeneralFlash from '../../components/Flash/GeneralFlash';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import MainNavbar from '../../components/Navbar/MainNavbar';
+import NoteDialog from '../../components/Note/NoteDialog';
+import NoteItem from '../../components/Note/NoteItem';
+import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
+import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
 import { useGeneralContext } from '../../contexts/general.context';
 import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
-
-import MainNavbar from '../../components/Navbar/MainNavbar';
-import GeneralFlash from '../../components/Flash/GeneralFlash';
-import NoteItem from '../../components/Note/NoteItem';
-import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
-import NoteDialog from '../../components/Note/NoteDialog';
-import NoteCollectionDialog from '../../components/NoteCollection/NoteCollectionDialog';
-import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
-
+import { Note } from '../../types/note.interface';
+import { NoteCollection } from '../../types/noteCollection.interface';
 import './HomePage.module.css';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 
 const HomePage: React.FC = () => {
   const { loading, setLoading } = useGeneralContext();
@@ -160,7 +157,7 @@ const HomePage: React.FC = () => {
                         }}
                       >
                         <Button
-                          trailingIcon={
+                          trailingVisual={
                             expanded.length > 0
                               ? ChevronDownIcon
                               : ChevronRightIcon
@@ -187,7 +184,7 @@ const HomePage: React.FC = () => {
                         }}
                       >
                         <Button
-                          leadingIcon={NoteIcon}
+                          leadingVisual={NoteIcon}
                           variant="primary"
                           onClick={() => openNoteDialog('create')}
                           sx={{
@@ -198,7 +195,7 @@ const HomePage: React.FC = () => {
                           Create Note
                         </Button>
                         <Button
-                          leadingIcon={FileDirectoryIcon}
+                          leadingVisual={FileDirectoryIcon}
                           variant="default"
                           onClick={() => openNoteCollectionDialog('create')}
                           sx={{

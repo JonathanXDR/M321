@@ -1,3 +1,4 @@
+import { AlertIcon } from '@primer/octicons-react';
 import {
   Autocomplete,
   FormControl,
@@ -5,12 +6,11 @@ import {
   TextInputWithTokens,
   Token,
 } from '@primer/react';
-import React, { useEffect, useState } from 'react';
-import { Note } from '../../types/note.interface';
-import { AlertIcon, CheckIcon } from '@primer/octicons-react';
+import { useEffect, useState } from 'react';
 import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { InputToken } from '../../types/inputToken.interface';
+import { Note } from '../../types/note.interface';
 import BlankStateSystemError from '../BlankState/BlankStateSystemError';
 
 function NotesFormControl({
@@ -56,8 +56,8 @@ function NotesFormControl({
             note?.noteCollectionId === selectedNoteCollection.id
               ? undefined
               : note?.noteCollectionId !== null
-              ? AlertIconOcticon
-              : undefined,
+                ? AlertIconOcticon
+                : undefined,
           sx: { color: 'inherit' },
         }));
 
@@ -76,8 +76,8 @@ function NotesFormControl({
     isSelected(itemIdA) === isSelected(itemIdB)
       ? 0
       : isSelected(itemIdA)
-      ? 1
-      : -1;
+        ? 1
+        : -1;
 
   const [hasPreviouslyAssignedNotes, setHasPreviouslyAssignedNotes] =
     useState(false);
@@ -115,8 +115,8 @@ function NotesFormControl({
           note?.noteCollectionId === selectedNoteCollection.id
             ? undefined
             : note?.noteCollectionId !== null
-            ? AlertIconOcticon
-            : undefined,
+              ? AlertIconOcticon
+              : undefined,
         sx: { color: 'inherit' },
       };
     });
@@ -181,8 +181,8 @@ function NotesFormControl({
                 note?.noteCollectionId === selectedNoteCollection.id
                   ? undefined
                   : note?.noteCollectionId !== null
-                  ? AlertIconOcticon
-                  : undefined,
+                    ? AlertIconOcticon
+                    : undefined,
               sx: {
                 color: 'inherit',
               },

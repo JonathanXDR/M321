@@ -1,6 +1,6 @@
+import { AlertIcon, CheckIcon, XIcon } from '@primer/octicons-react';
 import { Box, Flash, IconButton, StyledOcticon } from '@primer/react';
 import { useGeneralContext } from '../../contexts/general.context';
-import { AlertIcon, CheckIcon, XIcon } from '@primer/octicons-react';
 
 const GeneralFlash = () => {
   const { flashVisible, setFlashVisible, flashVariant, flashMessage } =

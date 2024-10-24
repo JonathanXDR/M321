@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -8,10 +6,12 @@ import {
   PageLayout,
   TextInput,
 } from '@primer/react';
-import { useAuthContext } from '../../contexts/auth.context';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import LoginFooter from '../../components/LoginFooter';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
-import LoginFooter from '../../components/Footer/LoginFooter';
-import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
+import PasswordRequirementsText from '../../components/PasswordRequirementsText';
+import { useAuthContext } from '../../contexts/auth.context';
 
 const PasswordResetPage = () => {
   const navigate = useNavigate();

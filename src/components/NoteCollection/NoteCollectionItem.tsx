@@ -1,10 +1,10 @@
-import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { PencilIcon, TrashIcon } from '@primer/octicons-react';
+import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { Hidden } from '@primer/react/drafts';
 
-import NoteCollectionActionMenu from './NoteCollectionActionMenu';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { Note } from '../../types/note.interface';
+import NoteCollectionActionMenu from './NoteCollectionActionMenu';
 
 const NoteCollectionItem = ({ noteCollection }: any) => {
   const {
@@ -42,7 +42,7 @@ const NoteCollectionItem = ({ noteCollection }: any) => {
         <Hidden when={['narrow']}>
           <ButtonGroup>
             <Button
-              leadingIcon={PencilIcon}
+              leadingVisual={PencilIcon}
               variant="outline"
               onClick={() => {
                 setSelectedNoteCollection(noteCollection);
@@ -52,7 +52,7 @@ const NoteCollectionItem = ({ noteCollection }: any) => {
               Edit
             </Button>
             <Button
-              leadingIcon={TrashIcon}
+              leadingVisual={TrashIcon}
               variant="danger"
               onClick={() => {
                 setSelectedNoteCollection(noteCollection);

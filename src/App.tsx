@@ -1,15 +1,15 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '@primer/css/index.scss';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import LoadingSpinner from './components/LoadingSpinner';
-import { checkConnection } from './services/http.service';
 import BlankStateBackendError from './components/BlankState/BlankStateBackendError';
-import { GeneralProvider } from './contexts/general.context';
+import LoadingSpinner from './components/LoadingSpinner';
 import { AuthProvider } from './contexts/auth.context';
+import { GeneralProvider } from './contexts/general.context';
 import { NoteProvider } from './contexts/note.context';
 import { NoteCollectionProvider } from './contexts/noteCollection.context';
 import { ValidationProvider } from './contexts/validation.context';
+import { checkConnection } from './services/http.service';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const SettingsPage = React.lazy(

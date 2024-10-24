@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { Note } from '../types/note.interface';
-import { notes } from '../services/http.service';
-import { useGeneralContext } from './general.context';
 import { useConfirm } from '@primer/react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+import { notes } from '../services/http.service';
+import { Note } from '../types/note.interface';
+import { useGeneralContext } from './general.context';
 
 interface NoteProviderProps extends React.PropsWithChildren<{}> {}
 

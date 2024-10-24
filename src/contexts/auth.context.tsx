@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { login, checkToken } from '../services/auth.service';
+import { checkToken, login } from '../services/auth.service';
 
 interface AuthProviderProps extends React.PropsWithChildren<{}> {}
 

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { AlertIcon } from '@primer/octicons-react';
 import {
   Avatar,
   Box,
@@ -7,9 +6,7 @@ import {
   Dialog,
   Flash,
   FormControl,
-  Header,
   Heading,
-  IconButton,
   Link,
   PageLayout,
   Pagehead,
@@ -17,22 +14,15 @@ import {
   Text,
   TextInput,
 } from '@primer/react';
-import {
-  AlertIcon,
-  MarkGithubIcon,
-  StopIcon,
-  XIcon,
-} from '@primer/octicons-react';
-import { User } from '../../types/user.interface';
-import { useAuthContext } from '../../contexts/auth.context';
-import { users } from '../../services/http.service';
-import AccountActionMenu from '../../components/AccountActionMenu';
-import './SettingsPage.module.css';
-import MainNavbar from '../../components/Navbar/MainNavbar';
+import React, { useEffect, useState } from 'react';
 import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
-import { useGeneralContext } from '../../contexts/general.context';
 import GeneralFlash from '../../components/Flash/GeneralFlash';
-import ValidationFlash from '../../components/Flash/ValidationFlash';
+import MainNavbar from '../../components/Navbar/MainNavbar';
+import { useAuthContext } from '../../contexts/auth.context';
+import { useGeneralContext } from '../../contexts/general.context';
+import { users } from '../../services/http.service';
+import { User } from '../../types/user.interface';
+import './SettingsPage.module.css';
 
 const SettingsPage = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);

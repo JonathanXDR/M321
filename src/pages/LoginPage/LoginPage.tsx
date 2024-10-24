@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { XIcon } from '@primer/octicons-react';
 import {
   Box,
   Button,
@@ -12,15 +11,16 @@ import {
   Text,
   TextInput,
 } from '@primer/react';
-import { XIcon } from '@primer/octicons-react';
-import { useAuthContext } from '../../contexts/auth.context';
-import './LoginPage.module.css';
-import LoginNavbar from '../../components/Navbar/LoginNavbar';
-import LoginFooter from '../../components/Footer/LoginFooter';
-import { useValidationContext } from '../../contexts/validation.context';
-import { useGeneralContext } from '../../contexts/general.context';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import LoginFooter from '../../components/LoginFooter';
+import LoginNavbar from '../../components/Navbar/LoginNavbar';
+import { useAuthContext } from '../../contexts/auth.context';
+import { useGeneralContext } from '../../contexts/general.context';
+import { useValidationContext } from '../../contexts/validation.context';
+import './LoginPage.module.css';
 
 const LoginPage: React.FC = () => {
   const { loading, setLoading } = useGeneralContext();

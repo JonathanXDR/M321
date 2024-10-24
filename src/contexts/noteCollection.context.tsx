@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { NoteCollection } from '../types/noteCollection.interface';
-import { Note } from '../types/note.interface';
-import { noteCollections } from '../services/http.service';
-import { useGeneralContext } from './general.context';
 import { useConfirm } from '@primer/react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+import { noteCollections } from '../services/http.service';
+import { Note } from '../types/note.interface';
+import { NoteCollection } from '../types/noteCollection.interface';
+import { useGeneralContext } from './general.context';
 
 interface NoteCollectionProviderProps extends React.PropsWithChildren<{}> {}
 

@@ -12,7 +12,7 @@ import {
   TypographyIcon,
 } from '@primer/octicons-react';
 import { ActionList, ActionMenu, Text } from '@primer/react';
-import { Hidden, UnderlineNav } from '@primer/react/drafts';
+import { UnderlineNav } from '@primer/react/drafts';
 import React from 'react';
 
 function UnderlineNavItem() {

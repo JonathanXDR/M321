@@ -1,8 +1,8 @@
-import { User } from '../types/user.interface';
+import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
+import { User } from '../types/user.interface';
 import api from './api.service';
-import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 
 export const checkConnection = async () => {
   try {
@@ -43,4 +43,4 @@ const noteCollections = {
   delete: (id: string) => api.delete(`/note-collections/${id}`),
 };
 
-export { users, notes, noteCollections };
+export { noteCollections, notes, users };

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
-import { noteCollections, notes } from '../services/http.service';
 
 interface GeneralProviderProps extends React.PropsWithChildren<{}> {}
 interface GeneralContextData {

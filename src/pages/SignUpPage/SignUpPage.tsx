@@ -1,5 +1,3 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -10,17 +8,19 @@ import {
   Text,
   TextInput,
 } from '@primer/react';
-import { useAuthContext } from '../../contexts/auth.context';
-import './SignUpPage.module.css';
-import LoginNavbar from '../../components/Navbar/LoginNavbar';
-import LoginFooter from '../../components/Footer/LoginFooter';
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ValidationFlash, {
   ValidationField,
 } from '../../components/Flash/ValidationFlash';
-import PasswordRequirementsText from '../../components/PasswordRequirementsText/PasswordRequirementsText';
-import { useValidationContext } from '../../contexts/validation.context';
-import { useGeneralContext } from '../../contexts/general.context';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import LoginFooter from '../../components/LoginFooter';
+import LoginNavbar from '../../components/Navbar/LoginNavbar';
+import PasswordRequirementsText from '../../components/PasswordRequirementsText';
+import { useAuthContext } from '../../contexts/auth.context';
+import { useGeneralContext } from '../../contexts/general.context';
+import { useValidationContext } from '../../contexts/validation.context';
+import './SignUpPage.module.css';
 
 const SignUpPage = () => {
   const { loading, setLoading } = useGeneralContext();
