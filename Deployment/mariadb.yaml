@@ -18,12 +18,12 @@ spec:
           ports:
             - containerPort: 3306
           env:
-            - name: MARIADB_USER
+            - name: MARIADATABASE_USER
               valueFrom:
                 secretKeyRef:
                   name: mariadb-secret
                   key: mariadb-user
-            - name: MARIADB_ROOT_PASSWORD
+            - name: MARIADATABASE_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mariadb-secret
