@@ -15,8 +15,7 @@ jobs:
           password: ${{ secrets.GHCR_PAT }}
       - name: Build and push the frontend Docker image
         run: |
-          cd Frontend
-          docker build . --tag ghcr.io/jonathanxdr/notes-frontend:latest
+          docker build ./Frontend --tag ghcr.io/jonathanxdr/notes-frontend:latest
           docker push ghcr.io/jonathanxdr/notes-frontend:latest
 
   publish-backend-image:
@@ -31,6 +30,5 @@ jobs:
           password: ${{ secrets.GHCR_PAT }}
       - name: Build and push the backend Docker image
         run: |
-          cd Backend
-          docker build . --tag ghcr.io/jonathanxdr/notes-backend:latest
+          docker build ./Backend --tag ghcr.io/jonathanxdr/notes-backend:latest
           docker push ghcr.io/jonathanxdr/notes-backend:latest
