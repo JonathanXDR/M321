@@ -26,4 +26,4 @@ COPY . .
 EXPOSE 3000
 
 ## Launch the wait tool and then your application
-CMD ["/wait", "&&", "npm", "run", "start"]
+CMD ["/wait", "&&", "prisma", "migrate", "deploy", "&&", "npm", "run", "start"]
