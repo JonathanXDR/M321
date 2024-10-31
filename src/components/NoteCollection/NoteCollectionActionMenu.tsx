@@ -35,16 +35,7 @@ function NoteCollectionActionMenu({ noteCollection }: any) {
                 <PencilIcon />
               </ActionList.LeadingVisual>
               Edit
-              {/* <ActionList.TrailingVisual>⌘E</ActionList.TrailingVisual> */}
             </ActionList.Item>
-            {/* <ActionList.Item onSelect={() => alert('Detach clicked')}>
-            <ActionList.LeadingVisual>
-              <UnlinkIcon />
-            </ActionList.LeadingVisual>
-            Detach notes
-            <ActionList.TrailingVisual>⌘F</ActionList.TrailingVisual>
-          </ActionList.Item> */}
-            {/* <ActionList.Divider /> */}
             <ActionList.Item
               variant="danger"
               onSelect={() => {

@@ -1,7 +1,6 @@
 import { Box, Button, FormControl, Heading, PageLayout } from '@primer/react';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 import LoginFooter from '../../components/LoginFooter';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import { useAuthContext } from '../../contexts/auth.context';
@@ -23,14 +22,10 @@ const LogoutPage = () => {
   } = useAuthContext();
 
   useEffect(() => {
-    try {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        handleCheckToken(token, navigate).finally(() => {});
-      } else {
-      }
-    } catch (error) {
-      <BlankStateSystemError httpError={error} />;
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      handleCheckToken(token, navigate).finally(() => {});
+    } else {
     }
   }, [navigate]);
 

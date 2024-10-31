@@ -13,7 +13,6 @@ import {
 } from '@primer/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import LoginFooter from '../../components/LoginFooter';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
@@ -41,17 +40,13 @@ const LoginPage: React.FC = () => {
     ]);
 
   useEffect(() => {
-    try {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        handleCheckToken(token, navigate).finally(() => {
-          setLoading(false);
-        });
-      } else {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      handleCheckToken(token, navigate).finally(() => {
         setLoading(false);
-      }
-    } catch (error) {
-      <BlankStateSystemError httpError={error} />;
+      });
+    } else {
+      setLoading(false);
     }
   }, [navigate]);
 

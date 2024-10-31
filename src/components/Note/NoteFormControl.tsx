@@ -11,7 +11,6 @@ import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { InputToken } from '../../types/inputToken.interface';
 import { Note } from '../../types/note.interface';
-import BlankStateSystemError from '../BlankState/BlankStateSystemError';
 
 function NotesFormControl({
   notesValue,
@@ -25,15 +24,11 @@ function NotesFormControl({
   const [allNotes, setAllNotes] = useState<Note[]>([]);
 
   useEffect(() => {
-    try {
-      const fetchAllNotes = async () => {
-        const notesData = await fetchNotesData();
-        setAllNotes(notesData);
-      };
-      fetchAllNotes();
-    } catch (error) {
-      <BlankStateSystemError httpError={error} />;
-    }
+    const fetchAllNotes = async () => {
+      const notesData = await fetchNotesData();
+      setAllNotes(notesData);
+    };
+    fetchAllNotes();
   }, [fetchNotesData]);
 
   const AlertIconOcticon = () => (
@@ -135,19 +130,15 @@ function NotesFormControl({
   };
 
   useEffect(() => {
-    try {
-      const hasAssignedNotes = tokens.some((token) => {
-        const note = allNotes.find((note) => note.id === token.id);
-        return (
-          note?.noteCollectionId !== null &&
-          note?.noteCollectionId !== selectedNoteCollection.id
-        );
-      });
+    const hasAssignedNotes = tokens.some((token) => {
+      const note = allNotes.find((note) => note.id === token.id);
+      return (
+        note?.noteCollectionId !== null &&
+        note?.noteCollectionId !== selectedNoteCollection.id
+      );
+    });
 
-      setHasPreviouslyAssignedNotes(hasAssignedNotes);
-    } catch (error) {
-      <BlankStateSystemError httpError={error} />;
-    }
+    setHasPreviouslyAssignedNotes(hasAssignedNotes);
   }, [tokens, allNotes, selectedNoteCollection.id]);
 
   return (

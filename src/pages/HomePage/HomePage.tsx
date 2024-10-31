@@ -6,9 +6,6 @@ import {
 } from '@primer/octicons-react';
 import { Box, Button, ButtonGroup, PageLayout, TreeView } from '@primer/react';
 import React, { useEffect, useState } from 'react';
-import BlankStateEmpty from '../../components/BlankState/BlankStateEmpty';
-import BlankStateSystemError from '../../components/BlankState/BlankStateSystemError';
-import GeneralFlash from '../../components/Flash/GeneralFlash';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import MainNavbar from '../../components/Navbar/MainNavbar';
 import NoteDialog from '../../components/Note/NoteDialog';
@@ -37,13 +34,9 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        await fetchNotesData();
-        await fetchNoteCollectionsData();
-        setLoading(false);
-      } catch (error) {
-        <BlankStateSystemError httpError={error} />;
-      }
+      await fetchNotesData();
+      await fetchNoteCollectionsData();
+      setLoading(false);
     };
 
     fetchData();
@@ -125,14 +118,10 @@ const HomePage: React.FC = () => {
       <PageLayout containerWidth="full" padding="none">
         <PageLayout.Header>
           <MainNavbar />
-          <GeneralFlash />
         </PageLayout.Header>
         <PageLayout.Content padding="normal" width="xlarge">
-          {!notesData.length && !noteCollectionsData.length && !loading ? (
-            <BlankStateEmpty />
-          ) : (
+          {!loading && (
             <>
-              {/* <UnderlineNavItem /> */}
               <TreeView aria-label="Files">
                 <Box sx={{ marginTop: 5 }}>
                   <Box

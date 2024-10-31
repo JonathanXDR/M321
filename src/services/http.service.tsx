@@ -1,18 +1,7 @@
-import BlankStateSystemError from '../components/BlankState/BlankStateSystemError';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
 import { User } from '../types/user.interface';
 import api from './api.service';
-
-export const checkConnection = async () => {
-  try {
-    await api.get('/');
-    return true;
-  } catch (error) {
-    <BlankStateSystemError httpError={error} />;
-    return false;
-  }
-};
 
 const users = {
   getAll: () => api.get<User[]>('/users'),

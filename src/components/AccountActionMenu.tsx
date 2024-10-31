@@ -1,23 +1,18 @@
-import { ActionList, ActionMenu, Avatar, Box, Link, Text } from '@primer/react';
+import { ActionList, ActionMenu, Avatar, Box, Text } from '@primer/react';
 import { useEffect, useState } from 'react';
 import { logout } from '../services/auth.service';
 import { users } from '../services/http.service';
 import { User } from '../types/user.interface';
-import BlankStateSystemError from './BlankState/BlankStateSystemError';
 
 function AccountActionMenu() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    try {
-      const fetchCurrentUser = async () => {
-        const response = await users.getCurrent();
-        setCurrentUser(response.data);
-      };
-      fetchCurrentUser();
-    } catch (error) {
-      <BlankStateSystemError httpError={error} />;
-    }
+    const fetchCurrentUser = async () => {
+      const response = await users.getCurrent();
+      setCurrentUser(response.data);
+    };
+    fetchCurrentUser();
   }, []);
 
   return (
@@ -79,19 +74,9 @@ function AccountActionMenu() {
             </Box>
           </ActionList.Item>
           <ActionList.Divider />
-          <ActionList.Item
-            as={Link}
-            href="/settings"
-            sx={{
-              textDecoration: 'none !important',
-            }}
-          >
-            Settings
-          </ActionList.Item>
-          {/* <ActionList.Divider /> */}
+
           <ActionList.Item variant="danger" onSelect={() => logout()}>
             Logout
-            {/* <ActionList.TrailingVisual>⌘L</ActionList.TrailingVisual> */}
           </ActionList.Item>
         </ActionList>
       </ActionMenu.Overlay>
