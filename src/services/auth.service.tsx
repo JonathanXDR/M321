@@ -4,8 +4,9 @@ const login = async (username: string, password: string): Promise<string> => {
   const localStorageToken = localStorage.getItem('access_token');
 
   if (localStorageToken) {
-    api.defaults.headers.common['Authorization'] =
-      `Bearer ${localStorageToken}`;
+    api.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorageToken}`;
     return localStorageToken;
   }
 

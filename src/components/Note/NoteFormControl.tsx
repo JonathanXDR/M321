@@ -56,8 +56,8 @@ function NotesFormControl({
             note?.noteCollectionId === selectedNoteCollection.id
               ? undefined
               : note?.noteCollectionId !== null
-                ? AlertIconOcticon
-                : undefined,
+              ? AlertIconOcticon
+              : undefined,
           sx: { color: 'inherit' },
         }));
 
@@ -76,8 +76,8 @@ function NotesFormControl({
     isSelected(itemIdA) === isSelected(itemIdB)
       ? 0
       : isSelected(itemIdA)
-        ? 1
-        : -1;
+      ? 1
+      : -1;
 
   const [hasPreviouslyAssignedNotes, setHasPreviouslyAssignedNotes] =
     useState(false);
@@ -115,8 +115,8 @@ function NotesFormControl({
           note?.noteCollectionId === selectedNoteCollection.id
             ? undefined
             : note?.noteCollectionId !== null
-              ? AlertIconOcticon
-              : undefined,
+            ? AlertIconOcticon
+            : undefined,
         sx: { color: 'inherit' },
       };
     });
@@ -181,8 +181,8 @@ function NotesFormControl({
                 note?.noteCollectionId === selectedNoteCollection.id
                   ? undefined
                   : note?.noteCollectionId !== null
-                    ? AlertIconOcticon
-                    : undefined,
+                  ? AlertIconOcticon
+                  : undefined,
               sx: {
                 color: 'inherit',
               },

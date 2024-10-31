@@ -1,8 +1,8 @@
-import { BaseStyles, ThemeProvider } from '@primer/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider, BaseStyles } from '@primer/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
