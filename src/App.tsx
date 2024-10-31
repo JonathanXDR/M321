@@ -11,7 +11,6 @@ import { ValidationProvider } from './contexts/validation.context';
 
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
-const LogoutPage = React.lazy(() => import('./pages/LogoutPage/LogoutPage'));
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
@@ -35,7 +34,6 @@ const App: React.FC = () => {
                     }
                   />
                   <Route path="/login" element={<LoginPage />} />
-                  <Route path="/logout" element={<LogoutPage />} />
                   <Route path="*" element={<div>404</div>} />
                 </Routes>{' '}
               </Router>
