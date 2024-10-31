@@ -20,10 +20,9 @@ services:
     depends_on:
       - database
     environment:
-      DATABASE_HOST: database
-      DATABASE_USER: root
-      DATABASE_PASSWORD: 1234
-      DATABASE_NAME: notes
+      DATABASE_URL: 'mysql://root:1234@database:3306/notes'
+      SECRET_KEY: 464655b6c8702e2135daa64f1bb6f5df0c41dc6437c49555fdc7c0fd1c4a0160
+      JWT_SECRET: f5da8e72fe05f14d527aa11a5010dc9aacd70d96023fab49427f1812dc4a9942
       WAIT_HOSTS: database:3306
 
   frontend:
