@@ -1,34 +1,56 @@
-name: publish
+name: Publish
+
 on:
   push:
   workflow_dispatch:
-jobs:
-  publish-frontend-image:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.2.2
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.3.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
-      - name: Build and push the frontend Docker image
-        run: |
-          docker build ./Frontend --tag ghcr.io/jonathanxdr/notes-frontend:latest
-          docker push ghcr.io/jonathanxdr/notes-frontend:latest
 
-  publish-backend-image:
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish-images:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - service: frontend
+            context: ./Frontend
+            tag: ghcr.io/jonathanxdr/notes-frontend:latest
+            token_secret: GHCR_PAT_FRONTEND
+            submodule_path: Frontend
+          - service: backend
+            context: ./Backend
+            tag: ghcr.io/jonathanxdr/notes-backend:latest
+            token_secret: GHCR_PAT_BACKEND
+            submodule_path: Backend
     steps:
-      - uses: actions/checkout@v4.2.2
+      - name: Checkout repository without submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Set up Git credentials for ${{ matrix.service }} submodule
+        run: |
+          git config --global url."https://${{ secrets[matrix.token_secret] }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Initialize ${{ matrix.service }} submodule
+        run: |
+          git submodule update --init --recursive -- ${{ matrix.submodule_path }}
+
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.3.0
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
-      - name: Build and push the backend Docker image
-        run: |
-          docker build ./Backend --tag ghcr.io/jonathanxdr/notes-backend:latest
-          docker push ghcr.io/jonathanxdr/notes-backend:latest
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push the ${{ matrix.service }} Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.context }}
+          push: true
+          tags: ${{ matrix.tag }}

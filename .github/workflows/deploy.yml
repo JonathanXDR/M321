@@ -1,37 +1,45 @@
-name: deploy
+name: Deploy
+
 on:
   workflow_run:
     workflows: ['publish']
-    types:
-      - completed
+    types: [completed]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Set up WireGuard
+      - name: Set up WireGuard VPN
         uses: egor-tensin/setup-wireguard@v1.2.0
         with:
-          endpoint: '${{ secrets.WIREGUARD_ENDPOINT }}'
-          endpoint_public_key: '${{ secrets.WIREGUARD_ENDPOINT_PUBLIC_KEY }}'
-          ips: '${{ secrets.WIREGUARD_IPS }}'
-          allowed_ips: '${{ secrets.WIREGUARD_ALLOWED_IPS }}'
-          private_key: '${{ secrets.WIREGUARD_PRIVATE_KEY }}'
+          endpoint: ${{ secrets.WIREGUARD_ENDPOINT }}
+          endpoint_public_key: ${{ secrets.WIREGUARD_ENDPOINT_PUBLIC_KEY }}
+          ips: ${{ secrets.WIREGUARD_IPS }}
+          allowed_ips: ${{ secrets.WIREGUARD_ALLOWED_IPS }}
+          private_key: ${{ secrets.WIREGUARD_PRIVATE_KEY }}
 
-      - name: SSH Remote Commands
+      - name: Execute Remote SSH Commands
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.LERNMAAS_IP }}
           username: ${{ secrets.LERNMAAS_USERNAME }}
           key: ${{ secrets.LERNMAAS_PRIVATE_KEY }}
           script: |
+            set -e
             if [ -d M321 ]; then
-              cd M321 && git pull
+              cd M321
+              git pull
             else
               git clone --recurse-submodules https://github.com/JonathanXDR/M321.git
+              cd M321
             fi
-            cd ~/M321/Deployment &&
-            kubectl delete -f . &&
+            cd Deployment
+            kubectl delete -f .
             kubectl apply -f .
