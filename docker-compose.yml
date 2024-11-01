@@ -1,9 +1,23 @@
 name: notes
 services:
+  traefik:
+    image: traefik:latest
+    command:
+      - '--providers.docker=true'
+      - '--entrypoints.default.address=:80'
+    ports:
+      - '80:80'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - default
+
   database:
     container_name: database
     image: mariadb:latest
     command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - .env
     environment:
       MYSQL_USER: ${DATABASE_USER}
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
@@ -15,6 +29,8 @@ services:
     volumes:
       - database:/var/lib/mysql
       - ./Database/init.sql:/docker-entrypoint-initdb.d/1.sql
+    networks:
+      - default
 
   backend:
     build: ./Backend
@@ -25,11 +41,17 @@ services:
       - database
     environment:
       DATABASE_URL: '${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}'
-      # Auth
       SECRET_KEY: ${SECRET_KEY}
       JWT_SECRET: ${JWT_SECRET}
-      # Misc
       WAIT_HOSTS: database:3306
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.backend.rule=PathPrefix(`/api`)'
+      - 'traefik.http.routers.backend.entrypoints=default'
+      - 'traefik.http.services.backend.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.backend.priority=2'
+    networks:
+      - default
 
   frontend:
     build: ./Frontend
@@ -38,6 +60,17 @@ services:
       - '3001:3001'
     depends_on:
       - backend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.frontend.rule=PathPrefix(`/`)'
+      - 'traefik.http.routers.frontend.entrypoints=default'
+      - 'traefik.http.services.frontend.loadbalancer.server.port=3001'
+      - 'traefik.http.routers.frontend.priority=1'
+    networks:
+      - default
 
 volumes:
   database:
+
+networks:
+  default:
