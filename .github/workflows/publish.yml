@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   publish-images:
+    name: Publish ${{ matrix.service }} Docker image
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,6 +25,7 @@ jobs:
             tag: ghcr.io/jonathanxdr/notes-backend:latest
             token_secret: GHCR_PAT_BACKEND
             submodule_path: Backend
+
     steps:
       - name: Checkout repository without submodules
         uses: actions/checkout@v4
