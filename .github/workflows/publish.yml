@@ -37,6 +37,7 @@ jobs:
       - name: Initialize ${{ matrix.service }} submodule
         run: |
           git submodule update --init --recursive -- ${{ matrix.submodule_path }}
+          git submodule foreach 'git fetch origin && git checkout origin/main && git reset --hard origin/main'
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
