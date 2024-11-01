@@ -5,8 +5,11 @@ services:
     image: mariadb:latest
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_DATABASE: notes
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_HOST: ${DATABASE_HOST}
+      MYSQL_PORT: ${DATABASE_PORT}
+      MYSQL_DATABASE: ${DATABASE_NAME}
     ports:
       - '3306:3306'
     volumes:
@@ -21,9 +24,11 @@ services:
     depends_on:
       - database
     environment:
-      DATABASE_URL: 'mysql://root:1234@database:3306/notes'
-      SECRET_KEY: 464655b6c8702e2135daa64f1bb6f5df0c41dc6437c49555fdc7c0fd1c4a0160
-      JWT_SECRET: f5da8e72fe05f14d527aa11a5010dc9aacd70d96023fab49427f1812dc4a9942
+      DATABASE_URL: '${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}'
+      # Auth
+      SECRET_KEY: ${SECRET_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      # Misc
       WAIT_HOSTS: database:3306
 
   frontend:
