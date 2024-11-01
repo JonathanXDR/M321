@@ -21,32 +21,20 @@ spec:
             - name: DATABASE_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: mariadb-config
-                  key: mariadb-url
+                  name: database-config
+                  key: database-url
             - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:
-                  name: mariadb-secret
-                  key: mariadb-user
+                  name: database-secret
+                  key: database-user
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mariadb-secret
-                  key: mariadb-password
+                  name: database-secret
+                  key: database-password
             - name: DATABASE_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: mariadb-config
-                  key: mariadb-name
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
+                  name: database-config
+                  key: database-name

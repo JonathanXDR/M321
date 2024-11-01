@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mariadb-config
+  name: database-config
 data:
-  mariadb-url: mariadb-service
-  mariadb-name: notes
+  database-url: database-service
+  database-name: notes
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mariadb-init
+  name: database-init
 data:
   notes.sql: |
     Drop database if exists notes;
