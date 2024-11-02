@@ -37,7 +37,7 @@ jobs:
               cd M321
               git pull
             else
-              git clone --recurse-submodules https://github.com/JonathanXDR/M321.git
+              git clone https://github.com/JonathanXDR/M321.git
               cd M321
             fi
             cd Deployment
