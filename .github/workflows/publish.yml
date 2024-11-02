@@ -16,15 +16,11 @@ jobs:
       matrix:
         include:
           - service: frontend
-            context: ./Frontend
             tag: ghcr.io/jonathanxdr/notes-frontend:latest
-            token_secret: GHCR_PAT_FRONTEND
-            submodule_path: Frontend
+            token: GHCR_PAT_FRONTEND
           - service: backend
-            context: ./Backend
             tag: ghcr.io/jonathanxdr/notes-backend:latest
-            token_secret: GHCR_PAT_BACKEND
-            submodule_path: Backend
+            token: GHCR_PAT_BACKEND
 
     steps:
       - name: Checkout repository without submodules
@@ -34,11 +30,11 @@ jobs:
 
       - name: Set up Git credentials for ${{ matrix.service }} submodule
         run: |
-          git config --global url."https://${{ secrets[matrix.token_secret] }}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${{ secrets[matrix.token] }}@github.com/".insteadOf "https://github.com/"
 
       - name: Initialize ${{ matrix.service }} submodule
         run: |
-          git submodule update --init --recursive -- ${{ matrix.submodule_path }}
+          git submodule update --init --recursive -- ${{ matrix.service }}
           git submodule foreach 'git fetch origin && git checkout origin/main && git reset --hard origin/main'
 
       - name: Login to GitHub Container Registry
@@ -54,6 +50,6 @@ jobs:
       - name: Build and push the ${{ matrix.service }} Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ${{ matrix.context }}
+          context: ./${{ matrix.service }}
           push: true
           tags: ${{ matrix.tag }}

@@ -15,8 +15,6 @@ services:
   database:
     container_name: database
     image: mariadb:latest
-    env_file:
-      - .env
     environment:
       MYSQL_USER: ${DATABASE_USER}
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
@@ -26,14 +24,14 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - default
 
   backend:
     container_name: backend
     image: ghcr.io/jonathanxdr/notes-backend:latest
-    build: ./Backend
+    build: ./backend
     ports:
       - '3000:3000'
     depends_on:
@@ -55,7 +53,7 @@ services:
   frontend:
     container_name: frontend
     image: ghcr.io/jonathanxdr/notes-frontend:latest
-    build: ./Frontend
+    build: ./frontend
     ports:
       - '3001:3001'
     depends_on:
