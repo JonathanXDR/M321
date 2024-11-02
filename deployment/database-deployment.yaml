@@ -24,11 +24,31 @@ spec:
     spec:
       containers:
         - env:
-            - name: MYSQL_DATABASE
-            - name: MYSQL_HOST
-            - name: MYSQL_PORT
-            - name: MYSQL_ROOT_PASSWORD
             - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-user
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-password
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-host
+            - name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-port
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-name
           image: mariadb:latest
           name: database
           ports:

@@ -32,12 +32,51 @@ spec:
     spec:
       containers:
         - env:
+            - name: DATABASE_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-type
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-password
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-host
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-port
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database-name
             - name: DATABASE_URL
-              value: ://:@:/
-            - name: JWT_SECRET
-            - name: SECRET_KEY
+              value: '$(DATABASE_TYPE)://$(DATABASE_USER):$(DATABASE_PASSWORD)@$(DATABASE_HOST):$(DATABASE_PORT)/$(DATABASE_NAME)'
             - name: WAIT_HOSTS
-              value: database:3306
+              value: $(DATABASE_HOST):$(DATABASE_PORT)
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: secret-key
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: jwt-secret
+
           image: ghcr.io/jonathanxdr/notes-backend:latest
           name: backend
           ports:
