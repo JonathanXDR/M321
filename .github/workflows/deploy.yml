@@ -35,11 +35,12 @@ jobs:
             set -e
             if [ -d M321 ]; then
               cd M321
-              git pull
+              git fetch origin
+              git checkout origin/main
+              git reset --hard origin/main
             else
               git clone https://github.com/JonathanXDR/M321.git
               cd M321
             fi
             cd Deployment
-            kubectl delete -f .
             kubectl apply -f .
