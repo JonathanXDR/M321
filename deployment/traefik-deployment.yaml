@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - args:
-            - --providers.docker=true
+            - --providers.kubernetesingress=true
             - --entrypoints.default.address=:80
           image: traefik:latest
           name: traefik
