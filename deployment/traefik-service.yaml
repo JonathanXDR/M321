@@ -5,12 +5,12 @@ metadata:
     kompose.cmd: kompose convert -o ./deployment
     kompose.version: 1.34.0 (HEAD)
   labels:
-    io.kompose.service: database
-  name: database
+    io.kompose.service: traefik
+  name: traefik
 spec:
   ports:
-    - name: "3306"
-      port: 3306
-      targetPort: 3306
+    - name: "80"
+      port: 80
+      targetPort: 80
   selector:
-    io.kompose.service: database
+    io.kompose.service: traefik

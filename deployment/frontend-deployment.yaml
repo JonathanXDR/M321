@@ -1,19 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  annotations:
+    kompose.cmd: kompose convert -o ./deployment
+    kompose.version: 1.34.0 (HEAD)
+    traefik.enable: "true"
+    traefik.http.routers.frontend.entrypoints: default
+    traefik.http.routers.frontend.priority: "1"
+    traefik.http.routers.frontend.rule: PathPrefix(`/`)
+    traefik.http.services.frontend.loadbalancer.server.port: "3001"
+  labels:
+    io.kompose.service: frontend
+  name: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      io.kompose.service: frontend
   template:
     metadata:
+      annotations:
+        kompose.cmd: kompose convert -o ./deployment
+        kompose.version: 1.34.0 (HEAD)
+        traefik.enable: "true"
+        traefik.http.routers.frontend.entrypoints: default
+        traefik.http.routers.frontend.priority: "1"
+        traefik.http.routers.frontend.rule: PathPrefix(`/`)
+        traefik.http.services.frontend.loadbalancer.server.port: "3001"
       labels:
-        app: frontend
+        io.kompose.service: frontend
     spec:
       containers:
-        - name: frontend
-          image: ghcr.io/jonathanxdr/notes-frontend:latest
+        - image: ghcr.io/jonathanxdr/notes-frontend:latest
+          name: frontend
           ports:
             - containerPort: 3001
+              protocol: TCP
+      restartPolicy: Always

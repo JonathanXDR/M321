@@ -1,54 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database-deployment
+  annotations:
+    kompose.cmd: kompose convert -o ./deployment
+    kompose.version: 1.34.0 (HEAD)
+  labels:
+    io.kompose.service: database
+  name: database
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: database
+      io.kompose.service: database
+  strategy:
+    type: Recreate
   template:
     metadata:
+      annotations:
+        kompose.cmd: kompose convert -o ./deployment
+        kompose.version: 1.34.0 (HEAD)
       labels:
-        app: database
+        io.kompose.service: database
     spec:
       containers:
-        - name: database
+        - env:
+            - name: MYSQL_DATABASE
+            - name: MYSQL_HOST
+            - name: MYSQL_PORT
+            - name: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_USER
           image: mariadb:latest
+          name: database
           ports:
             - containerPort: 3306
-          env:
-            - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  name: database-secret
-                  key: database-user
-            - name: DATABASE_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: database-secret
-                  key: database-password
+              protocol: TCP
           volumeMounts:
-            - name: database-init
-              mountPath: /docker-entrypoint-initdb.d
-            - name: database-data
-              mountPath: /var/lib/mysql
+            - mountPath: /docker-entrypoint-initdb.d/init.sql
+              name: database-cm0
+              subPath: init.sql
+      restartPolicy: Always
       volumes:
-        - name: database-init
-          configMap:
-            name: database-init
-        - name: database-data
-          persistentVolumeClaim:
-            claimName: database-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: database-service
-spec:
-  selector:
-    app: database
-  ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
+        - configMap:
+            items:
+              - key: init.sql
+                path: init.sql
+            name: database-cm0
+          name: database-cm0
