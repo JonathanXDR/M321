@@ -41,7 +41,7 @@ services:
       DATABASE_URL: '${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}'
       SECRET_KEY: ${SECRET_KEY}
       JWT_SECRET: ${JWT_SECRET}
-      WAIT_HOSTS: database:3306
+      WAIT_HOSTS: ${DATABASE_HOST}:${DATABASE_PORT}
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.backend.rule=PathPrefix(`/api`) || PathPrefix(`/swagger`)'
