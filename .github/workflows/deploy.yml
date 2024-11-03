@@ -42,5 +42,5 @@ jobs:
               git clone https://github.com/JonathanXDR/M321.git
               cd M321
             fi
-            cd deployment
-            kubectl apply -f .
+            kubectl delete "$(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed -e 's/,$//')" --all
+            kubectl apply -f ./deployment
