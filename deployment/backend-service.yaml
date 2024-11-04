@@ -4,11 +4,6 @@ metadata:
   annotations:
     kompose.cmd: kompose convert -o ./deployment
     kompose.version: 1.34.0 (HEAD)
-    traefik.enable: "true"
-    traefik.http.routers.backend.entrypoints: default
-    traefik.http.routers.backend.priority: "2"
-    traefik.http.routers.backend.rule: PathPrefix(`/api`) || PathPrefix(`/swagger`)
-    traefik.http.services.backend.loadbalancer.server.port: "3000"
   labels:
     io.kompose.service: backend
   name: backend
