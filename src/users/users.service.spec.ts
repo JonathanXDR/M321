@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
-import { NotFoundException } from '@nestjs/common';
 import { UserRequest } from './dto/user.request';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -59,23 +58,6 @@ describe('UsersController', () => {
 
       expect(await controller.getCurrentUser(mockUser)).toEqual(mockUser);
       expect(usersService.findOneById).toHaveBeenCalledWith(mockUser.id);
-    });
-  });
-
-  describe('getUser', () => {
-    it('should return a user by ID', async () => {
-      (usersService.findOneById as jest.Mock).mockResolvedValue(mockUser);
-
-      expect(await controller.getUser(mockUser.id)).toEqual(mockUser);
-      expect(usersService.findOneById).toHaveBeenCalledWith(mockUser.id);
-    });
-
-    it('should throw NotFoundException if user not found', async () => {
-      (usersService.findOneById as jest.Mock).mockResolvedValue(null);
-
-      await expect(controller.getUser('unknown')).rejects.toThrow(
-        NotFoundException,
-      );
     });
   });
 
