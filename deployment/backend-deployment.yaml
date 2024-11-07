@@ -54,8 +54,6 @@ spec:
                   key: database-name
             - name: DATABASE_URL
               value: '$(DATABASE_TYPE)://$(DATABASE_USER):$(DATABASE_PASSWORD)@$(DATABASE_HOST):$(DATABASE_PORT)/$(DATABASE_NAME)'
-            - name: WAIT_HOSTS
-              value: $(DATABASE_HOST):$(DATABASE_PORT)
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
