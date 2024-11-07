@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
+  // TODO: if you want to run the app locally, change the baseURL to `http://localhost:3000/api` and rebuild the frontend docker image if your are using docker compose.
   baseURL: '/api',
 });
 
