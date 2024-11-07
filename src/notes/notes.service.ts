@@ -7,16 +7,33 @@ import { NoteRequest } from './dto/note.request';
 export class NotesService {
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * Finds all notes for a user.
+   * @param user - The user object.
+   * @returns An array of notes.
+   */
   async findMany(user: User): Promise<Note[]> {
     return this.prisma.note.findMany({
       where: { userId: user.id },
     });
   }
 
+  /**
+   * Finds a note by its ID.
+   * @param user - The user object.
+   * @param id - The ID of the note.
+   * @returns The note object.
+   */
   async findOne(user: User, id: string): Promise<Note> {
     return this.getNote(user, id);
   }
 
+  /**
+   * Creates a new note.
+   * @param user - The user object.
+   * @param body - The note request object.
+   * @returns The note object.
+   */
   async createNote(user: User, body: NoteRequest): Promise<Note> {
     if (body.noteCollectionId) {
       await this.validateNoteCollection(user, body.noteCollectionId);
@@ -26,6 +43,13 @@ export class NotesService {
     });
   }
 
+  /**
+   * Updates an existing note.
+   * @param user - The user object.
+   * @param id - The ID of the note.
+   * @param body - The note request object.
+   * @returns The note object.
+   */
   async updateNote(user: User, id: string, body: NoteRequest): Promise<Note> {
     if (body.noteCollectionId) {
       await this.validateNoteCollection(user, body.noteCollectionId);
@@ -36,12 +60,24 @@ export class NotesService {
     });
   }
 
+  /**
+   * Deletes a note by its ID.
+   * @param user - The user object.
+   * @param id - The ID of the note.
+   * @returns The note object.
+   */
   async deleteNote(user: User, id: string): Promise<Note> {
     return this.prisma.note.delete({
       where: { id },
     });
   }
 
+  /**
+   *  Helper function to get a note by its ID.
+   * @param user - The user object.
+   * @param id - The ID of the note.
+   * @returns The note object.
+   */
   private async getNote(user: User, id: string): Promise<Note> {
     const note = await this.prisma.note.findUnique({
       where: { id },
@@ -53,6 +89,12 @@ export class NotesService {
     return note;
   }
 
+  /**
+   * Helper function to validate a note collection.
+   * @param user - The user object.
+   * @param id - The ID of the note collection
+   * @returns A promise that resolves if the note collection is valid.
+   */
   private async validateNoteCollection(user: User, id: string): Promise<void> {
     const noteCollection = await this.prisma.noteCollection.findUnique({
       where: { id },
